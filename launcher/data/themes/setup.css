@@ -32,7 +32,7 @@ QMainWindow {
     color: white;
 }
 #button_continue_setup:hover {
-    background: rgb(0, 83, 228);
+    background: rgb(0, 80, 218);
 }
 #text_register_login {
     background: rgba(0, 0, 0, 0);
