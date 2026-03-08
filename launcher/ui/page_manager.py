@@ -5,6 +5,7 @@ from ..utils.configurator import Configurator
 from .page_functions.page_manager import how_start_page
 from .pages.setup import WindowSetup
 from .pages.login import WindowLogin
+from .style import set_style
 
 class ClickableQLabel(QtWidgets.QLabel):
     clicked = QtCore.pyqtSignal()
@@ -42,6 +43,8 @@ class HiveLauncher(QMainWindow):
         self.setCentralWidget(self.centralwidget)
         
         if how_start_page() == 'setup':
+            set_style(self, 'setup')
             self.setup_page.setup_show() 
         else:
-            self.login_page.login_show() 
+            set_style(self, self.configuration.get_color_theme())
+            self.login_page.login_show()

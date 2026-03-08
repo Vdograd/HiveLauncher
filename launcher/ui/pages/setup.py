@@ -1,5 +1,4 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
-from ..style import set_style
 from ...utils.font_manager import FontManager
 from ..page_functions.setup import scroll_page_setup, replace_auth_register_setup, access_step_continue_auth, auth_setup
 from ..page_functions.page_manager import create_shadow
@@ -11,7 +10,6 @@ class WindowSetup:
         self.page_setup = 0 # 0 - Приветствие, 1 - Регистрация, 2 - Выбор темы, 3 - Лаунчер
         self.window_auth = 0 # 0 - Регистрация, 1 - Авторизация
         self.ClickableQLabel = ClickableQLabel
-        set_style(self.main, 'setup')
 
     def update_window_auth(self, new_parametr):
         self.window_auth = new_parametr
