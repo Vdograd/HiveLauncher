@@ -1,0 +1,47 @@
+from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtWidgets import QMainWindow
+from ..utils.logger import Logger
+from ..utils.configurator import Configurator
+from .page_functions.page_manager import how_start_page
+from .pages.setup import WindowSetup
+from .pages.login import WindowLogin
+
+class ClickableQLabel(QtWidgets.QLabel):
+    clicked = QtCore.pyqtSignal()
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+    def mousePressEvent(self, event):
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
+            self.clicked.emit()
+        super().mousePressEvent(event)
+
+class HiveLauncher(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.configuration = Configurator()
+        self.logger = Logger()
+        self.login_page = WindowLogin(self, ClickableQLabel)
+        self.setup_page = WindowSetup(self, ClickableQLabel)
+        self.nickname = None
+        self.datetime = None
+        self.play_time = None
+        self.setup_ui()
+
+    def setup_ui(self):
+        self.setObjectName("MainWindow")
+        self.resize(1100, 700)
+        self.setMinimumSize(QtCore.QSize(1100, 700))
+        self.setMaximumSize(QtCore.QSize(1100, 700))
+        self.setWindowTitle("HiveLauncher")
+        self.setWindowIcon(QtGui.QIcon(f"{self.configuration.static_folder}\\global\\logo_64x64.svg"))
+
+        self.centralwidget = QtWidgets.QWidget()
+        self.centralwidget.setObjectName("centralwidget")
+        self.setCentralWidget(self.centralwidget)
+        
+        if how_start_page() == 'setup':
+            self.setup_page.setup_show() 
+        else:
+            self.login_page.login_show() 

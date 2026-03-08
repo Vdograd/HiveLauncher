@@ -1,0 +1,132 @@
+#logo {
+    background: rgba(0, 0, 0, 0);
+}
+#version_launcher {
+    background: rgba(0, 0, 0, 0); 
+    color: #005FFF;
+}
+#text_hello {
+    background: rgba(0, 0, 0, 0);
+}
+#text_description {
+    background: rgba(0, 0, 0, 0); 
+    color: rgba(0, 0, 0, 0.5)
+}
+QMainWindow {
+    background: rgb(255,255,255);
+}
+#person1 {
+    background: rgba(0, 0, 0, 0);
+}
+#down_text_1 {
+    background: rgba(1, 1, 0, 0); 
+    color: rgb(0,0,0);
+}
+#down_text_2 {
+    background: rgba(1, 1, 0, 0); 
+    color: rgba(0,0,0,0.3);
+}
+#button_continue_setup {
+    border-radius: 8px;
+    background: #005FFF;
+    color: white;
+}
+#button_continue_setup:hover {
+    background: rgb(0, 83, 228);
+}
+#text_register_login {
+    background: rgba(0, 0, 0, 0);
+}
+#button_or_setup {
+    color: #005FFF;
+}
+#button_or_setup:hover {
+    color: rgb(0, 83, 228);
+}
+#nickname_setup {
+    border: none;
+    background: #FAFAFA;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: #000000;
+    border-radius: 5px;
+}
+#nickname_setup:hover {
+    background: #ffffff;
+}
+#button_auth_setup {
+    border-radius: 8px;
+    background: rgba(0, 95, 255, 1);
+    color: white;
+}
+#button_auth_setup:hover {
+    background: rgb(0, 83, 228);
+}
+#text_rules_nickname_setup {
+    background: rgba(1, 1, 0, 0);
+}
+#rules_setup {
+    background: rgba(1, 1, 0, 0); 
+    color: rgba(0,0,0,0.5);
+}
+#person2 {
+    background: rgba(1, 1, 0, 0);
+}
+#error_auth_setup {
+    color: rgba(255, 0, 0, 1);
+}
+#color_text {
+    background: rgba(1, 1, 0, 0);
+}
+#color_set_text {
+    background: rgba(1, 1, 0, 0);
+}
+#after_edit_text_setup {
+    background: rgba(1, 1, 0, 0); 
+    color: rgba(0,0,0,0.3);
+}
+
+#color_stamp_setup {
+    border-radius: 5px;
+    background: rgba(250, 250, 250, 1);
+    color: #000000;
+    padding-left: 16px;
+}
+#color_stamp_setup:hover {
+    background: #ffffff;
+}
+
+#color_stamp_setup::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 30px;
+    border: none;
+}
+#color_stamp_setup::down-arrow {
+    padding-right: 16px;
+    image: url('launcher/data/static/page3/arrow.svg');
+    width: 24px;
+    height: 24px;
+    border: none;
+}
+
+#color_stamp_view {
+    border: none;
+    background: rgba(250, 250, 250, 1);
+    outline: none;
+    color: #000000;
+}
+#color_stamp_view::item {
+    background: transparent;
+    padding: 0.4px 16px;
+    border-bottom: 1px solid rgba(74, 74, 74, 0.1);
+    min-height: 30px;
+    color: #000000
+}
+#color_stamp_view:item:hover {
+    background-color: #EFEFEF;
+    color: #000000 
+}
+#person3 {
+    background: rgba(1, 1, 0, 0);
+}
