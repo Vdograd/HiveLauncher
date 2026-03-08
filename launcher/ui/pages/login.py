@@ -11,6 +11,7 @@ class WindowLogin:
         self.auth = AuthManager()
         self.window_auth = 0
         self.ClickableQLabel = ClickableQLabel
+        self.conf = self.main.configuration
 
     def update_window_auth(self, new_parametr):
         self.window_auth = new_parametr
@@ -19,24 +20,24 @@ class WindowLogin:
         self.logo = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.logo.setGeometry(QtCore.QRect(76, 40, 68, 46))
         self.logo.setMinimumSize(QtCore.QSize(68, 46))
-        self.logo.setPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\global\\HLlogo.svg"))
+        self.logo.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\global\\HLlogo.svg"))
         self.logo.setObjectName("logo")
 
         self.version_launcher = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.version_launcher.setGeometry(QtCore.QRect(80, 85, 64, 46))
         self.version_launcher.setFont(self.font.get_font(8, "1"))
-        self.version_launcher.setText(self.main.configuration.version_launcher)
+        self.version_launcher.setText(self.conf.version_launcher)
         self.version_launcher.setObjectName("version_launcher")
         self.version_launcher.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 
         self.creeper_left = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.creeper_left.setGeometry(QtCore.QRect(0, 314, 257, 386))
-        self.creeper_left.setPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\login\\{self.main.configuration.get_color_theme()}\\creeper_left.png"))
+        self.creeper_left.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{self.conf.get_color_theme()}\\creeper_left.png"))
         self.creeper_left.setObjectName("creeper")
 
         self.creeper_right = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.creeper_right.setGeometry(QtCore.QRect(843, 314, 257, 386))
-        self.creeper_right.setPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\login\\{self.main.configuration.get_color_theme()}\\creeper_right.png"))
+        self.creeper_right.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{self.conf.get_color_theme()}\\creeper_right.png"))
         self.creeper_right.setObjectName("creeper")
 
         self.select_nickname_text = QtWidgets.QLabel(parent=self.main.centralwidget)
@@ -61,7 +62,7 @@ class WindowLogin:
         self.select_nickname_combobox.setInsertPolicy(QtWidgets.QComboBox.InsertPolicy.InsertAtBottom)
         self.select_nickname_combobox.setObjectName("select_nickname_combobox")
         self.select_nickname_combobox.setIconSize(QtCore.QSize(22, 22))
-        self.select_nickname_combobox.setGraphicsEffect(create_shadow(self.main.configuration.get_color_theme()))
+        self.select_nickname_combobox.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
         data_users = self.auth.list_nicknames()
 
         for user in data_users:
@@ -69,13 +70,13 @@ class WindowLogin:
                 self.select_nickname_combobox.addItem(user[0])
             else:
                 icon = QtGui.QIcon()
-                color = self.main.configuration.get_color_theme()
-                icon.addPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
-                icon.addPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
-                icon.addPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
-                icon.addPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
-                icon.addPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
-                icon.addPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
-                icon.addPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
+                color = self.conf.get_color_theme()
+                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
                 self.select_nickname_combobox.addItem(icon, user[0])
 

@@ -10,6 +10,7 @@ class WindowSetup:
         self.page_setup = 0 # 0 - Приветствие, 1 - Регистрация, 2 - Выбор темы, 3 - Лаунчер
         self.window_auth = 0 # 0 - Регистрация, 1 - Авторизация
         self.ClickableQLabel = ClickableQLabel
+        self.conf = self.main.configuration
 
     def update_window_auth(self, new_parametr):
         self.window_auth = new_parametr
@@ -20,13 +21,13 @@ class WindowSetup:
         self.logo = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.logo.setGeometry(QtCore.QRect(76, 40, 68, 46))
         self.logo.setMinimumSize(QtCore.QSize(68, 46))
-        self.logo.setPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\global\\HLlogo.svg"))
+        self.logo.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\global\\HLlogo.svg"))
         self.logo.setObjectName("logo")
 
         self.version_launcher = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.version_launcher.setGeometry(QtCore.QRect(80, 85, 64, 46))
         self.version_launcher.setFont(self.font.get_font(8, "1"))
-        self.version_launcher.setText(self.main.configuration.version_launcher)
+        self.version_launcher.setText(self.conf.version_launcher)
         self.version_launcher.setObjectName("version_launcher")
         self.version_launcher.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 
@@ -46,7 +47,7 @@ class WindowSetup:
 
         self.person1 = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.person1.setGeometry(QtCore.QRect(859, 350, 241, 350))
-        self.person1.setPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\page1\\person_1.png"))
+        self.person1.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\page1\\person_1.png"))
         self.person1.setObjectName("person1")
 
         self.down_text_1 = QtWidgets.QLabel(parent=self.main.centralwidget)
@@ -140,7 +141,7 @@ class WindowSetup:
 
         self.person2 = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.person2.setGeometry(QtCore.QRect(536, 115, 504, 504))
-        self.person2.setPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\page2\\person_1.png"))
+        self.person2.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\page2\\person_1.png"))
         self.person2.setObjectName("person2")   
 
         # Page 3
@@ -181,7 +182,7 @@ class WindowSetup:
 
         self.person3 = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.person3.setGeometry(QtCore.QRect(628, 163, 472, 537))
-        self.person3.setPixmap(QtGui.QPixmap(f"{self.main.configuration.static_folder}\\page3\\person_1.png"))
+        self.person3.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\page3\\person_1.png"))
         self.person3.setObjectName("person3")
 
         if self.page_setup == 0:
