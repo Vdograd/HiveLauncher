@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from ...utils.font_manager import FontManager
-from ..page_functions.setup import auth_setup
+from ..page_functions.login import connect_change_nickname_select
 from ..page_functions.page_manager import create_shadow
 from ...auth.auth_manager import AuthManager
 
@@ -10,11 +10,15 @@ class WindowLogin:
         self.main = main_window
         self.auth = AuthManager()
         self.window_auth = 0
+        self.hide_pass = True
         self.ClickableQLabel = ClickableQLabel
         self.conf = self.main.configuration
 
     def update_window_auth(self, new_parametr):
         self.window_auth = new_parametr
+
+    def update_hide_pass(self, new_parametr):
+        self.hide_pass = new_parametr
 
     def login_show(self):
         self.logo = QtWidgets.QLabel(parent=self.main.centralwidget)
@@ -89,7 +93,7 @@ class WindowLogin:
         self.select_nickname_combobox_view.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
         self.select_nickname_combobox_view.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.select_nickname_combobox.setView(self.select_nickname_combobox_view)
-        #self.select_nickname_combobox.currentIndexChanged.connect(lambda: self.change_nickname_login(data_users))
+        self.select_nickname_combobox.currentIndexChanged.connect(lambda: connect_change_nickname_select(self, data_users))
 
         self.password_account_login = QtWidgets.QLineEdit(parent=self.main.centralwidget)
         self.password_account_login.setGeometry(QtCore.QRect(400, 322, 300, 55))
@@ -115,5 +119,6 @@ class WindowLogin:
         self.login_in_launcher.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.login_in_launcher.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         #self.login_in_launcher.clicked.connect(self.auth_in_launcher_login)
-
+        connect_change_nickname_select(self, data_users)
+        
         #Page add account
