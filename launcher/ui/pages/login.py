@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from ...utils.font_manager import FontManager
-from ..page_functions.login import connect_change_nickname_select
+from ..page_functions.login import connect_change_nickname_select,password_check_login_start
 from ..page_functions.page_manager import create_shadow
 from ...auth.auth_manager import AuthManager
 
@@ -101,7 +101,7 @@ class WindowLogin:
         self.password_account_login.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
         self.password_account_login.setPlaceholderText("Пароль")
         self.password_account_login.setObjectName('password_account_login')
-        #self.password_account_login.textChanged.connect(self.password_check_login_start)
+        self.password_account_login.textChanged.connect(lambda: password_check_login_start(self))
         self.password_account_login.hide()
 
         self.use_in_minecraft_text = QtWidgets.QLabel(parent=self.main.centralwidget)
@@ -120,5 +120,5 @@ class WindowLogin:
         self.login_in_launcher.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         #self.login_in_launcher.clicked.connect(self.auth_in_launcher_login)
         connect_change_nickname_select(self, data_users)
-        
+
         #Page add account

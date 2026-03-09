@@ -54,7 +54,7 @@ class Configurator:
         
         # Fixed config.json
         try:
-            with open(f"{self.folder_launcher}\\config.json", "r", encoding="ansi") as file:
+            with open(f"{self.config_folder}\\config.json", "r", encoding="ansi") as file:
                 data = json.load(file)
                 check = [data["color"], data["folder_game"], data["maxm"], data["window_size"], data["after_download"], data["after_start"]]
         except Exception as e:

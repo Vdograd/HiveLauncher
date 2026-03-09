@@ -42,3 +42,46 @@ def connect_change_nickname_select(self, data):
                     background: rgb(0, 80, 218);
                 }
             """)
+
+def password_check_login_start(self):
+    all_chars_ru = '1234567890 ёйцукенгшщзхъфывапролджэячсмитьбюЁЙЦУКЕНГШЩЗХЪФЫВАПРОЛДЖЭЯЧСМИТЬБЮABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!@#$%^&*()_+-=[]{}|;:",.<>?/~`\'\\'
+    password_check = self.password_account_login.text()
+    if password_check == "":
+        self.login_in_launcher.setEnabled(False)
+        self.login_in_launcher.setStyleSheet(
+                """
+                    QPushButton {
+                        border-radius: 8px;
+                        background: rgba(0, 95, 255, 0.5);
+                        color: white;
+                    }
+                """
+            )
+        return
+    else:
+        password = list(password_check)
+        for pass_char in password:
+            if pass_char not in all_chars_ru:
+                self.login_in_launcher.setEnabled(False)
+                self.login_in_launcher.setStyleSheet(
+                    """
+                        QPushButton {
+                            border-radius: 8px;
+                            background: rgba(0, 95, 255, 0.5);
+                            color: white;
+                        }
+                    """
+                )
+                return
+        else:
+            self.login_in_launcher.setEnabled(True)
+            self.login_in_launcher.setStyleSheet("""
+                #login_in_launcher {
+                    border-radius: 8px;
+                    background: #005FFF;
+                    color: white;
+                }
+                #login_in_launcher:hover {
+                    background: rgb(0, 80, 218);
+                }
+            """)

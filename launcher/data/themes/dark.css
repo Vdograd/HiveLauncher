@@ -1,3 +1,107 @@
 QMainWindow {
     background: #181818;
 }
+#logo {
+    background: rgba(0, 0, 0, 0);
+}
+#version_launcher {
+    background: rgba(0, 0, 0, 0); 
+    color: #005FFF;
+}
+#creeper {
+    background: rgba(1, 1, 0, 0);
+}
+#select_nickname_text {
+    background: rgba(1, 1, 0, 0);
+    color: #ffffff;
+}
+#button_change_page_log_reg {
+    color: #005FFF;
+}
+#button_change_page_log_reg:hover {
+    color: rgb(0, 80, 218);
+}
+#select_nickname_combobox {
+    border-radius: 5px;
+    background: #181818;
+    color: #ffffff;
+    padding-left: 20px;
+}
+#select_nickname_combobox:hover {
+    background: #1E1E1E;
+}
+#select_nickname_combobox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 30px;
+    border: none;
+}
+#select_nickname_combobox::down-arrow {
+    padding-right: 20px;
+    image: url('launcher/data/static/login/dark/arrow.svg');
+    width: 24px;
+    height: 24px;
+    border: none;
+}
+#select_nickname_combobox_view {
+    border: none;
+    background: #181818;
+    outline: none;
+    color: #ffffff;
+}
+#select_nickname_combobox_view::item {
+    background: transparent;
+    padding: 0.4px 20px;
+    border-bottom: 1px solid rgba(74, 74, 74, 0.1);
+    min-height: 30px;
+    color: #ffffff;
+}
+#select_nickname_combobox_view::item:hover {
+    background-color: #1E1E1E;
+    color: #ffffff;
+}
+#select_nickname_combobox_view:vertical {
+    border: none;
+    background: transparent;
+    width: 8px;
+    margin: 0px;
+}
+#select_nickname_combobox_view::handle:vertical {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    min-height: 30px;
+}
+#select_nickname_combobox_view::handle:vertical:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+#select_nickname_combobox_view::handle:vertical:pressed {
+    background: rgba(255, 255, 255, 0.4);
+}
+#select_nickname_combobox_view::add-line:vertical,
+#select_nickname_combobox_view::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+}
+#select_nickname_combobox_view::add-page:vertical,
+#select_nickname_combobox_view::sub-page:vertical {
+    background: none;
+}
+#password_account_login {
+    border-radius: 5px;
+    background: #181818;
+    color: #ffffff;
+    padding-left: 20px;
+}
+#use_in_minecraft_text {
+    background: rgba(0,0,0,0.0); 
+    color: rgba(255,255,255,0.3);
+}
+#login_in_launcher {
+    border-radius: 8px;
+    background: #005FFF;
+    color: white;
+}
+#login_in_launcher:hover {
+    background: rgb(0, 80, 218);
+}
