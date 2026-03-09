@@ -12,6 +12,7 @@ logger = Logger()
 
 url_s = os.getenv('SYSTEM_SKIN_CAPE_URL')
 key_s = f"OAuth {os.getenv('SYSTEM_SKIN_CAPE_KEY')}"
+url_delete = os.getenv('SYSTEM_SKIN_CAPE_URL_DEL')
 
 class LoadSkin(QThread):
     progress = pyqtSignal()
@@ -32,7 +33,7 @@ class LoadSkin(QThread):
             target_path = os.path.join(target_directory, new_filename)
             shutil.copy2(file, target_path)
         except Exception as e:
-            logger.error(e)
+            logger.error(str(e))
             self.error.emit("Ошибка")
 
     def run(self):
@@ -66,12 +67,13 @@ class LoadSkin(QThread):
                 self.move_copy_file()
                 self.finished.emit(self.user, self.size)
         except Exception as e:
-            logger.error(e)
+            logger.error(str(e))
             self.error.emit("Ошибка")
 
 class ClearSkin(QThread):
     progress = pyqtSignal()
     finished = pyqtSignal()
+
     def __init__(self, user):
         super().__init__()
         self.user = user
@@ -82,7 +84,7 @@ class ClearSkin(QThread):
         sha256.update(self.user.encode('utf-8'))
         file_name = sha256.hexdigest()
 
-        url = url_s
+        url = url_delete
         headers = {
             "Authorization": key_s
         }
@@ -100,4 +102,96 @@ class ClearSkin(QThread):
                 self.finished.emit()
                 logger.error(f'Code delete skin: {response.status_code}')
         except Exception as e:
-            logger.error(e)
+            logger.error(str(e))
+            self.finished.emit()
+
+class LoadCape(QThread):
+    progress = pyqtSignal()
+    finished = pyqtSignal()
+    error = pyqtSignal(str)
+
+    def __init__(self, user, file_path):
+        super().__init__()
+        self.user = user
+        self.file_path = file_path
+
+    def run(self):
+        self.progress.emit()
+        sha256 = hashlib.sha256()
+        sha256.update(self.user.encode('utf-8'))
+        file_name = f"{sha256.hexdigest()}_cape"
+
+        url = url_s
+        headers = {
+            "Authorization": key_s
+        }
+        if self.file_path.endswith('.png'):
+            clape = 'png'
+        elif self.file_path.endswith('.gif'):
+            clape = 'gif'
+        params = {
+            "path": f"/HiveLauncherSkins/{file_name}.{clape}",
+            "overwrite": "true"
+        }
+        try:
+            if clape == "gif":
+                url_del = url_delete
+                pm = {
+                    "path": f"/HiveLauncherSkins/{file_name}.png",
+                    "permanently": True
+                }
+                logger.info('Try delete response from LoadCape')
+                requests.delete(url_del, headers=headers, params=pm)
+            logger.info('Try get response from loadCape')
+            response = requests.get(url, headers=headers, params=params)
+            response.raise_for_status()
+            upload_info = response.json()
+            upload_url = upload_info["href"]
+
+            with open(self.file_path, 'rb') as file:
+                logger.info('Try put response from loadCape')
+                upload_response = requests.put(upload_url, files={'file': file})
+                upload_response.raise_for_status()
+                self.finished.emit()
+        except Exception as e:
+            logger.error(str(e))
+            self.error.emit("Ошибка")
+
+class ClearCape(QThread):
+    progress = pyqtSignal()
+    finished = pyqtSignal()
+    def __init__(self, user):
+        super().__init__()
+        self.user = user
+
+    def run(self):
+        self.progress.emit()
+        sha256 = hashlib.sha256()
+        sha256.update(self.user.encode('utf-8'))
+        file_name = f"{sha256.hexdigest()}_cape"
+
+        url = url_delete
+        headers = {
+            "Authorization": key_s
+        }
+
+        all_params = [
+            {
+                "path": f"/HiveLauncherSkins/{file_name}.png",
+                "permanently": True
+            },
+            {
+                "path": f"/HiveLauncherSkins/{file_name}.gif",
+                "permanently": True
+            }
+        ]
+
+        try:
+            for param in all_params:
+                logger.info('Try delete response from ClearCape')
+                requests.delete(url, headers=headers, params=param)
+            else:
+                self.finished.emit()
+        except Exception as e:
+            logger.error(str(e))
+            self.finished.emit()

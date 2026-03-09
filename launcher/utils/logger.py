@@ -27,6 +27,7 @@ class Logger:
             file_log.write(f"[{time}] [WARN]: {message}\n")
 
     def error(self, message):
+        message = str(message)
         time = self.get_time()
         print(f"[{time}] [ERROR]: {message}")
         with open(self.log_file, "a", encoding="ansi") as file_log:
