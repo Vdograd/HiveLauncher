@@ -43,3 +43,48 @@ QMainWindow {
     height: 24px;
     border: none;
 }
+
+#select_nickname_combobox_view {
+    border: none;
+    background: #ffffff;
+    outline: none;
+    color: #000000;
+}
+#select_nickname_combobox_view::item {
+    background: transparent;
+    padding: 0.4px 20px;
+    border-bottom: 1px solid rgba(74, 74, 74, 0.1);
+    min-height: 30px;
+    color: #000000;
+}
+#select_nickname_combobox_view::item:hover {
+    background-color: #FAFAFA;
+    color: #000000;
+}
+#select_nickname_combobox_view:vertical {
+    border: none;
+    background: transparent;
+    width: 8px;
+    margin: 0px;
+}
+#select_nickname_combobox_view::handle:vertical {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    min-height: 30px;
+}
+#select_nickname_combobox_view::handle:vertical:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+#select_nickname_combobox_view::handle:vertical:pressed {
+    background: rgba(0, 0, 0, 0.4);
+}
+#select_nickname_combobox_view::add-line:vertical,
+#select_nickname_combobox_view::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+}
+#select_nickname_combobox_view::add-page:vertical,
+#select_nickname_combobox_view::sub-page:vertical {
+    background: none;
+}

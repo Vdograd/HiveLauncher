@@ -79,4 +79,13 @@ class WindowLogin:
                 icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
                 icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
                 self.select_nickname_combobox.addItem(icon, user[0])
+        self.select_nickname_combobox.setCurrentText(self.conf.get_nickname_session())
 
+        self.select_nickname_combobox_view = QtWidgets.QListView(self.select_nickname_combobox)
+        self.select_nickname_combobox_view.setIconSize(QtCore.QSize(22, 22))
+        self.select_nickname_combobox_view.setObjectName('select_nickname_combobox_view')
+        self.select_nickname_combobox_view.setFont(self.font.get_font(12, "1"))
+        self.select_nickname_combobox_view.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.select_nickname_combobox_view.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.select_nickname_combobox.setView(self.select_nickname_combobox_view)
+        #self.select_nickname_combobox.currentIndexChanged.connect(lambda: self.change_nickname_login(data_users))
