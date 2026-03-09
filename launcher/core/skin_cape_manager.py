@@ -10,6 +10,9 @@ from ..utils.configurator import Configurator
 config = Configurator()
 logger = Logger()
 
+url_s = os.getenv('SYSTEM_SKIN_CAPE_URL')
+key_s = f"OAuth {os.getenv('SYSTEM_SKIN_CAPE_KEY')}"
+
 class LoadSkin(QThread):
     progress = pyqtSignal()
     finished = pyqtSignal(str, int)
@@ -38,9 +41,9 @@ class LoadSkin(QThread):
         sha256.update(self.user.encode('utf-8'))
         file_name = sha256.hexdigest()
 
-        url = os.getenv('SYSTEM_SKIN_CAPE_URL')
+        url = url_s
         headers = {
-            "Authorization": f"OAuth {os.getenv('SYSTEM_SKIN_CAPE_KEY')}"
+            "Authorization": key_s
         }
 
         params = {
@@ -65,3 +68,36 @@ class LoadSkin(QThread):
         except Exception as e:
             logger.error(e)
             self.error.emit("Ошибка")
+
+class ClearSkin(QThread):
+    progress = pyqtSignal()
+    finished = pyqtSignal()
+    def __init__(self, user):
+        super().__init__()
+        self.user = user
+
+    def run(self):
+        self.progress.emit()
+        sha256 = hashlib.sha256()
+        sha256.update(self.user.encode('utf-8'))
+        file_name = sha256.hexdigest()
+
+        url = url_s
+        headers = {
+            "Authorization": key_s
+        }
+
+        params = {
+            "path": f"/HiveLauncherSkins/{file_name}.png",
+            "permanently": True
+        }
+        try:
+            logger.info('Try delete response from loadskin')
+            response = requests.delete(url, headers=headers, params=params)
+            if response.status_code == 204 or response.status_code == 404:
+                self.finished.emit()
+            else:
+                self.finished.emit()
+                logger.error(f'Code delete skin: {response.status_code}')
+        except Exception as e:
+            logger.error(e)
