@@ -30,6 +30,7 @@ class WindowLogin:
         self.version_launcher.setObjectName("version_launcher")
         self.version_launcher.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 
+        # Page Auth
         self.creeper_left = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.creeper_left.setGeometry(QtCore.QRect(0, 314, 257, 386))
         self.creeper_left.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{self.conf.get_color_theme()}\\creeper_left.png"))
@@ -89,3 +90,30 @@ class WindowLogin:
         self.select_nickname_combobox_view.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.select_nickname_combobox.setView(self.select_nickname_combobox_view)
         #self.select_nickname_combobox.currentIndexChanged.connect(lambda: self.change_nickname_login(data_users))
+
+        self.password_account_login = QtWidgets.QLineEdit(parent=self.main.centralwidget)
+        self.password_account_login.setGeometry(QtCore.QRect(400, 322, 300, 55))
+        self.password_account_login.setFont(self.font.get_font(12, "1"))
+        self.password_account_login.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+        self.password_account_login.setPlaceholderText("Пароль")
+        self.password_account_login.setObjectName('password_account_login')
+        #self.password_account_login.textChanged.connect(self.password_check_login_start)
+        self.password_account_login.hide()
+
+        self.use_in_minecraft_text = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.use_in_minecraft_text.setGeometry(QtCore.QRect(0, 315, 1100, 32))
+        self.use_in_minecraft_text.setFont(self.font.get_font(10, "1"))
+        self.use_in_minecraft_text.setText("Он будет использоваться в Minecraft")
+        self.use_in_minecraft_text.setObjectName("use_in_minecraft_text")
+        self.use_in_minecraft_text.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+
+        self.login_in_launcher = QtWidgets.QPushButton(parent=self.main.centralwidget)
+        self.login_in_launcher.setGeometry(QtCore.QRect(450, 360, 200, 35)) 
+        self.login_in_launcher.setFont(self.font.get_font(10, "1"))
+        self.login_in_launcher.setText("Войти в аккаунт")
+        self.login_in_launcher.setObjectName("login_in_launcher")
+        self.login_in_launcher.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.login_in_launcher.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        #self.login_in_launcher.clicked.connect(self.auth_in_launcher_login)
+
+        #Page add account
