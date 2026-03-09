@@ -1,0 +1,67 @@
+from PyQt6.QtCore import QThread, pyqtSignal
+from dotenv import load_dotenv
+import os
+import shutil
+import hashlib
+import requests
+from ..utils.logger import Logger
+from ..utils.configurator import Configurator
+
+config = Configurator()
+logger = Logger()
+
+class LoadSkin(QThread):
+    progress = pyqtSignal()
+    finished = pyqtSignal(str, int)
+    error = pyqtSignal(str)
+
+    def __init__(self, user, file_path, size):
+        super().__init__()
+        self.user = user
+        self.file_path = file_path
+        self.size = size
+
+    def move_copy_file(self):
+        try:
+            file = self.file_path
+            target_directory = f"{config.static_folder}\\head_skins_response\\{self.user}"
+            new_filename = f"{self.user}.png"
+            target_path = os.path.join(target_directory, new_filename)
+            shutil.copy2(file, target_path)
+        except Exception as e:
+            logger.error(e)
+            self.error.emit("Ошибка")
+
+    def run(self):
+        self.progress.emit()
+        sha256 = hashlib.sha256()
+        sha256.update(self.user.encode('utf-8'))
+        file_name = sha256.hexdigest()
+
+        url = os.getenv('SYSTEM_SKIN_CAPE_URL')
+        headers = {
+            "Authorization": f"OAuth {os.getenv('SYSTEM_SKIN_CAPE_KEY')}"
+        }
+
+        params = {
+            "path": f"/HiveLauncherSkins/{file_name}.png",
+            "overwrite": "true"
+        }
+        try:
+            logger.info('Try get response from loadskin')
+            response = requests.get(url, headers=headers, params=params)
+            response.raise_for_status()
+            upload_info = response.json()
+            upload_url = upload_info["href"]
+
+            with open(self.file_path, 'rb') as file:
+                logger.info('Try put response from loadskin')
+                upload_response = requests.put(upload_url, files={'file': file})
+                upload_response.raise_for_status()
+                output_dir = f"{config.static_folder}\\head_skins_response\\{self.user}"
+                os.makedirs(output_dir, exist_ok=True)
+                self.move_copy_file()
+                self.finished.emit(self.user, self.size)
+        except Exception as e:
+            logger.error(e)
+            self.error.emit("Ошибка")
