@@ -118,3 +118,6 @@ QMainWindow {
     background: rgba(1, 1, 0, 0);
     color: #000000;
 }
+#error_auth_setup {
+    color: rgba(255, 0, 0, 1);
+}

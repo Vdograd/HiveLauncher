@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from ...utils.font_manager import FontManager
-from ..page_functions.login import connect_change_nickname_select,password_check_login_start, change_login_page
+from ..page_functions.login import connect_change_nickname_select,password_check_login_start, change_login_page, login_page_auth
 from ..page_functions.page_manager import create_shadow
 from ...auth.auth_manager import AuthManager
 
@@ -122,6 +122,20 @@ class WindowLogin:
         connect_change_nickname_select(self, data_users)
 
         #Page add account
+        self.error_auth_login_1 = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.error_auth_login_1.setGeometry(QtCore.QRect(172, 231, 300, 15))
+        self.error_auth_login_1.setFont(self.font.get_font(10, "1"))
+        self.error_auth_login_1.setObjectName("error_auth_setup")
+        self.error_auth_login_1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.error_auth_login_1.hide()
+
+        self.error_auth_login_2 = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.error_auth_login_2.setGeometry(QtCore.QRect(628, 231, 300, 15))
+        self.error_auth_login_2.setFont(self.font.get_font(10, "1"))
+        self.error_auth_login_2.setObjectName("error_auth_setup")
+        self.error_auth_login_2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.error_auth_login_2.hide()
+
         self.text_registr_login2 = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.text_registr_login2.setGeometry(QtCore.QRect(232, 198, 200, 32))
         self.text_registr_login2.setFont(self.font.get_font(20, "1"))
@@ -181,7 +195,7 @@ class WindowLogin:
         self.button_register_login2.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.button_register_login2.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.button_register_login2.setObjectName('login_in_launcher')
-        #self.button_register_login2.clicked.connect(self.start_registr_log_login2)
+        self.button_register_login2.clicked.connect(lambda: login_page_auth(self, self.write_nickname_for_registr.text(), self.write_password_for_registr.text(), 'registr'))
 
         self.button_auth_login2 = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.button_auth_login2.setGeometry(QtCore.QRect(628, 397, 300, 35)) 
@@ -190,7 +204,7 @@ class WindowLogin:
         self.button_auth_login2.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.button_auth_login2.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.button_auth_login2.setObjectName('login_in_launcher')
-        #self.button_auth_login2.clicked.connect(self.start_auth_log_login2)
+        self.button_auth_login2.clicked.connect(lambda: login_page_auth(self, self.write_nickname_for_auth.text(), self.write_password_for_auth.text(), 'auth'))
 
         self.rules_nickname_login2 = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.rules_nickname_login2.setGeometry(QtCore.QRect(172, 507, 500, 60))

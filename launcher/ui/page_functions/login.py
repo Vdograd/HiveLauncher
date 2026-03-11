@@ -5,6 +5,44 @@ from ...utils.logger import Logger
 auth = AuthManager()
 logger = Logger()
 
+class AuthRegisterAccount(QThread):
+    progress = pyqtSignal()
+    finished = pyqtSignal(str, float, str)
+    error = pyqtSignal(str, str)
+
+    def __init__(self, nickname, password, method):
+        super().__init__()
+        self.nickname = nickname
+        self.password = password
+        self.method = method
+
+    def run(self):
+        if self.method == 'registr':
+            try:
+                data = auth.create_user(self.nickname, self.password)
+            except Exception as e:
+                logger.error(str(e))
+                self.error.emit('Произошла ошибка', "registr")
+            if data == "Nickname dublicate":
+                self.error.emit("Пользователь уже существует", "registr")
+            elif str(type(data)) == "<class 'tuple'>":
+                self.finished.emit(data[0], data[1], data[2])
+        elif self.method == "auth":
+            self.progress.emit()
+            try:
+                data = auth.auth_in_account(self.nickname, self.password)
+            except Exception as e:
+                self.error.emit("Произошла ошибка", "auth")
+                logger.error(str(e))
+            if data == "Not found nickname in db":
+                self.error.emit("Пользователь не существует", "auth")
+            elif data == 'Account already added':
+                self.error.emit('Аккаунт уже добавлен', "auth")
+            elif data == "Not correct password":
+                self.error.emit("Неверный пароль", "auth")
+            elif str(type(data)) == "<class 'tuple'>":
+                self.finished.emit(data[0], data[1], data[2])
+
 def connect_change_nickname_select(self, data):
     for user in data:
         nickname_select = self.select_nickname_combobox.currentText()
@@ -140,3 +178,79 @@ def change_login_page(self):
         else:
             self.select_nickname_text.setGeometry(QtCore.QRect(0, 186, 1100, 32))
             self.button_change_page_log_reg.setGeometry(QtCore.QRect(465, 223, 180, 19))
+
+
+def login_page_auth(self, nickname, password, method):
+    if method == 'registr':
+        self.worker = AuthRegisterAccount(nickname, password, "registr")
+        self.worker.progress.connect(lambda: auth_login_progress(self))
+        self.worker.error.connect(lambda x,y: auth_login_error(self, x,y))
+        self.worker.finished.connect(lambda x,y,z: auth_login_finished(self,x,y,z))
+        logger.info("Try create account")
+        self.worker.start()
+    elif method == 'auth':
+        self.worker = AuthRegisterAccount(nickname, password, "auth")
+        self.worker.progress.connect(lambda: auth_login_progress(self))
+        self.worker.error.connect(lambda x,y: auth_login_error(self, x,y))
+        self.worker.finished.connect(lambda x,y,z: auth_login_finished(self,x,y,z))
+        logger.info("Try log in to account")
+        self.worker.start()
+
+def auth_login_progress(self):
+    block_button = """
+            QPushButton {
+                border-radius: 8px;
+                background: rgba(0, 95, 255, 0.5);
+                color: white;
+            }
+        """
+    
+    self.button_change_page_log_reg.setEnabled(False)
+    self.write_nickname_for_registr.setEnabled(False)
+    self.write_nickname_for_auth.setEnabled(False)
+    self.write_password_for_registr.setEnabled(False)
+    self.write_password_for_auth.setEnabled(False)
+    self.write_password_retry_for_registr.setEnabled(False)
+    self.button_register_login2.setEnabled(False)
+    self.button_register_login2.setStyleSheet(block_button)
+    self.button_auth_login2.setEnabled(False)
+    self.button_auth_login2.setStyleSheet(block_button)
+
+def auth_login_error(self, reason, type_error):
+    if type_error == 'registr':
+        self.error_auth_login_1.setText(reason)
+        self.error_auth_login_1.show()
+
+        self.button_change_page_log_reg.setEnabled(True)
+        self.write_nickname_for_registr.setEnabled(True)
+        self.write_nickname_for_auth.setEnabled(True)
+        self.write_password_for_registr.setEnabled(True)
+        self.write_password_for_auth.setEnabled(True)
+        self.write_password_retry_for_registr.setEnabled(True)
+        self.write_nickname_for_registr.clear()
+        self.write_nickname_for_auth.clear()
+        self.write_password_retry_for_registr.clear()
+
+    elif type_error == 'auth':
+        self.error_auth_login_2.setText(reason)
+        self.error_auth_login_2.show()
+
+        self.button_change_page_log_reg.setEnabled(True)
+        self.write_nickname_for_registr.setEnabled(True)
+        self.write_nickname_for_auth.setEnabled(True)
+        self.write_password_for_registr.setEnabled(True)
+        self.write_password_for_auth.setEnabled(True)
+        self.write_password_retry_for_registr.setEnabled(True)
+        self.write_password_for_auth.clear()
+        if reason == 'Пользователь не существует' or reason == 'Аккаунт уже добавлен':
+            self.write_nickname_for_auth.clear()
+    return
+
+def auth_login_finished(self, nickname, play_time, datetime):
+    self.error_auth_login_1.hide()
+    self.error_auth_login_2.hide()
+    self.main.nickname = nickname
+    self.main.datetime = datetime
+    self.main.play_time = play_time
+    logger.info('Try show window launcher')
+    # Переключение на лаунчер <- ->
