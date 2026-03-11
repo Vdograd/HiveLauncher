@@ -35,7 +35,7 @@ class WindowSetup:
         self.text_hello = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.text_hello.setGeometry(QtCore.QRect(80, 154, 300, 64))
         self.text_hello.setFont(self.font.get_font(20, "1"))
-        self.text_hello.setText("<font color='#005FFF'>HiveLauncher</font><br><font>Приветствует вас!</font>")
+        self.text_hello.setText("<font color='#005FFF'>HiveLauncher</font><br><font color='#000000'>Приветствует вас!</font>")
         self.text_hello.setObjectName("text_hello")
 
         self.text_description = QtWidgets.QLabel(parent=self.main.centralwidget)

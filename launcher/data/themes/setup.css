@@ -36,6 +36,7 @@ QMainWindow {
 }
 #text_register_login {
     background: rgba(0, 0, 0, 0);
+    color: #000000
 }
 #button_or_setup {
     color: #005FFF;
@@ -64,6 +65,7 @@ QMainWindow {
 }
 #text_rules_nickname_setup {
     background: rgba(1, 1, 0, 0);
+    color: #000000;
 }
 #rules_setup {
     background: rgba(1, 1, 0, 0); 
