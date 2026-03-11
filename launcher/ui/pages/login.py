@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from ...utils.font_manager import FontManager
-from ..page_functions.login import connect_change_nickname_select,password_check_login_start
+from ..page_functions.login import connect_change_nickname_select,password_check_login_start, change_login_page
 from ..page_functions.page_manager import create_shadow
 from ...auth.auth_manager import AuthManager
 
@@ -58,7 +58,7 @@ class WindowLogin:
         self.button_change_page_log_reg.setFont(self.font.get_font(12, "1"))
         self.button_change_page_log_reg.setObjectName("button_change_page_log_reg")
         self.button_change_page_log_reg.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
-        #self.button_change_page_log_reg.clicked.connect(self.change_page_in_login_on_select_account)
+        self.button_change_page_log_reg.clicked.connect(lambda: change_login_page(self))
 
         self.select_nickname_combobox = QtWidgets.QComboBox(parent=self.main.centralwidget)
         self.select_nickname_combobox.setGeometry(QtCore.QRect(400, 259, 300, 55))
@@ -122,3 +122,97 @@ class WindowLogin:
         connect_change_nickname_select(self, data_users)
 
         #Page add account
+        self.text_registr_login2 = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.text_registr_login2.setGeometry(QtCore.QRect(232, 198, 200, 32))
+        self.text_registr_login2.setFont(self.font.get_font(20, "1"))
+        self.text_registr_login2.setText("Регистрация")
+        self.text_registr_login2.setObjectName('text_registr_login2')
+
+        self.text_auth_login2 = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.text_auth_login2.setGeometry(QtCore.QRect(685, 198, 200, 32))
+        self.text_auth_login2.setFont(self.font.get_font(20, "1"))
+        self.text_auth_login2.setText("Авторизация")
+        self.text_auth_login2.setObjectName('text_registr_login2')
+
+        self.write_nickname_for_registr = QtWidgets.QLineEdit(parent=self.main.centralwidget)
+        self.write_nickname_for_registr.setGeometry(QtCore.QRect(172, 252, 300, 55))
+        self.write_nickname_for_registr.setFont(self.font.get_font(12, "1"))
+        self.write_nickname_for_registr.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+        self.write_nickname_for_registr.setPlaceholderText("Никнейм")
+        self.write_nickname_for_registr.setObjectName('password_account_login')
+        #self.write_nickname_for_registr.textChanged.connect(self.access_create_add_auth_acc_in_launch_register)
+        
+        self.write_nickname_for_auth = QtWidgets.QLineEdit(parent=self.main.centralwidget)
+        self.write_nickname_for_auth.setGeometry(QtCore.QRect(628, 252, 300, 55))
+        self.write_nickname_for_auth.setFont(self.font.get_font(12, "1"))
+        self.write_nickname_for_auth.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+        self.write_nickname_for_auth.setPlaceholderText("Никнейм")
+        self.write_nickname_for_auth.setObjectName('password_account_login')
+        #self.write_nickname_for_auth.textChanged.connect(self.access_create_add_auth_acc_in_launch_auth)
+
+        self.write_password_for_registr = QtWidgets.QLineEdit(parent=self.main.centralwidget)
+        self.write_password_for_registr.setGeometry(QtCore.QRect(172, 322, 300, 55))
+        self.write_password_for_registr.setFont(self.font.get_font(12, "1"))
+        self.write_password_for_registr.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+        self.write_password_for_registr.setPlaceholderText("Пароль")
+        self.write_password_for_registr.setObjectName('password_account_login')
+        #self.write_password_for_registr.textChanged.connect(self.access_create_add_auth_acc_in_launch_register)
+        
+        self.write_password_for_auth = QtWidgets.QLineEdit(parent=self.main.centralwidget)
+        self.write_password_for_auth.setGeometry(QtCore.QRect(628, 322, 300, 55))
+        self.write_password_for_auth.setFont(self.font.get_font(12, "1"))
+        self.write_password_for_auth.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+        self.write_password_for_auth.setPlaceholderText("Пароль")
+        self.write_password_for_auth.setObjectName('password_account_login')
+        #self.write_password_for_auth.textChanged.connect(self.access_create_add_auth_acc_in_launch_auth)
+
+        self.write_password_retry_for_registr = QtWidgets.QLineEdit(parent=self.main.centralwidget)
+        self.write_password_retry_for_registr.setGeometry(QtCore.QRect(172, 392, 300, 55))
+        self.write_password_retry_for_registr.setFont(self.font.get_font(12, "1"))
+        self.write_password_retry_for_registr.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+        self.write_password_retry_for_registr.setPlaceholderText("Повторить пароль")
+        self.write_password_retry_for_registr.setObjectName('password_account_login')
+        #self.write_password_retry_for_registr.textChanged.connect(self.access_create_add_auth_acc_in_launch_register)
+
+        self.button_register_login2 = QtWidgets.QPushButton(parent=self.main.centralwidget)
+        self.button_register_login2.setGeometry(QtCore.QRect(172, 467, 300, 35)) 
+        self.button_register_login2.setFont(self.font.get_font(10, "1"))
+        self.button_register_login2.setText("Зарегистрироваться")
+        self.button_register_login2.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.button_register_login2.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.button_register_login2.setObjectName('login_in_launcher')
+        #self.button_register_login2.clicked.connect(self.start_registr_log_login2)
+
+        self.button_auth_login2 = QtWidgets.QPushButton(parent=self.main.centralwidget)
+        self.button_auth_login2.setGeometry(QtCore.QRect(628, 397, 300, 35)) 
+        self.button_auth_login2.setFont(self.font.get_font(10, "1"))
+        self.button_auth_login2.setText("Авторизоваться")
+        self.button_auth_login2.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.button_auth_login2.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.button_auth_login2.setObjectName('login_in_launcher')
+        #self.button_auth_login2.clicked.connect(self.start_auth_log_login2)
+
+        self.rules_nickname_login2 = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.rules_nickname_login2.setGeometry(QtCore.QRect(172, 507, 500, 60))
+        self.rules_nickname_login2.setFont(self.font.get_font(12, "1"))
+        self.rules_nickname_login2.setText("Никнейм может содержать:")
+        self.rules_nickname_login2.setObjectName("rules_nickname_page2")
+
+        self.rule_login2 = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.rule_login2.setGeometry(QtCore.QRect(174, 524, 220, 100))
+        self.rule_login2.setFont(self.font.get_font(10, "5"))
+        self.rule_login2.setText("<font>1. Символы EN</font><br><font>2. Цифры</font><br><font>3. Спец-символы</font>")
+        self.rule_login2.setObjectName("rule_login2")
+
+        if self.window_auth == 0:
+            self.text_auth_login2.hide()
+            self.text_registr_login2.hide()
+            self.write_nickname_for_registr.hide()
+            self.write_nickname_for_auth.hide()
+            self.write_password_for_registr.hide()
+            self.write_password_for_auth.hide()
+            self.write_password_retry_for_registr.hide()
+            self.button_register_login2.hide()
+            self.button_auth_login2.hide()
+            self.rules_nickname_login2.hide()
+            self.rule_login2.hide()
