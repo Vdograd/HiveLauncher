@@ -35,6 +35,13 @@ class WindowLogin:
         self.version_launcher.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 
         # Page Auth
+        self.error_select_login_1 = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.error_select_login_1.setGeometry(QtCore.QRect(0, 467, 1100, 15))
+        self.error_select_login_1.setFont(self.font.get_font(10, "1"))
+        self.error_select_login_1.setObjectName("error_auth_setup")
+        self.error_select_login_1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.error_select_login_1.hide()
+
         self.creeper_left = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.creeper_left.setGeometry(QtCore.QRect(0, 314, 257, 386))
         self.creeper_left.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{self.conf.get_color_theme()}\\creeper_left.png"))
@@ -118,7 +125,7 @@ class WindowLogin:
         self.login_in_launcher.setObjectName("login_in_launcher")
         self.login_in_launcher.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.login_in_launcher.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
-        #self.login_in_launcher.clicked.connect(self.auth_in_launcher_login)
+        self.login_in_launcher.clicked.connect(lambda: auth_in_launcher_login(self))
         connect_change_nickname_select(self, data_users)
 
         #Page add account

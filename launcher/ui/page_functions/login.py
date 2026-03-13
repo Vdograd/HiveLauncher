@@ -76,6 +76,7 @@ class SelectNicknameForContinue(QThread):
                 self.finished.emit(response[0], response[1], response[2])
 
 def connect_change_nickname_select(self, data):
+    self.error_select_login_1.hide()
     for user in data:
         nickname_select = self.select_nickname_combobox.currentText()
         if user[0] == nickname_select and user[1] == "failed":
@@ -154,6 +155,7 @@ def change_login_page(self):
             self.password_account_login.hide()
         self.use_in_minecraft_text.hide()
         self.login_in_launcher.hide()
+        self.error_select_login_1.hide()
         self.creeper_left.hide()
         self.creeper_right.hide()
         self.select_nickname_text.setText("Добавить никнейм")
@@ -214,6 +216,39 @@ def auth_in_launcher_login(self):
     logger.info("Try auth in account / Select")
     self.worker.start()
 
+def ail_progress(self):
+    self.login_in_launcher.setStyleSheet(
+        """
+            QPushButton {
+                border-radius: 8px;
+                background: rgba(0, 95, 255, 0.5);
+                color: white;
+            }
+        """
+    )
+    self.login_in_launcher.setEnabled(False)
+    self.select_nickname_combobox.setEnabled(False)
+    self.password_account_login.setEnabled(False)
+    self.button_change_page_log_reg.setEnabled(False)
+
+def ail_error(self, reason):
+    self.error_select_login_1.setText(reason)
+    self.error_select_login_1.show()
+    self.password_account_login.clear()
+    self.login_in_launcher.setEnabled(True)
+    self.select_nickname_combobox.setEnabled(True)
+    self.password_account_login.setEnabled(True)
+    self.button_change_page_log_reg.setEnabled(True)
+
+def ail_finished(self, nickname, playtime, datetime):
+    self.error_auth_login_1.hide()
+    self.error_auth_login_2.hide()
+    self.error_select_login_1.hide()
+    self.main.nickname = nickname
+    self.main.datetime = datetime
+    self.main.play_time = playtime
+    logger.info('Try show window launcher')
+    # Переключение на лаунчер <- ->
 
 def login_page_auth(self, nickname, password, method):
     if method == 'registr':
