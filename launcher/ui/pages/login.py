@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from ...utils.font_manager import FontManager
-from ..page_functions.login import connect_change_nickname_select,password_check_login_start, change_login_page, login_page_auth
+from ..page_functions.login import *
 from ..page_functions.page_manager import create_shadow
 from ...auth.auth_manager import AuthManager
 
@@ -154,7 +154,7 @@ class WindowLogin:
         self.write_nickname_for_registr.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
         self.write_nickname_for_registr.setPlaceholderText("Никнейм")
         self.write_nickname_for_registr.setObjectName('password_account_login')
-        #self.write_nickname_for_registr.textChanged.connect(self.access_create_add_auth_acc_in_launch_register)
+        self.write_nickname_for_registr.textChanged.connect(lambda: controll_panel_login2_reg(self))
         
         self.write_nickname_for_auth = QtWidgets.QLineEdit(parent=self.main.centralwidget)
         self.write_nickname_for_auth.setGeometry(QtCore.QRect(628, 252, 300, 55))
@@ -162,7 +162,7 @@ class WindowLogin:
         self.write_nickname_for_auth.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
         self.write_nickname_for_auth.setPlaceholderText("Никнейм")
         self.write_nickname_for_auth.setObjectName('password_account_login')
-        #self.write_nickname_for_auth.textChanged.connect(self.access_create_add_auth_acc_in_launch_auth)
+        self.write_nickname_for_auth.textChanged.connect(lambda: controll_panel_login2_auth(self))
 
         self.write_password_for_registr = QtWidgets.QLineEdit(parent=self.main.centralwidget)
         self.write_password_for_registr.setGeometry(QtCore.QRect(172, 322, 300, 55))
@@ -170,7 +170,7 @@ class WindowLogin:
         self.write_password_for_registr.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
         self.write_password_for_registr.setPlaceholderText("Пароль")
         self.write_password_for_registr.setObjectName('password_account_login')
-        #self.write_password_for_registr.textChanged.connect(self.access_create_add_auth_acc_in_launch_register)
+        self.write_password_for_registr.textChanged.connect(lambda: controll_panel_login2_reg(self))
         
         self.write_password_for_auth = QtWidgets.QLineEdit(parent=self.main.centralwidget)
         self.write_password_for_auth.setGeometry(QtCore.QRect(628, 322, 300, 55))
@@ -178,7 +178,7 @@ class WindowLogin:
         self.write_password_for_auth.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
         self.write_password_for_auth.setPlaceholderText("Пароль")
         self.write_password_for_auth.setObjectName('password_account_login')
-        #self.write_password_for_auth.textChanged.connect(self.access_create_add_auth_acc_in_launch_auth)
+        self.write_password_for_auth.textChanged.connect(lambda: controll_panel_login2_auth(self))
 
         self.write_password_retry_for_registr = QtWidgets.QLineEdit(parent=self.main.centralwidget)
         self.write_password_retry_for_registr.setGeometry(QtCore.QRect(172, 392, 300, 55))
@@ -186,7 +186,7 @@ class WindowLogin:
         self.write_password_retry_for_registr.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
         self.write_password_retry_for_registr.setPlaceholderText("Повторить пароль")
         self.write_password_retry_for_registr.setObjectName('password_account_login')
-        #self.write_password_retry_for_registr.textChanged.connect(self.access_create_add_auth_acc_in_launch_register)
+        self.write_password_retry_for_registr.textChanged.connect(lambda: controll_panel_login2_reg(self))
 
         self.button_register_login2 = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.button_register_login2.setGeometry(QtCore.QRect(172, 467, 300, 35)) 
@@ -196,6 +196,8 @@ class WindowLogin:
         self.button_register_login2.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.button_register_login2.setObjectName('login_in_launcher')
         self.button_register_login2.clicked.connect(lambda: login_page_auth(self, self.write_nickname_for_registr.text(), self.write_password_for_registr.text(), 'registr'))
+        
+        controll_panel_login2_reg(self) # Инициалиризуем блокировку кнопки
 
         self.button_auth_login2 = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.button_auth_login2.setGeometry(QtCore.QRect(628, 397, 300, 35)) 
@@ -205,6 +207,8 @@ class WindowLogin:
         self.button_auth_login2.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.button_auth_login2.setObjectName('login_in_launcher')
         self.button_auth_login2.clicked.connect(lambda: login_page_auth(self, self.write_nickname_for_auth.text(), self.write_password_for_auth.text(), 'auth'))
+
+        controll_panel_login2_auth(self) # Инициалиризуем блокировку кнопки
 
         self.rules_nickname_login2 = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.rules_nickname_login2.setGeometry(QtCore.QRect(172, 507, 500, 60))
