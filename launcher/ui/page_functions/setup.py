@@ -1,6 +1,7 @@
 from PyQt6 import QtCore
 from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSize
 from ...auth.auth_manager import AuthManager
+from ..page_functions.page_manager import GetPixture
 from ...utils.logger import Logger
 auth = AuthManager()
 logger = Logger()
@@ -260,8 +261,27 @@ def auth_setup_finished(self, nickname, play_time, datetime):
     self.update_page(scroll_page_setup(self, self.page_setup))
 
 def show_launcher(self):
+    logger.info('Get Texture')
+    self.worker = GetPixture(self.main.nickname)
+    self.worker.progress.connect(lambda: getpixture_progress(self))
+    self.worker.finished.connect(lambda picktures: getpixture_finished(self, picktures))
+    self.worker.start()
+
+def getpixture_progress(self):
+    self.button_continue_setup.setEnabled(False)
+    self.button_continue_setup.setStyleSheet(
+        """
+            QPushButton {
+                border-radius: 8px;
+                background: rgba(0, 95, 255, 0.5);
+                color: white;
+            }
+        """
+    )
+def getpixture_finished(self, picktures):
     logger.info('Try show window launcher')
-    # Переключение на лаунчер <- ->
+    self.main.show_launcher_main(picktures)
+
 
 
 class AuthRegisterAccount(QThread):

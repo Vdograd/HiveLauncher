@@ -241,3 +241,4 @@ class WindowLogin:
             self.button_auth_login2.hide()
             self.rules_nickname_login2.hide()
             self.rule_login2.hide()
+            

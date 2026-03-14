@@ -15,7 +15,7 @@ class WindowSetup:
     def update_window_auth(self, new_parametr):
         self.window_auth = new_parametr
     def update_page(self, new_parametr):
-        print(new_parametr)
+        self.page_setup = new_parametr
         if new_parametr == 3:
             show_launcher(self)
 

@@ -2,6 +2,7 @@ from PyQt6 import QtCore
 from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSize
 from ...auth.auth_manager import AuthManager
 from ...utils.logger import Logger
+from ..page_functions.page_manager import GetPixture
 auth = AuthManager()
 logger = Logger()
 
@@ -247,8 +248,18 @@ def ail_finished(self, nickname, playtime, datetime):
     self.main.nickname = nickname
     self.main.datetime = datetime
     self.main.play_time = playtime
+    logger.info('Get Texture')
+    self.worker = GetPixture(self.main.nickname)
+    self.worker.progress.connect(lambda: getpixture_progress(self))
+    self.worker.finished.connect(lambda picktures: getpixture_finished(self, picktures))
+    self.worker.start()
+
+def getpixture_progress(self):
+    pass
+def getpixture_finished(self, picktures):
     logger.info('Try show window launcher')
-    # Переключение на лаунчер <- ->
+    self.main.show_launcher_main(picktures)
+    
 
 def login_page_auth(self, nickname, password, method):
     if method == 'registr':
@@ -322,9 +333,11 @@ def auth_login_finished(self, nickname, play_time, datetime):
     self.main.nickname = nickname
     self.main.datetime = datetime
     self.main.play_time = play_time
-    logger.info('Try show window launcher')
-    # Переключение на лаунчер <- ->
-
+    logger.info('Get Texture')
+    self.worker = GetPixture(self.main.nickname)
+    self.worker.progress.connect(lambda: getpixture_progress(self))
+    self.worker.finished.connect(lambda picktures: getpixture_finished(self, picktures))
+    self.worker.start()
 
 def controll_panel_login2_reg(self):
     block_button = """
