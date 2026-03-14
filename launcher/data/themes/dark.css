@@ -105,3 +105,18 @@ QMainWindow {
 #login_in_launcher:hover {
     background: rgb(0, 80, 218);
 }
+#error_auth_setup {
+    color: rgba(255, 0, 0, 1);
+}
+#text_registr_login2 {
+    background: rgba(1, 1, 0, 0);
+    color: #ffffff;
+}
+#rule_login2 {
+    background: rgba(1, 1, 0, 0); 
+    color: rgba(255, 255, 255, 0.5);
+}
+#rules_nickname_page2 {
+    background: rgba(1, 1, 0, 0);
+    color: #ffffff;
+}

@@ -7,7 +7,6 @@ logger = Logger()
 
 def scroll_page_setup(main_window, page):
     if page == 0:
-        page += 1
         main_window.text_hello.hide()
         main_window.text_description.hide()
         main_window.person1.hide()
@@ -26,7 +25,6 @@ def scroll_page_setup(main_window, page):
         main_window.person2.show()
 
     elif page == 1:
-        page += 1
         main_window.text_register_login.hide()
         main_window.button_or_setup.hide()
         main_window.nickname_setup.hide()
@@ -48,6 +46,7 @@ def scroll_page_setup(main_window, page):
         main_window.button_continue_setup.setText("Завершить")
         main_window.down_text_1.setGeometry(QtCore.QRect(80, 618, 620, 20))
         main_window.down_text_1.setText("Для завершения нажмите кнопку «Завершить»")
+    page += 1
     return page
 
 def replace_auth_register_setup(main_window, window_auth):
@@ -259,6 +258,10 @@ def auth_setup_finished(self, nickname, play_time, datetime):
     self.main.datetime = datetime
     self.main.play_time = play_time
     self.update_page(scroll_page_setup(self, self.page_setup))
+
+def show_launcher(self):
+    logger.info('Try show window launcher')
+    # Переключение на лаунчер <- ->
 
 
 class AuthRegisterAccount(QThread):

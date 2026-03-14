@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from ...utils.font_manager import FontManager
-from ..page_functions.setup import scroll_page_setup, replace_auth_register_setup, access_step_continue_auth, auth_setup
+from ..page_functions.setup import scroll_page_setup, replace_auth_register_setup, access_step_continue_auth, auth_setup, show_launcher
 from ..page_functions.page_manager import create_shadow
 
 class WindowSetup:
@@ -15,7 +15,9 @@ class WindowSetup:
     def update_window_auth(self, new_parametr):
         self.window_auth = new_parametr
     def update_page(self, new_parametr):
-        self.page_setup = new_parametr
+        print(new_parametr)
+        if new_parametr == 3:
+            show_launcher(self)
 
     def setup_show(self):
         self.logo = QtWidgets.QLabel(parent=self.main.centralwidget)
