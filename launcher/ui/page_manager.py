@@ -35,7 +35,7 @@ class HiveLauncher(QMainWindow):
 
     def show_launcher_main(self, picture):
         for child in self.centralwidget.findChildren(QtWidgets.QWidget):
-            if child.objectName() == 'select_version':
+            if child.objectName() == 'select_version' or child.objectName() == 'select_version_view':
                 continue
             child.setParent(None)
             child.deleteLater()

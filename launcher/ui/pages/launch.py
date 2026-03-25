@@ -29,7 +29,7 @@ class WindowLauncher:
 
         self.home = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.home.setGeometry(QtCore.QRect(485, 15, 61, 50))
-        self.home.setObjectName("nickname_text")
+        self.home.setObjectName("but_nav")
         self.home.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.home.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.home.setIconSize(QSize(61, 50))
@@ -37,7 +37,7 @@ class WindowLauncher:
 
         self.account = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.account.setGeometry(QtCore.QRect(561, 15, 55, 50))
-        self.account.setObjectName("account")
+        self.account.setObjectName("but_nav")
         self.account.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.account.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.account.setIconSize(QSize(55, 50))
@@ -45,7 +45,7 @@ class WindowLauncher:
 
         self.settings = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.settings.setGeometry(QtCore.QRect(998, 15, 72, 50))
-        self.settings.setObjectName("settings")
+        self.settings.setObjectName("but_nav")
         self.settings.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.settings.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.settings.setIconSize(QSize(72, 50))
@@ -85,7 +85,7 @@ class WindowLauncher:
         self.fon_image.hide()
         self.button_start.hide()
         self.button_open_folder_version.hide()
-        self.main.select_version.hide()
+        self.select_version.hide()
 
         # Show home page
         open_window(self, 'Home')
