@@ -1,6 +1,6 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMainWindow
-from ..utils.logger import Logger
+from ..utils.logger import logger
 from ..utils.configurator import Configurator
 from .page_functions.page_manager import how_start_page, versions_add
 from .pages.setup import WindowSetup
@@ -24,7 +24,7 @@ class HiveLauncher(QMainWindow):
         super().__init__()
 
         self.configuration = Configurator()
-        self.logger = Logger()
+        self.logger = logger
         self.font: FontManager = FontManager()
         self.login_page = WindowLogin(self, ClickableQLabel)
         self.setup_page = WindowSetup(self, ClickableQLabel)

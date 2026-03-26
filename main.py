@@ -2,11 +2,10 @@ import sys
 from PyQt6.QtWidgets import QApplication
 from launcher.ui.page_manager import HiveLauncher
 from launcher.auth.auth_manager import AuthManager
-from launcher.utils.logger import Logger
+from launcher.utils.logger import logger
 from launcher.utils.configurator import Configurator
 
 def main():
-    logger = Logger()
     auth_mng = AuthManager()
     conf = Configurator()
 

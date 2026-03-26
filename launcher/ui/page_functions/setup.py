@@ -2,9 +2,9 @@ from PyQt6 import QtCore
 from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSize
 from ...auth.auth_manager import AuthManager
 from ..page_functions.page_manager import GetPixture
-from ...utils.logger import Logger
+from ...utils.logger import logger
 auth = AuthManager()
-logger = Logger()
+logger = logger
 
 def scroll_page_setup(main_window, page):
     if page == 0:

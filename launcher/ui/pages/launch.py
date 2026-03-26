@@ -57,7 +57,9 @@ class WindowLauncher:
         self.fon_image.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\home\\fon.png"))
 
         self.select_version = self.main.select_version
-
+        self.select_version_view = self.main.select_version_view
+        self.select_version_view.setUniformItemSizes(True)
+        
         self.button_start = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.button_start.setGeometry(QtCore.QRect(425, 552, 250, 55))
         self.button_start.setObjectName("button_start")

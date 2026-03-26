@@ -8,11 +8,12 @@ import hashlib
 import requests
 import os
 import minecraft_launcher_lib as mn
-from ...utils.logger import Logger
+from ...utils.logger import logger
 from ...core.texture_manager import TextureSize64, TextureSize1024
 from PIL import Image
 configurator = Configurator()
-logger = Logger()
+logger = logger
+
 def how_start_page():
     try:
         with open(f"{configurator.config_folder}\\nicknames.json", "r", encoding="ansi") as file:
@@ -133,16 +134,17 @@ def versions_add(self):
     self.select_version.setGeometry(QtCore.QRect(400, 623, 300, 55))
     self.select_version.setFont(self.font.get_font(12, "1"))
     self.select_version.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+    self.select_version.setIconSize(QtCore.QSize(26, 26)) 
+    self.select_version.setGraphicsEffect(create_shadow(configurator.get_color_theme()))
     self.select_version.setObjectName("select_version")
-    self.select_version.setIconSize(QtCore.QSize(26, 26))  
+
     self.select_version_view = QtWidgets.QListView(self.select_version)
     self.select_version_view.setFont(self.font.get_font(12, "1"))
     self.select_version_view.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
     self.select_version_view.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
-    self.select_version_view.setIconSize(QtCore.QSize(26, 26))
     self.select_version_view.setObjectName("select_version_view")
+    self.select_version_view.setIconSize(QtCore.QSize(26, 26))
     self.select_version.setView(self.select_version_view)
-    self.select_version.setGraphicsEffect(create_shadow(configurator.get_color_theme()))
     self.select_version.hide()
 
     forge = forge_enabled_bool()

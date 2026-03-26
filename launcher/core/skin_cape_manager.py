@@ -4,11 +4,11 @@ import os
 import shutil
 import hashlib
 import requests
-from ..utils.logger import Logger
+from ..utils.logger import logger
 from ..utils.configurator import Configurator
 
 config = Configurator()
-logger = Logger()
+logger = logger
 
 url_s = os.getenv('SYSTEM_SKIN_CAPE_URL')
 key_s = f"OAuth {os.getenv('SYSTEM_SKIN_CAPE_KEY')}"

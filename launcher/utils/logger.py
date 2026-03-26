@@ -32,3 +32,5 @@ class Logger:
         print(f"[{time}] [ERROR]: {message}")
         with open(self.log_file, "a", encoding="ansi") as file_log:
             file_log.write(f"[{time}] [ERROR]: {message}\n")
+
+logger = Logger()

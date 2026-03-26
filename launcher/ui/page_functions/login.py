@@ -1,10 +1,10 @@
 from PyQt6 import QtCore
 from PyQt6.QtCore import QThread, pyqtSignal, Qt, QSize
 from ...auth.auth_manager import AuthManager
-from ...utils.logger import Logger
+from ...utils.logger import logger
 from ..page_functions.page_manager import GetPixture
 auth = AuthManager()
-logger = Logger()
+logger = logger
 
 class AuthRegisterAccount(QThread):
     progress = pyqtSignal()
