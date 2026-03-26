@@ -58,7 +58,6 @@ class WindowLauncher:
 
         self.select_version = self.main.select_version
         self.select_version_view = self.main.select_version_view
-        self.select_version_view.setUniformItemSizes(True)
         
         self.button_start = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.button_start.setGeometry(QtCore.QRect(425, 552, 250, 55))
@@ -76,7 +75,7 @@ class WindowLauncher:
         self.button_open_folder_version.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.button_open_folder_version.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
         self.button_open_folder_version.setIconSize(QSize(55, 55))
-        #self.button_open_folder_version.clicked.connect(lambda: self.open_folder_game())
+        self.button_open_folder_version.clicked.connect(lambda: open_folder_game(self))
 
         # Скрываем все элементы, перед показом главной страницы
         self.head_nickname.hide()

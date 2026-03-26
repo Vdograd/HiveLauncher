@@ -1,5 +1,9 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import Qt, QSize
+from ...core.version_manager import obj_Version_Manager
+import os
+import subprocess
+from ...utils.logger import logger
 
 def open_window(self, page):
     conf = self.conf
@@ -18,6 +22,16 @@ def open_window(self, page):
         self.nickname_text.setText(self.main.nickname)
         self.nickname_text.show()
         self.button_start.show()
+        self.button_open_folder_version.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\folder.svg"))
         self.button_open_folder_version.show()
         self.select_version.show()
         self.page = 'Home'
+
+def open_folder_game(self):
+    v = self.select_version.currentText()
+    logger.info(f'Open folder {v}')
+    folder_path = obj_Version_Manager.get_version_path(v)
+    try:
+        subprocess.Popen(f'explorer "{folder_path}"', shell=True)
+    except Exception as e:
+        logger.error(f'Failed open folder {v}: {e}')

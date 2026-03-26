@@ -203,3 +203,20 @@ QComboBox#select_version QListView QScrollBar::add-page:vertical,
 QComboBox#select_version QListView QScrollBar::sub-page:vertical {
     background: none;
 }
+
+#button_start {
+    border-radius: 10px;
+    background: #005FFF;
+    color: white;
+}
+#button_start:hover {
+    background: #0054E4
+}
+
+#button_open_folder_version {
+    border-radius: 5px;
+    background: #181818;
+}
+#button_open_folder_version:hover {
+    background: #1E1E1E;
+}
