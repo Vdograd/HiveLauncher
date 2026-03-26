@@ -26,6 +26,23 @@ def open_window(self, page):
         self.button_open_folder_version.show()
         self.select_version.show()
         self.page = 'Home'
+    elif page == 'Account':
+        self.home.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\home.svg"))
+        self.account.setIcon(QtGui.QIcon(f"{conf.static_folder}\\action\\account.svg"))
+        self.settings.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\settings.svg"))
+
+        self.fon_image.hide()
+        self.button_start.hide()
+        self.button_open_folder_version.hide()
+        self.select_version.hide()
+
+        self.panel_base_account.show()
+        self.head_nickname_150.show()
+        self.nickname_text_account.show()
+        self.register_account.show()
+        self.play_time.show()
+
+
 
 def open_folder_game(self):
     v = self.select_version.currentText()
