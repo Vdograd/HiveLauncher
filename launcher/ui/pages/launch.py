@@ -14,6 +14,10 @@ class WindowLauncher:
         self.conf = self.main.configuration
         self.picture = picture
         self.page = None
+
+    def change_page(self, page):
+        if page != None:
+            self.page = page
     
     def launcher_show(self):
         # Home Page
@@ -33,7 +37,7 @@ class WindowLauncher:
         self.home.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.home.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.home.setIconSize(QSize(61, 50))
-        self.home.clicked.connect(lambda: open_window(self, 'Home'))
+        self.home.clicked.connect(lambda: self.change_page(open_window(self, 'Home')))
 
         self.account = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.account.setGeometry(QtCore.QRect(561, 15, 55, 50))
@@ -41,7 +45,7 @@ class WindowLauncher:
         self.account.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.account.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.account.setIconSize(QSize(55, 50))
-        self.account.clicked.connect(lambda: open_window(self, 'Account'))
+        self.account.clicked.connect(lambda: self.change_page(open_window(self, 'Account')))
 
         self.settings = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.settings.setGeometry(QtCore.QRect(998, 15, 72, 50))
@@ -49,7 +53,7 @@ class WindowLauncher:
         self.settings.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.settings.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.settings.setIconSize(QSize(72, 50))
-        self.settings.clicked.connect(lambda: open_window(self, 'Settings'))
+        self.settings.clicked.connect(lambda: self.change_page(open_window(self, 'Settings')))
 
         self.fon_image = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.fon_image.setGeometry(QtCore.QRect(0,80, 1100, 500))
@@ -82,6 +86,7 @@ class WindowLauncher:
         self.panel_base_account = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.panel_base_account.setGeometry(QtCore.QRect(260, 160, 580, 380))
         self.panel_base_account.setObjectName('panel_base_account')
+        self.panel_base_account.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
 
         self.head_nickname_150 = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.head_nickname_150.setGeometry(QtCore.QRect(290, 190, 150, 150))
@@ -103,6 +108,75 @@ class WindowLauncher:
         self.play_time.setObjectName("play_time")
         self.play_time.setFont(self.font.get_font(12,"1"))
 
+        self.text_change_skin = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.text_change_skin.setGeometry(QtCore.QRect(290, 384, 180, 24))
+        self.text_change_skin.setFont(self.font.get_font(14,"1"))
+        self.text_change_skin.setText("Сменить скин")
+        self.text_change_skin.setObjectName('text_change_skin')
+
+        self.text_change_cape = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.text_change_cape.setGeometry(QtCore.QRect(470, 384, 200, 24))
+        self.text_change_cape.setFont(self.font.get_font(14,"1"))
+        self.text_change_cape.setText("Сменить плащ")
+        self.text_change_cape.setObjectName('text_change_cape')
+
+        self.button_load_skin = QtWidgets.QPushButton(parent=self.main.centralwidget)
+        self.button_load_skin.setGeometry(QtCore.QRect(290, 416, 153, 33))
+        self.button_load_skin.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.button_load_skin.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.button_load_skin.setText("Загрузить файл")
+        self.button_load_skin.setObjectName('load_but_ac')
+        self.button_load_skin.setFont(self.font.get_font(10, "1"))
+        #self.button_load_skin.clicked.connect(lambda: self.load_skin(current_nickname()))
+
+        self.button_load_cape = QtWidgets.QPushButton(parent=self.main.centralwidget)
+        self.button_load_cape.setGeometry(QtCore.QRect(470, 416, 153, 33))
+        self.button_load_cape.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.button_load_cape.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.button_load_cape.setText("Загрузить файл")
+        self.button_load_cape.setObjectName('load_but_ac')
+        self.button_load_cape.setFont(self.font.get_font(10, "1"))
+        #self.button_load_cape.clicked.connect(lambda: self.load_cape(current_nickname()))
+
+        self.current_size_skin = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.current_size_skin.setGeometry(QtCore.QRect(290, 454, 200, 20))
+        self.current_size_skin.setFont(self.font.get_font(8,"1"))
+        self.current_size_skin.setText("64x64 / 1024x1024 .png")
+        self.current_size_skin.setObjectName('cur_size')
+
+        self.current_size_cape = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.current_size_cape.setGeometry(QtCore.QRect(470, 454, 200, 20))
+        self.current_size_cape.setFont(self.font.get_font(8,"1"))
+        self.current_size_cape.setText("64x32 / 1024x512 .png/gif")
+        self.current_size_cape.setObjectName('cur_size')
+
+        self.button_delete_skin = QtWidgets.QPushButton(parent=self.main.centralwidget)
+        self.button_delete_skin.setGeometry(QtCore.QRect(290, 478, 153, 33))
+        self.button_delete_skin.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.button_delete_skin.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.button_delete_skin.setText("Удалить скин")
+        self.button_delete_skin.setFont(self.font.get_font(10, "1"))
+        self.button_delete_skin.setObjectName('delete_but_ac')
+        #self.button_delete_skin.clicked.connect(lambda: self.clear_skin(current_nickname()))
+
+        self.button_delete_cape = QtWidgets.QPushButton(parent=self.main.centralwidget)
+        self.button_delete_cape.setGeometry(QtCore.QRect(470, 478, 153, 33))
+        self.button_delete_cape.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.button_delete_cape.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.button_delete_cape.setText("Удалить плащ")
+        self.button_delete_cape.setFont(self.font.get_font(10, "1"))
+        self.button_delete_cape.setObjectName('delete_but_ac')
+        #self.button_delete_cape.clicked.connect(lambda: self.clear_cape(current_nickname()))
+
+        self.button_logout_account = QtWidgets.QPushButton(parent=self.main.centralwidget)
+        self.button_logout_account.setGeometry(QtCore.QRect(907, 642, 153, 33))
+        self.button_logout_account.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.button_logout_account.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.button_logout_account.setText("Выйти с аккаунта")
+        self.button_logout_account.setFont(self.font.get_font(10, "1"))
+        self.button_logout_account.setObjectName('delete_but_ac')
+        #self.button_logout_account.clicked.connect(lambda: self.logout(current_nickname()))
+
         # Скрываем все элементы, перед показом главной страницы
         self.head_nickname.hide()
         self.nickname_text.hide()
@@ -119,6 +193,16 @@ class WindowLauncher:
         self.nickname_text_account.hide()
         self.register_account.hide()
         self.play_time.hide()
+        self.text_change_skin.hide()
+        self.text_change_cape.hide()
+        self.button_load_skin.hide()
+        self.button_load_cape.hide()
+        self.current_size_skin.hide()
+        self.current_size_cape.hide()
+        self.button_delete_skin.hide()
+        self.button_delete_cape.hide()
+        self.button_logout_account.hide()
+
 
         # Show home page
-        open_window(self, 'Home')
+        self.change_page(open_window(self, 'Home'))

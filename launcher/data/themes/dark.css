@@ -220,3 +220,34 @@ QComboBox#select_version QListView QScrollBar::sub-page:vertical {
 #button_open_folder_version:hover {
     background: #1E1E1E;
 }
+
+#panel_base_account {
+    background: #181818; 
+    border-radius: 15px
+}
+
+#nickname_text_account, #register_account, #play_time {
+    color: #ffffff
+}
+#text_change_skin, #text_change_cape {
+    color: #ffffff;
+}
+#load_but_ac {
+    border-radius: 4px;
+    background: #005FFF;
+    color: white;
+}
+#load_but_ac:hover {
+    background: #0052DE
+}
+#cur_size {
+    color: rgba(255, 255, 255, 0.3);
+}
+#delete_but_ac {
+    border-radius: 4px;
+    background: #C90000;
+    color: white;
+}
+#delete_but_ac:hover {
+    background: #aa0000
+}

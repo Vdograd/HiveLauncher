@@ -25,6 +25,21 @@ def open_window(self, page):
         self.button_open_folder_version.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\folder.svg"))
         self.button_open_folder_version.show()
         self.select_version.show()
+
+        self.panel_base_account.hide()
+        self.head_nickname_150.hide()
+        self.nickname_text_account.hide()
+        self.register_account.hide()
+        self.play_time.hide()
+        self.text_change_skin.hide()
+        self.text_change_cape.hide()
+        self.button_load_skin.hide()
+        self.button_load_cape.hide()
+        self.current_size_skin.hide()
+        self.current_size_cape.hide()
+        self.button_delete_skin.hide()
+        self.button_delete_cape.hide()
+        self.button_logout_account.hide()
         self.page = 'Home'
     elif page == 'Account':
         self.home.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\home.svg"))
@@ -36,11 +51,26 @@ def open_window(self, page):
         self.button_open_folder_version.hide()
         self.select_version.hide()
 
+        self.head_nickname_150.setPixmap(QtGui.QPixmap(self.picture[1]))
+        self.nickname_text_account.setText(self.main.nickname)
+        dt = self.main.datetime.split("T")[0].split("-")
+        self.register_account.setText(f"Зарегистрирован: {dt[2]}.{dt[1]}.{dt[0]}")
+        self.play_time.setText(f"Наигранно времени: {round(self.main.play_time, 1)}ч")
         self.panel_base_account.show()
         self.head_nickname_150.show()
         self.nickname_text_account.show()
         self.register_account.show()
         self.play_time.show()
+        self.text_change_skin.show()
+        self.text_change_cape.show()
+        self.button_load_skin.show()
+        self.button_load_cape.show()
+        self.current_size_skin.show()
+        self.current_size_cape.show()
+        self.button_delete_skin.show()
+        self.button_delete_cape.show()
+        self.button_logout_account.show()
+    return page
 
 
 

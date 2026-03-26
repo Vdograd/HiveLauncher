@@ -121,3 +121,133 @@ QMainWindow {
 #error_auth_setup {
     color: rgba(255, 0, 0, 1);
 }
+
+#button_start {
+    border-radius: 10px;
+    background: #005FFF;
+    color: white;
+}
+#button_start:hover {
+    background: #0054E4
+}
+#button_open_folder_version {
+    border-radius: 5px;
+    background: #ffffff;
+}
+#button_open_folder_version:hover {
+    background: #F4F3F3;
+}
+
+#panel_base_account {
+    background: #ffffff; 
+    border-radius: 15px
+}
+
+#nickname_text_account, #register_account, #play_time {
+    color: #000000
+}
+#text_change_skin, #text_change_cape {
+    color: #000000;
+}
+#load_but_ac {
+    border-radius: 4px;
+    background: #005FFF;
+    color: white;
+}
+#load_but_ac:hover {
+    background: #0052DE
+}
+#cur_size {
+    color: rgba(0, 0, 0, 0.3);
+}
+#delete_but_ac {
+    border-radius: 4px;
+    background: #C90000;
+    color: white;
+}
+#delete_but_ac:hover {
+    background: #aa0000
+}
+
+#nickname_text {
+    color: #000000;
+}
+
+#but_nav {
+    background: rgba(1, 1, 0, 0);
+}
+
+QComboBox#select_version {
+    border-radius: 5px;
+    background: #ffffff;
+    color: #000000;
+    padding-left: 20px;
+}
+
+QComboBox#select_version:hover {
+    background: #F4F3F3;
+}
+
+QComboBox#select_version::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 30px;
+    border: none;
+}
+
+QComboBox#select_version::down-arrow {
+    padding-right: 20px;
+    image: url('launcher/data/static/login/light/arrow.svg');
+    width: 24px;
+    height: 24px;
+    border: none;
+}
+
+QComboBox#select_version QListView {
+    border: none;
+    background: #ffffff;
+    outline: none;
+    color: #000000;
+}
+
+QComboBox#select_version QListView::item {
+    background: transparent;
+    padding: 0.4px 20px;
+    border-bottom: 1px solid rgba(74, 74, 74, 0.1);
+    min-height: 30px;
+    color: #000000;
+}
+
+QComboBox#select_version QListView::item:hover {
+    background-color: #F4F3F3;
+    color: #000000;
+}
+
+QComboBox#select_version QListView QScrollBar:vertical {
+    border: none;
+    background: transparent;
+    width: 8px;
+    margin: 0px;
+}
+
+QComboBox#select_version QListView QScrollBar::handle:vertical {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    min-height: 30px;
+}
+
+QComboBox#select_version QListView QScrollBar::handle:vertical:hover {
+    background: rgba(0, 0, 0, 0.3);
+}
+
+QComboBox#select_version QListView QScrollBar::add-line:vertical,
+QComboBox#select_version QListView QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+}
+
+QComboBox#select_version QListView QScrollBar::add-page:vertical,
+QComboBox#select_version QListView QScrollBar::sub-page:vertical {
+    background: none;
+}
