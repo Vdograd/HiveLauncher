@@ -177,6 +177,144 @@ class WindowLauncher:
         self.button_logout_account.setObjectName('delete_but_ac')
         #self.button_logout_account.clicked.connect(lambda: self.logout(current_nickname()))
 
+        # Settings Page
+
+        self.folder_game_text = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.folder_game_text.setGeometry(QtCore.QRect(112, 135, 200, 30))
+        self.folder_game_text.setObjectName("folder_game_text")
+        self.folder_game_text.setFont(self.font.get_font(14,"1"))
+        self.folder_game_text.setText("Директория игры")
+        self.folder_game_text.setObjectName('nickname_text')
+
+        self.tab_show_folder_game = QtWidgets.QLineEdit(parent=self.main.centralwidget)
+        self.tab_show_folder_game.setFont(self.font.get_font(10, "1"))
+        self.tab_show_folder_game.setGeometry(112, 170, 372, 50)
+        self.tab_show_folder_game.setCursorPosition(0)
+        self.tab_show_folder_game.setReadOnly(True)
+        self.tab_show_folder_game.setObjectName("tab_show_folder_game")
+        self.tab_show_folder_game.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.tab_show_folder_game.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+
+        self.edit_folder_game = self.ClickableQLabel(parent=self.main.centralwidget)
+        self.edit_folder_game.setGeometry(QtCore.QRect(398, 140, 96, 22))
+        self.edit_folder_game.setText("Изменить")
+        self.edit_folder_game.setFont(self.font.get_font(12, "1"))
+        self.edit_folder_game.setObjectName("button_change_page_log_reg")
+        self.edit_folder_game.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        #self.edit_folder_game.clicked.connect(self.browse_folder)
+
+        self.size_window_text = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.size_window_text.setGeometry(QtCore.QRect(112, 250, 320, 30))
+        self.size_window_text.setObjectName("size_window_text")
+        self.size_window_text.setFont(self.font.get_font(14,"1"))
+        self.size_window_text.setText("Разрешение экрана")
+        self.size_window_text.setObjectName('nickname_text')
+
+        self.sel_window_size = QtWidgets.QComboBox(parent=self.main.centralwidget)
+        self.sel_window_size.setGeometry(QtCore.QRect(112, 285, 372, 50))
+        self.sel_window_size.setFont(self.font.get_font(10, "1"))
+        self.sel_window_size.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.sel_window_size.setObjectName('select_version')
+        self.sel_window_size.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+
+        self.sel_window_size_view = QtWidgets.QListView(self.sel_window_size)
+        self.sel_window_size_view.setObjectName('select_version_view')
+        self.sel_window_size_view.setFont(self.font.get_font(10, "1"))
+        self.sel_window_size_view.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+
+        self.sel_window_size_view.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.sel_window_size.setView(self.sel_window_size_view)
+        #self.sel_window_size.currentIndexChanged.connect(self.change_version)
+
+        self.after_start_text = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.after_start_text.setGeometry(QtCore.QRect(112, 365, 320, 30))
+        self.after_start_text.setObjectName("after_start_text")
+        self.after_start_text.setFont(self.font.get_font(14,"1"))
+        self.after_start_text.setText("После запуска игры")
+        self.after_start_text.setObjectName('nickname_text')
+
+        self.sel_after_start = QtWidgets.QComboBox(parent=self.main.centralwidget)
+        self.sel_after_start.setGeometry(QtCore.QRect(112, 400, 372, 50))
+        self.sel_after_start.setFont(self.font.get_font(10, "1"))
+        self.sel_after_start.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.sel_after_start.setObjectName('select_version')
+        self.sel_after_start.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+
+        self.sel_after_start_view = QtWidgets.QListView(self.sel_window_size)
+        self.sel_after_start_view.setObjectName('select_version_view')
+        self.sel_after_start_view.setFont(self.font.get_font(10, "1"))
+        self.sel_after_start_view.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+
+        self.sel_after_start_view.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.sel_after_start.setView(self.sel_after_start_view)
+
+        self.rem_text = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.rem_text.setGeometry(QtCore.QRect(616, 135, 320, 30))
+        self.rem_text.setObjectName("rem_text")
+        self.rem_text.setFont(self.font.get_font(14,"1"))
+        self.rem_text.setText("Выделенная память")
+        self.rem_text.setObjectName('nickname_text')
+
+        self.sel_rem = QtWidgets.QComboBox(parent=self.main.centralwidget)
+        self.sel_rem.setGeometry(QtCore.QRect(616, 170, 372, 50))
+        self.sel_rem.setFont(self.font.get_font(10, "1"))
+        self.sel_rem.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)   
+        self.sel_rem.setObjectName('select_version')
+        self.sel_rem.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+
+        self.sel_rem_view = QtWidgets.QListView(self.sel_window_size)
+        self.sel_rem_view.setObjectName('select_version_view')
+        self.sel_rem_view.setFont(self.font.get_font(10, "1"))
+        self.sel_rem_view.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+
+        self.sel_rem_view.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.sel_rem.setView(self.sel_rem_view)
+
+        self.after_download_text = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.after_download_text.setGeometry(QtCore.QRect(616, 250, 320, 30))
+        self.after_download_text.setObjectName("after_download_text")
+        self.after_download_text.setFont(self.font.get_font(14,"1"))
+        self.after_download_text.setText("После установки")
+        self.after_download_text.setObjectName('nickname_text')
+
+        self.sel_after_download = QtWidgets.QComboBox(parent=self.main.centralwidget)
+        self.sel_after_download.setGeometry(QtCore.QRect(616, 285, 372, 50))
+        self.sel_after_download.setFont(self.font.get_font(10, "1"))
+        self.sel_after_download.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.sel_after_download.setObjectName('select_version')
+        self.sel_after_download.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+
+        self.sel_after_download_view = QtWidgets.QListView(self.sel_after_download)
+        self.sel_after_download_view.setFont(self.font.get_font(10, "1"))
+        self.sel_after_download_view.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        self.sel_after_download_view.setObjectName('select_version_view')
+
+        self.sel_after_download_view.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.sel_after_download.setView(self.sel_after_download_view)
+
+
+        self.color_theme_text = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.color_theme_text.setGeometry(QtCore.QRect(616, 365, 320, 30))
+        self.color_theme_text.setObjectName("color_theme_text")
+        self.color_theme_text.setFont(self.font.get_font(14,"1"))
+        self.color_theme_text.setText("Тема оформления")
+        self.color_theme_text.setObjectName('nickname_text')
+
+        self.sel_color_theme = QtWidgets.QComboBox(parent=self.main.centralwidget)
+        self.sel_color_theme.setGeometry(QtCore.QRect(616, 400, 372, 50))
+        self.sel_color_theme.setFont(self.font.get_font(10, "1"))
+        self.sel_color_theme.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.sel_color_theme.setObjectName('select_version')
+        self.sel_color_theme.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+
+        self.sel_color_theme_view = QtWidgets.QListView(self.sel_color_theme)
+        self.sel_color_theme_view.setObjectName('select_version_view')
+        self.sel_color_theme_view.setFont(self.font.get_font(10, "1"))
+        self.sel_color_theme_view.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+
+        self.sel_color_theme_view.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.sel_color_theme.setView(self.sel_color_theme_view)
+
         # Скрываем все элементы, перед показом главной страницы
         self.head_nickname.hide()
         self.nickname_text.hide()
@@ -203,6 +341,19 @@ class WindowLauncher:
         self.button_delete_cape.hide()
         self.button_logout_account.hide()
 
+        self.folder_game_text.hide()
+        self.tab_show_folder_game.hide()
+        self.edit_folder_game.hide()
+        self.size_window_text.hide()
+        self.sel_window_size.hide()
+        self.after_start_text.hide()
+        self.sel_after_start.hide()
+        self.rem_text.hide()
+        self.sel_rem.hide()
+        self.after_download_text.hide()
+        self.sel_after_download.hide()
+        self.color_theme_text.hide()
+        self.sel_color_theme.hide()
 
         # Show home page
         self.change_page(open_window(self, 'Home'))

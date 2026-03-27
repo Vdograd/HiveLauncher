@@ -251,3 +251,11 @@ QComboBox#select_version QListView QScrollBar::add-page:vertical,
 QComboBox#select_version QListView QScrollBar::sub-page:vertical {
     background: none;
 }
+
+#tab_show_folder_game {
+    background: #ffffff;
+    color: #000000;
+    border-radius: 4px;
+    padding-left: 20px;
+    padding-right: 20px;
+}

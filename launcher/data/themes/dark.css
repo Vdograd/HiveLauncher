@@ -251,3 +251,11 @@ QComboBox#select_version QListView QScrollBar::sub-page:vertical {
 #delete_but_ac:hover {
     background: #aa0000
 }
+
+#tab_show_folder_game {
+    background: #181818;
+    color: #ffffff;
+    border-radius: 4px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
