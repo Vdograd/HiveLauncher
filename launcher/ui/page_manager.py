@@ -39,6 +39,7 @@ class HiveLauncher(QMainWindow):
                 continue
             child.setParent(None)
             child.deleteLater()
+        set_style(self, self.configuration.get_color_theme())
         self.launcher_page = WindowLauncher(self, ClickableQLabel, picture)
         self.launcher_page.launcher_show()
 

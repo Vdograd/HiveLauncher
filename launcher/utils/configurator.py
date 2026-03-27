@@ -48,7 +48,6 @@ class Configurator:
     def fixed_system_config(self):
         try:
             os.makedirs(self.config_folder, exist_ok=True)
-            os.makedirs(self.logs_folder, exist_ok=True)
         except Exception as e:
             return e
         

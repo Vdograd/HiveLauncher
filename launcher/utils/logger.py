@@ -1,9 +1,15 @@
 import datetime
 from .configurator import Configurator
+import os
 
 class Logger:
     def __init__(self):
-        self.log_file = f"{Configurator().logs_folder}\\{datetime.datetime.now().strftime('%d-%m-%Y-%H-%M-%S')}.log"
+        conf = Configurator()
+        self.log_file = f"{conf.logs_folder}\\{datetime.datetime.now().strftime('%d-%m-%Y-%H-%M-%S')}.log"
+        try:
+            os.makedirs(conf.logs_folder, exist_ok=True)
+        except Exception as e:
+            return e
     
     def get_time(self):
         return datetime.datetime.now().strftime('%d-%m-%Y-%H-%M-%S')

@@ -233,10 +233,29 @@ def auth_setup_progress(self):
     self.password_setup.setEnabled(False)
     self.button_or_setup.setEnabled(False)
     self.password_retry_setup.setEnabled(False)
+    self.button_auth_setup.setStyleSheet(
+        """
+            QPushButton {
+                border-radius: 8px;
+                background: rgba(0, 95, 255, 0.5);
+                color: white;
+            }
+        """
+    )
 
 def auth_setup_error(self, reason):
     self.error_auth_setup.setText(reason)
     self.button_auth_setup.setEnabled(True)
+    self.button_auth_setup.setStyleSheet("""
+        #button_auth_setup {
+            border-radius: 8px;
+            background: rgba(0, 95, 255, 1);
+            color: white;
+        }
+        #button_auth_setup:hover {
+            background: rgb(0, 83, 228);
+        }
+    """)
     self.nickname_setup.setEnabled(True)
     self.password_setup.setEnabled(True)
     self.button_or_setup.setEnabled(True)
