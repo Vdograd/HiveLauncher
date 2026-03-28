@@ -61,6 +61,7 @@ class WindowLauncher:
         self.fon_image.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\home\\fon.png"))
 
         self.select_version = self.main.select_version
+        self.select_version.currentIndexChanged.connect(lambda: change_version(self))
         self.select_version_view = self.main.select_version_view
         
         self.button_start = QtWidgets.QPushButton(parent=self.main.centralwidget)
@@ -216,6 +217,7 @@ class WindowLauncher:
         self.sel_window_size.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.sel_window_size.setObjectName('select_version')
         self.sel_window_size.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+        self.sel_window_size.currentIndexChanged.connect(lambda: changed_window_size(self))
 
         self.sel_window_size_view = QtWidgets.QListView(self.sel_window_size)
         self.sel_window_size_view.setObjectName('select_version_view')
@@ -238,6 +240,7 @@ class WindowLauncher:
         self.sel_after_start.setFont(self.font.get_font(10, "1"))
         self.sel_after_start.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.sel_after_start.setObjectName('select_version')
+        self.sel_after_start.currentIndexChanged.connect(lambda: changed_after_start(self))
         self.sel_after_start.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
 
         self.sel_after_start_view = QtWidgets.QListView(self.sel_window_size)
@@ -261,6 +264,7 @@ class WindowLauncher:
         self.sel_rem.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)   
         self.sel_rem.setObjectName('select_version')
         self.sel_rem.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+        self.sel_rem.currentIndexChanged.connect(lambda: changed_rem(self))
 
         self.sel_rem_view = QtWidgets.QListView(self.sel_window_size)
         self.sel_rem_view.setObjectName('select_version_view')
@@ -283,6 +287,7 @@ class WindowLauncher:
         self.sel_after_download.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.sel_after_download.setObjectName('select_version')
         self.sel_after_download.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+        self.sel_after_download.currentIndexChanged.connect(lambda: changed_after_download(self))
 
         self.sel_after_download_view = QtWidgets.QListView(self.sel_after_download)
         self.sel_after_download_view.setFont(self.font.get_font(10, "1"))
@@ -306,6 +311,7 @@ class WindowLauncher:
         self.sel_color_theme.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.sel_color_theme.setObjectName('select_version')
         self.sel_color_theme.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+        self.sel_color_theme.currentIndexChanged.connect(lambda: changed_color_theme(self))
 
         self.sel_color_theme_view = QtWidgets.QListView(self.sel_color_theme)
         self.sel_color_theme_view.setObjectName('select_version_view')
@@ -354,6 +360,9 @@ class WindowLauncher:
         self.sel_after_download.hide()
         self.color_theme_text.hide()
         self.sel_color_theme.hide()
+
+        auth_fill_data_settings(self)
+        changed_color_theme(self)
 
         # Show home page
         self.change_page(open_window(self, 'Home'))
