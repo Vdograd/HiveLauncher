@@ -66,8 +66,17 @@ class VersionManager:
             return e
         return path_minecraft_version
     
+    def get_version_path_vers(self, version):
+        path_minecraft_version = f"{self.minecraft_directory}\\{version.replace('Minecraft ', '').replace(" ", "_")}\\versions"
+        try:
+            if not os.path.exists(path_minecraft_version):
+                os.makedirs(path_minecraft_version)
+        except Exception as e:
+            return e
+        return path_minecraft_version
+    
     def version_to_folder_json(self, version: str):
-        minecraft_directory_vers = self.get_version_path(version.replace("Minecraft ", ""))
+        minecraft_directory_vers = self.get_version_path_vers(version.replace("Minecraft ", ""))
         versions = self.helper.find_versions_folders(minecraft_directory_vers)
         c = ""
         original_version = version
