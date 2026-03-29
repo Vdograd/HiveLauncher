@@ -19,6 +19,7 @@ class AuthRegisterAccount(QThread):
 
     def run(self):
         if self.method == 'registr':
+            self.progress.emit()
             try:
                 data = auth.create_user(self.nickname, self.password)
             except Exception as e:

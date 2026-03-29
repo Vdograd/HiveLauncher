@@ -12,6 +12,17 @@ from ..style import set_style
 from ..page_functions.page_manager import create_shadow
 
 helper = Helper()
+
+def edit_line_nickname(self):
+    a1 = list(self.main.nickname)
+    a2 = list(self.main.nickname)
+    if len(a1) > 18:
+        a1 = "".join(x for x in a1[:18]) + '...'
+    if len(a2) > 15:
+        a2 = "".join(x for x in a2[:15]) + '...'
+    self.nickname_text.setText("".join(x for x in a1))
+    self.nickname_text_account.setText("".join(x for x in a2))
+
 def open_window(self, page):
     conf = self.conf
     if page == self.page:
@@ -27,7 +38,6 @@ def open_window(self, page):
         self.fon_image.show()
         self.head_nickname.setPixmap(QtGui.QPixmap(self.picture[0]))
         self.head_nickname.show()
-        self.nickname_text.setText(self.main.nickname)
         self.nickname_text.show()
         self.button_start.show()
         self.button_open_folder_version.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\folder.svg"))
@@ -89,7 +99,6 @@ def open_window(self, page):
         self.sel_color_theme.hide()
 
         self.head_nickname_150.setPixmap(QtGui.QPixmap(self.picture[1]))
-        self.nickname_text_account.setText(self.main.nickname)
         dt = self.main.datetime.split("T")[0].split("-")
         self.register_account.setText(f"Зарегистрирован: {dt[2]}.{dt[1]}.{dt[0]}")
         self.play_time.setText(f"Наигранно времени: {round(self.main.play_time, 1)}ч")

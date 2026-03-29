@@ -363,6 +363,7 @@ class WindowLauncher:
 
         auth_fill_data_settings(self)
         changed_color_theme(self)
+        edit_line_nickname(self)
 
         # Show home page
         self.change_page(open_window(self, 'Home'))
