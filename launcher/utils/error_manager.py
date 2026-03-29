@@ -5,7 +5,6 @@ import socket
 
 class ErrorExc():
     def __init__(self, error: Exception):
-        print('da')
         self.error = error
         self.code = self.get_code()
         self.message = self.get_message()
