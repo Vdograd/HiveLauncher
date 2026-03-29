@@ -6,7 +6,6 @@ from .auth_verify import AuthVerify
 from .encryption import encryption_password
 from dotenv import load_dotenv
 import os
-from ..utils.error_manager import ErrorExc
 
 class AuthManager:
     def __init__(self):
@@ -150,9 +149,6 @@ class AuthManager:
     def update_play_time(self, nickname, play_time_plus: float):
         try:
             current_time = float(self.supabase.table("Users").select("play_time").eq("nickname", nickname).execute().data[0]['play_time'])
-        except Exception as e:
-            raise e
-        try:
             self.supabase.table("Users").update({"play_time": current_time+play_time_plus}).eq("nickname", nickname).execute()
         except Exception as e:
             raise e
