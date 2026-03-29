@@ -234,11 +234,26 @@ def ail_progress(self):
 
 def ail_error(self, reason):
     self.error_select_login_1.setText(reason)
+    if self.password_account_login.isHidden():
+        self.error_select_login_1.setGeometry(QtCore.QRect(0, 404, 1100, 15))
+    else:
+        self.error_select_login_1.setGeometry(QtCore.QRect(0, 467, 1100, 15))
     self.error_select_login_1.show()
     self.password_account_login.clear()
     self.login_in_launcher.setEnabled(True)
     self.select_nickname_combobox.setEnabled(True)
     self.password_account_login.setEnabled(True)
+    if self.password_account_login.isHidden():
+        self.login_in_launcher.setStyleSheet("""
+            #login_in_launcher {
+                border-radius: 8px;
+                background: #005FFF;
+                color: white;
+            }
+            #login_in_launcher:hover {
+                background: rgb(0, 80, 218);
+            }
+        """)
     self.button_change_page_log_reg.setEnabled(True)
 
 def ail_finished(self, nickname, playtime, datetime):

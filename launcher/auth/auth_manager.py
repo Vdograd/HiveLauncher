@@ -6,6 +6,7 @@ from .auth_verify import AuthVerify
 from .encryption import encryption_password
 from dotenv import load_dotenv
 import os
+from ..utils.error_manager import ErrorExc
 
 class AuthManager:
     def __init__(self):
@@ -22,7 +23,7 @@ class AuthManager:
         try:
             self.supabase.table("Users").select("nickname").limit(1).execute()
         except Exception as e:
-            return e
+            raise e
 
     def create_user(self, nickname, password):
         password = encryption_password(password)
@@ -51,7 +52,7 @@ class AuthManager:
             if "duplicate key value violates unique constraint" in str(e):
                 return "Nickname dublicate"
             else:
-                return e
+                raise e
             
     def list_nicknames(self):
         try:
@@ -63,18 +64,18 @@ class AuthManager:
                 try:
                     verify_code = data["verify_code"][name]
                 except Exception as e:
-                    return e
+                    raise e
                 try:
                     verify_code_from_database = self.supabase.table("Users").select("verify_code").eq("nickname", name).execute().data[0]['verify_code']
                 except Exception as e:
-                    return e
+                    raise e
                 if verify_code == verify_code_from_database:
                     all_users += [[name, "success"]]
                 else:
                     all_users += [[name, "failed"]]
             return all_users
         except Exception as e:
-            return e
+            raise e
     
     def auth_in_account(self, nickname, password):
         try:
@@ -88,7 +89,7 @@ class AuthManager:
             try:
                 user_from_database = self.supabase.table("Users").select("*").eq("nickname", nickname).execute()
             except Exception as e:
-                return e
+                raise e
             if user_from_database.data == []:
                 return "Not found nickname in db"
             if password == user_from_database.data[0]['password']:
@@ -106,7 +107,7 @@ class AuthManager:
             else:
                 return "Not correct password"
         except Exception as e:
-            return e
+            raise e
         
     def auth_in_account_retry(self, nickname, password):
         try:
@@ -117,14 +118,14 @@ class AuthManager:
             try:
                 user_from_database = self.supabase.table("Users").select("*").eq("nickname", nickname).execute()
             except Exception as e:
-                return e
+                raise e
             if user_from_database.data == []:
                 return "Not found nickname in db"
             if password == user_from_database.data[0]['password']:
                 try:
                     self.supabase.table("Users").update({"verify_code": verify_code_for_nickname}).eq("nickname", nickname).execute()
                 except Exception as e:
-                    return e
+                    raise e
                 with open(f"{self.configurator.config_folder}\\nicknames.json", "w", encoding="ansi") as file_w:
                     data["verify_code"][nickname] = verify_code_for_nickname
                     data["last_nickname"] = nickname
@@ -133,7 +134,7 @@ class AuthManager:
             else:
                 return "Not correct password"
         except Exception as e:
-            return e
+            raise e
         
     def exit_with_account(self, nickname):
         try:
@@ -143,23 +144,23 @@ class AuthManager:
                 data["verify_code"][nickname] = "log in again"
                 json.dump(data, file_w, indent=4, ensure_ascii=False)
         except Exception as e:
-            return e
+            raise e
         return "Success logout"
     
     def update_play_time(self, nickname, play_time_plus: float):
         try:
             current_time = float(self.supabase.table("Users").select("play_time").eq("nickname", nickname).execute().data[0]['play_time'])
         except Exception as e:
-            return e
+            raise e
         try:
             self.supabase.table("Users").update({"play_time": current_time+play_time_plus}).eq("nickname", nickname).execute()
         except Exception as e:
-            return e
+            raise e
         return current_time + play_time_plus
     
     def select_data_user(self, nickname):
         try:
             user_from_database = self.supabase.table("Users").select("*").eq("nickname", nickname).execute()
         except Exception as e:
-            return e
+            raise e
         return (user_from_database.data[0]["nickname"], user_from_database.data[0]["play_time"], user_from_database.data[0]["register_time"])

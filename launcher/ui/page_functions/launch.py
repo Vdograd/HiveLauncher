@@ -251,14 +251,23 @@ def update_version_icons(self):
     for i in range(self.select_version.count()):
         item_text = self.select_version.itemText(i)
         if "Fabric" in item_text:
-            icon1 = QtGui.QIcon()
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)       
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
+        elif "Forge" in item_text:
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)    
         elif "Minecraft" in item_text:
             icon = QtGui.QIcon()
             icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
@@ -268,15 +277,6 @@ def update_version_icons(self):
             icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
             icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
             icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
-        elif "Forge" in item_text:
-            icon1 = QtGui.QIcon()
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
-            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)       
         self.select_version.setItemIcon(i, icon)
 
 def browse_folder(self):

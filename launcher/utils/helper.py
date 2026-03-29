@@ -2,6 +2,9 @@ import psutil
 import re
 import os
 from screeninfo import get_monitors
+import subprocess
+import requests
+import traceback
 
 class Helper:
     def get_rem(self, rem):
@@ -65,3 +68,25 @@ class Helper:
         items = os.listdir(path)
         folders = [item for item in items if os.path.isdir(os.path.join(path, item))]
         return folders
+    
+    def get_java(self):
+        try:
+            result = subprocess.run(['java', '-version'], capture_output=True, text=True, check=False)
+            version_output = result.stderr if result.stderr else result.stdout
+            match = re.search(r'version "([^"]+)"', version_output)
+            if match:
+                return match.group(1)
+            
+            match = re.search(r'(\d+\.\d+\.\d+[_\d]*)', version_output)
+            if match:
+                return match.group(1)
+            return None
+        except FileNotFoundError:
+            return None
+    
+    def get_traceback(self, e):
+        new = []
+        af = traceback.format_exc().split("\n")
+        for x in af:
+            new.append(f"|   {x}")
+        return new

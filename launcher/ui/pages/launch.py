@@ -202,7 +202,7 @@ class WindowLauncher:
         self.edit_folder_game.setFont(self.font.get_font(12, "1"))
         self.edit_folder_game.setObjectName("button_change_page_log_reg")
         self.edit_folder_game.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
-        #self.edit_folder_game.clicked.connect(self.browse_folder)
+        self.edit_folder_game.clicked.connect(lambda: browse_folder(self))
 
         self.size_window_text = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.size_window_text.setGeometry(QtCore.QRect(112, 250, 320, 30))

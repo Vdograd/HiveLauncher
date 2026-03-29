@@ -321,6 +321,7 @@ class AuthRegisterAccount(QThread):
             except Exception as e:
                 logger.error(str(e))
                 self.error.emit('Произошла ошибка')
+                return
             if data == "Nickname dublicate":
                 self.error.emit("Пользователь уже существует")
             elif str(type(data)) == "<class 'tuple'>":
@@ -332,6 +333,7 @@ class AuthRegisterAccount(QThread):
             except Exception as e:
                 self.error.emit("Произошла ошибка")
                 logger.error(str(e))
+                return
             if data == "Not found nickname in db":
                 self.error.emit("Пользователь не существует")
             elif data == 'Account already added':

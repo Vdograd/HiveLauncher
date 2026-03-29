@@ -36,7 +36,6 @@ class WindowLogin:
 
         # Page Auth
         self.error_select_login_1 = QtWidgets.QLabel(parent=self.main.centralwidget)
-        self.error_select_login_1.setGeometry(QtCore.QRect(0, 467, 1100, 15))
         self.error_select_login_1.setFont(self.font.get_font(10, "1"))
         self.error_select_login_1.setObjectName("error_auth_setup")
         self.error_select_login_1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
