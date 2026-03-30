@@ -14,18 +14,9 @@ def main():
     try:
         logger.session_start()
         logger.info("Initial connect db")
-    except Exception as e:
-        ErrorExc(e)
-    try:
         auth_mng.initial_database()
-    except Exception as e:
-        ErrorExc(e)
-    try:
+        logger.info("Fixed system config")
         conf.fixed_system_config()
-    except Exception as e:
-        ErrorExc(e)
-
-    try:
         logger.info('Init minecraft directory')
         obj_Version_Manager.init_minecraft_directory()
     except Exception as e:
