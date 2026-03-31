@@ -6,11 +6,13 @@ from .auth_verify import AuthVerify
 from .encryption import encryption_password
 from dotenv import load_dotenv
 import os
+from ..utils.helper import Helper
 
 class AuthManager:
     def __init__(self):
         load_dotenv()
         self.verify = AuthVerify()
+        self.helper = Helper()
         self.configurator = Configurator()
         self.supabase: Client = create_client(
             os.getenv('DATABASE_URL'),
@@ -153,7 +155,25 @@ class AuthManager:
         except Exception as e:
             raise e
         return current_time + play_time_plus
-    
+
+    def retry_update_time(self):
+        if os.path.isfile(f"{self.configurator.config_folder}\\time_fixed.json"):
+            try:
+                with open(f"{self.configurator.config_folder}\\time_fixed.json", "r", encoding="ansi") as file:
+                    data = json.load(file)
+                for nickname in data:
+                    if data[nickname][1] != self.helper.hash_time_add(data[nickname][0]):
+                        continue
+                    play_time_plus = data[nickname][0]
+                    current_time = float(self.supabase.table("Users").select("play_time").eq("nickname", nickname).execute().data[0]['play_time'])
+                    self.supabase.table("Users").update({"play_time": current_time+play_time_plus}).eq("nickname", nickname).execute()
+                    del data[nickname]
+                with open(f"{self.configurator.config_folder}\\time_fixed.json", "w", encoding="ansi") as file:
+                    json.dump(data, file, indent=4, ensure_ascii=False)
+                os.remove(f"{self.configurator.config_folder}\\time_fixed.json")
+            except Exception as e:
+                raise e
+
     def select_data_user(self, nickname):
         try:
             user_from_database = self.supabase.table("Users").select("*").eq("nickname", nickname).execute()

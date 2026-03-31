@@ -5,9 +5,9 @@ from .helper import Helper
 
 class Logger:
     def __init__(self):
-        conf = Configurator()
-        self.log_file = f"{conf.logs_folder}\\{datetime.datetime.now().strftime('%d-%m-%Y-%H-%M-%S')}.log"
         try:
+            conf = Configurator()
+            self.log_file = f"{conf.logs_folder}\\{datetime.datetime.now().strftime('%d-%m-%Y-%H-%M-%S')}.log"
             os.makedirs(conf.logs_folder, exist_ok=True)
         except Exception as e:
             raise e

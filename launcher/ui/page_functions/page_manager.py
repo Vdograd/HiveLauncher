@@ -144,6 +144,7 @@ def versions_add(self):
     self.select_version_view.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
     self.select_version_view.setObjectName("select_version_view")
     self.select_version.setView(self.select_version_view)
+    self.select_version_view.setIconSize(QtCore.QSize(26, 26))
     self.select_version.hide()
 
     forge = forge_enabled_bool()

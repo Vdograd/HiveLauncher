@@ -178,6 +178,24 @@ class WindowLauncher:
         self.button_logout_account.setObjectName('delete_but_ac')
         #self.button_logout_account.clicked.connect(lambda: self.logout(current_nickname()))
 
+        self.skin_type_text = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.skin_type_text.setGeometry(QtCore.QRect(651, 384, 200, 24))
+        self.skin_type_text.setFont(self.font.get_font(14,"1"))
+        self.skin_type_text.setText("Скин: Classic")
+        self.skin_type_text.setObjectName('text_change_skin')
+        
+        self.button_skin_type = QtWidgets.QPushButton(parent=self.main.centralwidget)
+        self.button_skin_type.setGeometry(QtCore.QRect(651, 416, 153, 33))
+        self.button_skin_type.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.button_skin_type.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.button_skin_type.setText("Сменить на Classic")
+        self.button_skin_type.setObjectName('load_but_ac')
+        self.button_skin_type.setFont(self.font.get_font(10, "1"))
+        #self.button_load_cape.clicked.connect(lambda: self.load_cape(current_nickname()))
+
+
+
+
         # Settings Page
 
         self.folder_game_text = QtWidgets.QLabel(parent=self.main.centralwidget)
@@ -311,6 +329,10 @@ class WindowLauncher:
         self.sel_color_theme.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.sel_color_theme.setObjectName('select_version')
         self.sel_color_theme.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
+        self.sel_color_theme.addItem("Светлая")
+        self.sel_color_theme.addItem("Темная")
+        color_th = self.conf.get_color_theme()
+        self.sel_color_theme.setCurrentText(f"{'Светлая' if color_th == 'light' else 'Темная'}")
         self.sel_color_theme.currentIndexChanged.connect(lambda: changed_color_theme(self))
 
         self.sel_color_theme_view = QtWidgets.QListView(self.sel_color_theme)
@@ -346,6 +368,8 @@ class WindowLauncher:
         self.button_delete_skin.hide()
         self.button_delete_cape.hide()
         self.button_logout_account.hide()
+        self.button_skin_type.hide()
+        self.skin_type_text.hide()
 
         self.folder_game_text.hide()
         self.tab_show_folder_game.hide()
@@ -362,7 +386,6 @@ class WindowLauncher:
         self.sel_color_theme.hide()
 
         auth_fill_data_settings(self)
-        changed_color_theme(self)
         edit_line_nickname(self)
 
         # Show home page

@@ -106,3 +106,26 @@ class Configurator:
                     json.dump(data, file, indent=4, ensure_ascii=False)
             except Exception as e:
                 raise e
+            
+    def state_time_players(self, nickname, timeplus):
+        try:
+            if os.path.isfile(f"{self.config_folder}\\time_fixed.json"):
+                with open(f"{self.config_folder}\\time_fixed.json", "r", encoding="ansi") as file:
+                    data = json.load(file)
+                with open(f"{self.config_folder}\\time_fixed.json", "w", encoding="ansi") as file:
+                    try:
+                        a = data[nickname]
+                        data[nickname][0] += timeplus
+                        data[nickname][1] = self.helper.hash_time_add(data[nickname][0])
+                    except:
+                        data[nickname] = [timeplus, self.helper.hash_time_add(timeplus)]
+                    json.dump(data, file,indent=4, ensure_ascii=False)
+
+            else:
+                with open(f"{self.config_folder}\\time_fixed.json", "w", encoding="ansi") as file:
+                    data = {
+                        nickname: [timeplus, self.helper.hash_time_add(timeplus)]
+                    }
+                    json.dump(data, file,indent=4, ensure_ascii=False)
+        except Exception as e:
+            raise e

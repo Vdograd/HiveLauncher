@@ -3,8 +3,8 @@ import re
 import os
 from screeninfo import get_monitors
 import subprocess
-import requests
 import traceback
+import hashlib
 
 class Helper:
     def get_rem(self, rem):
@@ -90,3 +90,9 @@ class Helper:
         for x in af:
             new.append(f"|   {x}")
         return new
+    
+    def hash_time_add(self, plustime):
+        time = str(plustime)
+        hash256 = hashlib.sha256()
+        hash256.update(time.encode('utf-8'))
+        return hash256.hexdigest()

@@ -21,6 +21,11 @@ def main():
         obj_Version_Manager.init_minecraft_directory()
     except Exception as e:
         ErrorExc(e)
+    try:
+        logger.info("Retryed update play time (if needed)")
+        auth_mng.retry_update_time()
+    except Exception as e:
+        logger.error(f"Failed updated play time: {e}")
 
     logger.info("Connect Window")
     app = QApplication(sys.argv)

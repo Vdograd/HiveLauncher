@@ -58,6 +58,8 @@ def open_window(self, page):
         self.button_delete_skin.hide()
         self.button_delete_cape.hide()
         self.button_logout_account.hide()
+        self.button_skin_type.hide()
+        self.skin_type_text.hide()
 
         self.folder_game_text.hide()
         self.tab_show_folder_game.hide()
@@ -116,6 +118,8 @@ def open_window(self, page):
         self.button_delete_skin.show()
         self.button_delete_cape.show()
         self.button_logout_account.show()
+        self.button_skin_type.show()
+        self.skin_type_text.show()
     elif page == 'Settings':
         self.home.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\home.svg"))
         self.account.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\account.svg"))
@@ -149,6 +153,8 @@ def open_window(self, page):
         self.button_delete_skin.hide()
         self.button_delete_cape.hide()
         self.button_logout_account.hide()
+        self.button_skin_type.hide()
+        self.skin_type_text.hide()
 
         self.fon_image.hide()
         self.button_start.hide()
@@ -167,10 +173,6 @@ def open_folder_game(self):
 
 def auth_fill_data_settings(self):
     self.tab_show_folder_game.setText(obj_Version_Manager.minecraft_directory)
-    self.sel_color_theme.addItem("Светлая")
-    self.sel_color_theme.addItem("Темная")
-    color_th = self.conf.get_color_theme()
-    self.sel_color_theme.setCurrentText(f"{'Светлая' if color_th == 'light' else 'Темная'}")
 
     state = self.conf.get_config()
     for screen in helper.access_screens():
@@ -252,6 +254,7 @@ def changed_color_theme(self):
     self.sel_rem.setGraphicsEffect(create_shadow(state))
     self.sel_after_download.setGraphicsEffect(create_shadow(state))
     self.sel_color_theme.setGraphicsEffect(create_shadow(state))
+    self.select_version.setGraphicsEffect(create_shadow(state))
     update_version_icons(self)
 
 def update_version_icons(self):
@@ -320,7 +323,15 @@ def change_version(self):
                 break
     
     # Обновляем кнопку запуска
+    self.button_start.setEnabled(True)
     if not version_found:
-        self.button_start.setText("Установить")
+        if 'Forge' in version_combobox or 'Fabric' in version_combobox:
+            if helper.get_java() != None:
+                self.button_start.setText("Установить")
+            else:
+                self.button_start.setText("Требуется Java")
+                self.button_start.setEnabled(False)
+        else:
+            self.button_start.setText("Установить")
     else:
         self.button_start.setText("Запустить")

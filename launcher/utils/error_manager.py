@@ -2,6 +2,9 @@ import requests
 import json
 from .logger import logger
 import socket
+from ..ui.dialogs.error_dialog import DialogError
+from PyQt6.QtWidgets import QApplication
+import sys
 
 class ErrorExc():
     def __init__(self, error: Exception):
@@ -12,6 +15,10 @@ class ErrorExc():
             logger.report(self.code, self.error)
         except:
             pass
+        app = QApplication(sys.argv)
+        window = DialogError(self.code, self.message)
+        window.show()
+        return app.exec()
 
     def get_code(self):
         errors = {
@@ -44,7 +51,7 @@ class ErrorExc():
             Exception: 999
         }
         for error in errors.items():
-            if self.error == error[0]:
+            if type(self.error) == error[0]:
                 return error[1]
         else:
             return errors.get(Exception)
@@ -79,4 +86,4 @@ class ErrorExc():
             502: 'Непредвиденная ошибка.',
             999: 'Неизвестная ошибка.'
         }
-        return messages.get(self.code)
+        return messages.get(self.code, 'Неизвестная ошибка.')

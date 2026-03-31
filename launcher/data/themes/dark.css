@@ -28,7 +28,7 @@ QMainWindow {
     padding-left: 20px;
 }
 #select_nickname_combobox:hover {
-    background: #1E1E1E;
+    background: #1A1A1A;
 }
 #select_nickname_combobox::drop-down {
     subcontrol-origin: padding;
@@ -137,7 +137,7 @@ QComboBox#select_version {
 }
 
 QComboBox#select_version:hover {
-    background: #1E1E1E;
+    background: #1A1A1A;
 }
 
 QComboBox#select_version::drop-down {
@@ -218,7 +218,7 @@ QComboBox#select_version QListView QScrollBar::sub-page:vertical {
     background: #181818;
 }
 #button_open_folder_version:hover {
-    background: #1E1E1E;
+    background: #1A1A1A;
 }
 
 #panel_base_account {
@@ -258,4 +258,37 @@ QComboBox#select_version QListView QScrollBar::sub-page:vertical {
     border-radius: 4px;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+/* Error Dialog */
+#ErrorDialog {
+    background-color: #181818;
+}
+
+#reason_text {
+    color: #ffffff
+}
+#logo_error {
+    background: rgba(0,0,0,0);
+}
+
+#code_text {
+    color: rgba(255,255, 255, 0.8)
+}
+
+#send_report {
+    border-radius: 4px;
+    background: #005FFF;
+    color: white;
+}
+#send_report:hover {
+    background: #0054E4
+}
+
+#panel_error {
+    background: rgba(0,95,255,0.8);
+}
+
+#cross {
+    border: none;
 }
