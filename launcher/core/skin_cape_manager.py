@@ -12,6 +12,8 @@ config = Configurator()
 url_s = os.getenv('SYSTEM_SKIN_CAPE_URL')
 key_s = f"OAuth {os.getenv('SYSTEM_SKIN_CAPE_KEY')}"
 url_delete = os.getenv('SYSTEM_SKIN_CAPE_URL_DEL')
+url_get = os.getenv('SYSTEM_HEAD_TEXTURE_URL')
+key_get = f"OAuth {os.getenv('SYSTEM_HEAD_TEXTURE_KEY')}"
 
 class LoadSkin(QThread):
     progress = pyqtSignal()
@@ -242,7 +244,7 @@ class ClassicSlimSkin:
             }
 
             params = {
-                "path": f"/HiveLauncherSkins/{file_name}.png",
+                "path": f"/HiveLauncherSkins/{file_name}",
                 "permanently": True
             }
             try:
@@ -256,3 +258,30 @@ class ClassicSlimSkin:
             except Exception as e:
                 logger.error(str(e))
                 self.error.emit('Ошибка')
+
+def get_type_skin_nickname(nickname):
+    hash256 = hashlib.sha256()
+    hash256.update(nickname.encode('utf-8'))
+    file_name = f"{hash256.hexdigest()}_slim"
+
+    url = url_get
+    headers = {
+        "Authorization": key_get
+    }
+
+    params = {
+        "path": f"/HiveLauncherSkins/{file_name}"
+    }
+    try:
+        logger.info('Try get type skin nickname')
+        response = requests.get(url, headers=headers, params=params)
+        if response.status_code == 200:
+            return 'slim'
+        elif response.status_code == 404:
+            return 'classic'
+        else:
+            logger.error(f'Code get type skin nickname: {response.status_code}')
+            return 'classic'
+    except Exception as e:
+        logger.error(str(e))
+        return 'classic'

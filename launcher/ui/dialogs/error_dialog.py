@@ -53,6 +53,7 @@ class DialogError(QtWidgets.QDialog):
         self.send_report.setObjectName("send_report")
         self.send_report.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.send_report.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.send_report.clicked.connect(lambda: self.send_report_func())
 
         self.panel1_t = QtWidgets.QLabel(parent=self)
         self.panel1_t.setGeometry(QtCore.QRect(455, 0, 45, 220))
@@ -110,3 +111,6 @@ class DialogError(QtWidgets.QDialog):
     border: none;
 }
 """)
+                
+    def send_report_func(self):
+        ...
