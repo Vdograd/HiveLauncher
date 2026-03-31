@@ -14,6 +14,7 @@ class WindowLauncher:
         self.conf = self.main.configuration
         self.picture = picture
         self.page = None
+        self.java = helper.get_java()
 
     def change_page(self, page):
         if page != None:

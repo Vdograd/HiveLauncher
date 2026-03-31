@@ -329,7 +329,7 @@ def change_version(self):
     self.button_start.setEnabled(True)
     if not version_found:
         if 'Forge' in version_combobox or 'Fabric' in version_combobox:
-            if helper.get_java() != None:
+            if self.java != None:
                 self.button_start.setText("Установить")
             else:
                 self.button_start.setText("Требуется Java")

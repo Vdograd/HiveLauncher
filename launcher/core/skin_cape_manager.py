@@ -236,6 +236,7 @@ class ClassicSlimSkin(QThread):
                     logger.info('Try put response from change classic -> slim')
                     upload_response = requests.put(upload_url, files={'file': file})
                     upload_response.raise_for_status()
+                os.remove(f"{config.static_folder}\\{file_name}")
                 self.finished.emit('slim')
             except Exception as e:
                 logger.error(str(e))
