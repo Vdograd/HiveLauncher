@@ -8,7 +8,6 @@ from ..utils.logger import logger
 from ..utils.configurator import Configurator
 
 config = Configurator()
-logger = logger
 
 url_s = os.getenv('SYSTEM_SKIN_CAPE_URL')
 key_s = f"OAuth {os.getenv('SYSTEM_SKIN_CAPE_KEY')}"
@@ -195,3 +194,65 @@ class ClearCape(QThread):
         except Exception as e:
             logger.error(str(e))
             self.finished.emit()
+
+class ClassicSlimSkin:
+    progress = pyqtSignal()
+    finished = pyqtSignal(str)
+    error = pyqtSignal(str)
+
+    def __init__(self, user, skin_type):
+        self.user = user
+        self.skin_type = skin_type
+
+    def run(self):
+        self.progress.emit()
+
+        hash256 = hashlib.sha256()
+        hash256.update(self.user.encode('utf-8'))
+        file_name = f"{hash256.hexdigest()}_slim"
+
+        if self.skin_type == "classic":
+            url = url_s
+            headers = {
+                "Authorization": key_s
+            }
+
+            params = {
+                "path": f"/HiveLauncherSkins/{file_name}",
+                "overwrite": "true"
+            }
+            try:
+                logger.info('Try change classic -> slim')
+                response = requests.get(url, headers=headers, params=params)
+                if response.status_code == 200:
+                    self.finished.emit('slim')
+                elif response.status_code == 404:
+                    self.finished.emit('slim')
+                else:
+                    self.error.emit('Ошибка')
+                    logger.error(f'Code change classic -> slim: {response.status_code}')
+            except Exception as e:
+                logger.error(str(e))
+                self.error.emit('Ошибка')
+
+        elif self.skin_type == "slim":
+            url = url_delete
+            headers = {
+                "Authorization": key_s
+            }
+
+            params = {
+                "path": f"/HiveLauncherSkins/{file_name}.png",
+                "permanently": True
+            }
+            try:
+                logger.info('Try change slim -> classic')
+                response = requests.delete(url, headers=headers, params=params)
+                if response.status_code == 204 or response.status_code == 404:
+                    self.finished.emit('classic')
+                else:
+                    self.error.emit('Ошибка')
+                    logger.error(f'Code change slim -> classic: {response.status_code}')
+            except Exception as e:
+                logger.error(str(e))
+                self.error.emit('Ошибка')
