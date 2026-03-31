@@ -181,20 +181,15 @@ class WindowLauncher:
         self.skin_type_text = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.skin_type_text.setGeometry(QtCore.QRect(651, 384, 200, 24))
         self.skin_type_text.setFont(self.font.get_font(14,"1"))
-        self.skin_type_text.setText("Скин: Classic")
         self.skin_type_text.setObjectName('text_change_skin')
         
         self.button_skin_type = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.button_skin_type.setGeometry(QtCore.QRect(651, 416, 153, 33))
         self.button_skin_type.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.button_skin_type.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
-        self.button_skin_type.setText("Сменить на Classic")
         self.button_skin_type.setObjectName('load_but_ac')
         self.button_skin_type.setFont(self.font.get_font(10, "1"))
-        #self.button_load_cape.clicked.connect(lambda: self.load_cape(current_nickname()))
-
-
-
+        self.button_skin_type.clicked.connect(lambda: change_skin_type(self, self.main.nickname))
 
         # Settings Page
 

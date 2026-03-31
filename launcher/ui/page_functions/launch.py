@@ -10,6 +10,7 @@ import re
 import json
 from ..style import set_style
 from ..page_functions.page_manager import create_shadow
+from ...core.skin_cape_manager import ClassicSlimSkin
 
 helper = Helper()
 
@@ -104,6 +105,8 @@ def open_window(self, page):
         dt = self.main.datetime.split("T")[0].split("-")
         self.register_account.setText(f"Зарегистрирован: {dt[2]}.{dt[1]}.{dt[0]}")
         self.play_time.setText(f"Наигранно времени: {round(self.main.play_time, 1)}ч")
+        self.skin_type_text.setText(f"Скин: {self.main.type_skin}")
+        self.button_skin_type.setText(f"Сменить на {'slim' if self.main.type_skin == 'classic' else 'classic'}")
         self.panel_base_account.show()
         self.head_nickname_150.show()
         self.nickname_text_account.show()
@@ -335,3 +338,25 @@ def change_version(self):
             self.button_start.setText("Установить")
     else:
         self.button_start.setText("Запустить")
+
+
+def change_skin_type(self, nickname):
+    skin_type = self.main.type_skin
+    self.worker = ClassicSlimSkin(nickname, skin_type)
+    self.worker.progress.connect(lambda: cst_progress(self))
+    self.worker.error.connect(lambda x: cst_error(self, x))
+    self.worker.finished.connect(lambda x: cst_finished(self, x))
+    logger.info(f'Start change skin type for {nickname}')
+    self.worker.start()
+
+def cst_progress(self):
+    self.button_skin_type.setEnabled(False)
+    self.button_skin_type.setText("Загрузка")
+def cst_error(self, text):
+    self.button_skin_type.setEnabled(True)
+    self.button_skin_type.setText(text)
+def cst_finished(self, new_skin_type):
+    self.button_skin_type.setEnabled(True)
+    self.main.type_skin = new_skin_type
+    self.skin_type_text.setText(f"Скин: {self.main.type_skin}")
+    self.button_skin_type.setText(f"Сменить на {'slim' if self.main.type_skin == 'classic' else 'classic'}")

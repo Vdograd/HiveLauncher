@@ -8,6 +8,7 @@ from .pages.login import WindowLogin
 from .pages.launch import WindowLauncher
 from ..utils.font_manager import FontManager
 from .style import set_style
+from ..core.skin_cape_manager import get_type_skin_nickname
 
 class ClickableQLabel(QtWidgets.QLabel):
     clicked = QtCore.pyqtSignal()
@@ -31,6 +32,7 @@ class HiveLauncher(QMainWindow):
         self.nickname = None
         self.datetime = None
         self.play_time = None
+        self.type_skin = None
         self.setup_ui()
 
     def show_launcher_main(self, picture):
@@ -40,6 +42,8 @@ class HiveLauncher(QMainWindow):
             child.setParent(None)
             child.deleteLater()
         set_style(self, self.configuration.get_color_theme())
+
+        self.type_skin = get_type_skin_nickname(self.nickname)
         self.launcher_page = WindowLauncher(self, ClickableQLabel, picture)
         self.launcher_page.launcher_show()
 

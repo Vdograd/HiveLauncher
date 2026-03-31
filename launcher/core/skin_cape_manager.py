@@ -197,12 +197,13 @@ class ClearCape(QThread):
             logger.error(str(e))
             self.finished.emit()
 
-class ClassicSlimSkin:
+class ClassicSlimSkin(QThread):
     progress = pyqtSignal()
     finished = pyqtSignal(str)
     error = pyqtSignal(str)
 
     def __init__(self, user, skin_type):
+        super().__init__()
         self.user = user
         self.skin_type = skin_type
 
@@ -226,13 +227,16 @@ class ClassicSlimSkin:
             try:
                 logger.info('Try change classic -> slim')
                 response = requests.get(url, headers=headers, params=params)
-                if response.status_code == 200:
-                    self.finished.emit('slim')
-                elif response.status_code == 404:
-                    self.finished.emit('slim')
-                else:
-                    self.error.emit('Ошибка')
-                    logger.error(f'Code change classic -> slim: {response.status_code}')
+                response.raise_for_status()
+                upload_info = response.json()
+                upload_url = upload_info["href"]
+                with open(f"{config.static_folder}\\{file_name}", 'w') as file:
+                    file.write("")
+                with open(f"{config.static_folder}\\{file_name}", 'rb') as file:
+                    logger.info('Try put response from change classic -> slim')
+                    upload_response = requests.put(upload_url, files={'file': file})
+                    upload_response.raise_for_status()
+                self.finished.emit('slim')
             except Exception as e:
                 logger.error(str(e))
                 self.error.emit('Ошибка')
