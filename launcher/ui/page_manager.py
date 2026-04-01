@@ -37,10 +37,9 @@ class HiveLauncher(QMainWindow):
 
     def show_launcher_main(self, picture):
         for child in self.centralwidget.findChildren(QtWidgets.QWidget):
-            if child.objectName() == 'select_version' or child.objectName() == 'select_version_view':
+            if child.__class__.__name__ == 'QFrame' or child.__class__.__name__ == 'QListView' or child.__class__.__name__ == 'QScrollBar' or child.__class__.__name__ == 'QWidget':
                 continue
-            child.setParent(None)
-            child.deleteLater()
+            child.hide()
         set_style(self, self.configuration.get_color_theme())
 
         self.type_skin = get_type_skin_nickname(self.nickname)
