@@ -8,9 +8,15 @@ from PyQt6.QtWidgets import QFileDialog
 from ...utils.helper import Helper
 import re
 import json
+from ...core.texture_manager import *
 from ..style import set_style
+from PyQt6.QtGui import QColor, QPixmap
+from PyQt6.QtWidgets import QFileDialog
 from ..page_functions.page_manager import create_shadow
-from ...core.skin_cape_manager import ClassicSlimSkin
+from ...core.skin_cape_manager import *
+from ...auth.auth_manager import AuthManager
+import sys
+from ...utils.error_manager import ErrorExc
 
 helper = Helper()
 
@@ -37,7 +43,6 @@ def open_window(self, page):
         self.settings.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\settings.svg"))
         self.settings.show()
         self.fon_image.show()
-        self.head_nickname.setPixmap(QtGui.QPixmap(self.picture[0]))
         self.head_nickname.show()
         self.nickname_text.show()
         self.button_start.show()
@@ -78,6 +83,17 @@ def open_window(self, page):
 
         self.page = 'Home'
     elif page == 'Account':
+        color = 255 if self.conf.get_color_theme() == 'dark' else 0
+        self.current_size_skin.setStyleSheet(
+        f"""#cur_size {{
+            color: rgba({color}, {color}, {color}, 0.3);
+        }}""")
+        self.current_size_cape.setStyleSheet(
+        f"""#cur_size {{
+            color: rgba({color}, {color}, {color}, 0.3);
+        }}""")
+        self.button_load_skin.setText("Загрузить файл")
+        self.button_load_cape.setText('Загрузить файл')
         self.home.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\home.svg"))
         self.account.setIcon(QtGui.QIcon(f"{conf.static_folder}\\action\\account.svg"))
         self.settings.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\settings.svg"))
@@ -101,7 +117,6 @@ def open_window(self, page):
         self.color_theme_text.hide()
         self.sel_color_theme.hide()
 
-        self.head_nickname_150.setPixmap(QtGui.QPixmap(self.picture[1]))
         dt = self.main.datetime.split("T")[0].split("-")
         self.register_account.setText(f"Зарегистрирован: {dt[2]}.{dt[1]}.{dt[0]}")
         self.play_time.setText(f"Наигранно времени: {round(self.main.play_time, 1)}ч")
@@ -240,6 +255,8 @@ def changed_after_start(self):
         json.dump(color_config, file, indent=4, ensure_ascii=False)
 
 def changed_color_theme(self):
+    logger.info('Change color theme')
+    conf = self.conf
     new_color = self.sel_color_theme.currentText()
     color_config = self.conf.get_config()
     color_new = 'light' if new_color == "Светлая" else "dark"
@@ -258,6 +275,9 @@ def changed_color_theme(self):
     self.sel_after_download.setGraphicsEffect(create_shadow(state))
     self.sel_color_theme.setGraphicsEffect(create_shadow(state))
     self.select_version.setGraphicsEffect(create_shadow(state))
+    self.home.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\home.svg"))
+    self.account.setIcon(QtGui.QIcon(f"{conf.static_folder}\\home\\{conf.get_color_theme()}\\account.svg"))
+    self.settings.setIcon(QtGui.QIcon(f"{conf.static_folder}\\action\\settings.svg"))
     update_version_icons(self)
 
 def update_version_icons(self):
@@ -360,3 +380,122 @@ def cst_finished(self, new_skin_type):
     self.main.type_skin = new_skin_type
     self.skin_type_text.setText(f"Скин: {self.main.type_skin}")
     self.button_skin_type.setText(f"Сменить на {'slim' if self.main.type_skin == 'classic' else 'classic'}")
+
+def load_skin(self, user):
+    file_path, _ = QFileDialog.getOpenFileName(QtWidgets.QMainWindow(), 'Выберите PNG файл', 'С:/', 'PNG Files (*.png)')
+    if file_path:
+        pixmap = QPixmap(file_path)
+        width = pixmap.width()
+        height = pixmap.height()
+        if (width, height) == (64, 64) or (width, height) == (1024, 1024):
+            self.worker = LoadSkin(user, file_path, width)
+            self.worker.progress.connect(lambda: loadskin_progress(self))
+            self.worker.error.connect(lambda x: loadskin_error(self, x))
+            self.worker.finished.connect(lambda x,y: loadskin_finished(self, x, y))
+            self.worker.start()
+        else:
+            self.current_size_skin.setStyleSheet("color: #ff0000;")
+            return
+        
+def loadskin_progress(self):
+    self.button_load_skin.setEnabled(False)
+    self.button_load_skin.setText("Загрузка")
+
+def loadskin_error(self, text):
+    self.button_load_skin.setEnabled(True)
+    self.button_load_skin.setText(text)
+
+def loadskin_finished(self, user, size):
+    try:
+        if size == 1024:
+            logger.info("Get 1024 head texture")
+            TextureSize1024().save_texture(user)
+        else:
+            logger.info("Get 64 head texture")
+            TextureSize64().save_texture(user)
+        head_img = [f"{self.conf.static_folder}\\head_skins_response\\{user}\\{user}_50x50.png", 
+                    f"{self.conf.static_folder}\\head_skins_response\\{user}\\{user}_150x150.png"]
+        self.head_nickname.setPixmap(QtGui.QPixmap(head_img[0]))
+        self.head_nickname_150.setPixmap(QtGui.QPixmap(head_img[1]))
+        color = 255 if self.conf.get_color_theme() == 'dark' else 0
+        self.current_size_skin.setStyleSheet(
+        f"""#cur_size {{
+            color: rgba({color}, {color}, {color}, 0.3);
+        }}""")
+        self.button_load_skin.setText("Загрузить файл")
+        self.button_load_skin.setEnabled(True)
+    except Exception as e:
+        logger.error(f"{e}")
+        self.button_load_skin.setText("Ошибка")
+        self.button_load_skin.setEnabled(True)
+
+def clear_skin(self, user):
+    self.worker = ClearSkin(user)
+    self.worker.finished.connect(lambda: delete_skin_finished(self))
+    self.worker.progress.connect(lambda: delete_skin_progress(self))
+    self.worker.start()
+
+def delete_skin_finished(self):
+    head_img = [
+        f"{self.conf.static_folder}\\home\\none_account_50.png", 
+        f"{self.conf.static_folder}\\account\\none_account_150.png"
+    ]
+    self.head_nickname.setPixmap(QtGui.QPixmap(head_img[0]))
+    self.head_nickname_150.setPixmap(QtGui.QPixmap(head_img[1]))
+    self.button_delete_skin.setText("Удалить скин")
+    self.button_delete_skin.setEnabled(True)
+def delete_skin_progress(self):
+    self.button_delete_skin.setText("Удаляется")
+    self.button_delete_skin.setEnabled(False)
+
+def load_cape(self, user):
+    file_path, _ = QFileDialog.getOpenFileName(QtWidgets.QMainWindow(), 'Выберите файл', '', 'Files (*.png *.gif);;PNG Files (*.png);;GIF Files (*.gif)')
+    if file_path:
+        pixmap = QPixmap(file_path)
+        width = pixmap.width()
+        height = pixmap.height()
+        if (width, height) == (64, 32) or (width, height) == (1024, 512):
+            self.worker = LoadCape(user, file_path)
+            self.worker.progress.connect(lambda: loadcape_progress(self))
+            self.worker.error.connect(lambda x: loadcape_error(self, x))
+            self.worker.finished.connect(lambda: loadcape_finished(self))
+            self.worker.start()
+        else:
+            self.current_size_cape.setStyleSheet("color: #ff0000;")
+            return
+
+def loadcape_progress(self):
+    self.button_load_cape.setText("Загрузка")
+    self.button_load_cape.setEnabled(False)
+def loadcape_finished(self):
+    self.button_load_cape.setText("Загрузить файл")
+    self.button_load_cape.setEnabled(True)
+    color = 255 if self.conf.get_color_theme() == 'dark' else 0
+    self.current_size_cape.setStyleSheet(
+    f"""#cur_size {{
+        color: rgba({color}, {color}, {color}, 0.3);
+    }}""")
+def loadcape_error(self,message):
+    self.button_load_cape.setText(message)
+    self.button_load_cape.setEnabled(True)
+
+def clear_cape(self, user):
+    self.worker = ClearCape(user)
+    self.worker.finished.connect(lambda: delete_cape_finished(self))
+    self.worker.progress.connect(lambda: delete_cape_progress(self))
+    self.worker.start()
+
+def delete_cape_finished(self):
+    self.button_delete_cape.setText("Удалить плащ")
+    self.button_delete_cape.setEnabled(True)
+def delete_cape_progress(self):
+    self.button_delete_cape.setText("Удаляется")
+    self.button_delete_cape.setEnabled(False)
+
+def logout(user):
+    try:
+        data = AuthManager().exit_with_account(user)
+        if data == "Success logout":
+            sys.exit()
+    except Exception as e:
+        ErrorExc(e)

@@ -129,7 +129,7 @@ class WindowLauncher:
         self.button_load_skin.setText("Загрузить файл")
         self.button_load_skin.setObjectName('load_but_ac')
         self.button_load_skin.setFont(self.font.get_font(10, "1"))
-        #self.button_load_skin.clicked.connect(lambda: self.load_skin(current_nickname()))
+        self.button_load_skin.clicked.connect(lambda: load_skin(self, self.main.nickname))
 
         self.button_load_cape = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.button_load_cape.setGeometry(QtCore.QRect(470, 416, 153, 33))
@@ -138,7 +138,7 @@ class WindowLauncher:
         self.button_load_cape.setText("Загрузить файл")
         self.button_load_cape.setObjectName('load_but_ac')
         self.button_load_cape.setFont(self.font.get_font(10, "1"))
-        #self.button_load_cape.clicked.connect(lambda: self.load_cape(current_nickname()))
+        self.button_load_cape.clicked.connect(lambda: load_cape(self, self.main.nickname))
 
         self.current_size_skin = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.current_size_skin.setGeometry(QtCore.QRect(290, 454, 200, 20))
@@ -159,7 +159,7 @@ class WindowLauncher:
         self.button_delete_skin.setText("Удалить скин")
         self.button_delete_skin.setFont(self.font.get_font(10, "1"))
         self.button_delete_skin.setObjectName('delete_but_ac')
-        #self.button_delete_skin.clicked.connect(lambda: self.clear_skin(current_nickname()))
+        self.button_delete_skin.clicked.connect(lambda: clear_skin(self, self.main.nickname))
 
         self.button_delete_cape = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.button_delete_cape.setGeometry(QtCore.QRect(470, 478, 153, 33))
@@ -168,7 +168,7 @@ class WindowLauncher:
         self.button_delete_cape.setText("Удалить плащ")
         self.button_delete_cape.setFont(self.font.get_font(10, "1"))
         self.button_delete_cape.setObjectName('delete_but_ac')
-        #self.button_delete_cape.clicked.connect(lambda: self.clear_cape(current_nickname()))
+        self.button_delete_cape.clicked.connect(lambda: clear_cape(self, self.main.nickname))
 
         self.button_logout_account = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.button_logout_account.setGeometry(QtCore.QRect(907, 642, 153, 33))
@@ -177,7 +177,7 @@ class WindowLauncher:
         self.button_logout_account.setText("Выйти с аккаунта")
         self.button_logout_account.setFont(self.font.get_font(10, "1"))
         self.button_logout_account.setObjectName('delete_but_ac')
-        #self.button_logout_account.clicked.connect(lambda: self.logout(current_nickname()))
+        self.button_logout_account.clicked.connect(lambda: logout(self.main.nickname))
 
         self.skin_type_text = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.skin_type_text.setGeometry(QtCore.QRect(651, 384, 200, 24))
@@ -385,4 +385,7 @@ class WindowLauncher:
         edit_line_nickname(self)
 
         # Show home page
+        self.head_nickname.setPixmap(QtGui.QPixmap(self.picture[0]))
+        self.head_nickname_150.setPixmap(QtGui.QPixmap(self.picture[1]))
+
         self.change_page(open_window(self, 'Home'))
