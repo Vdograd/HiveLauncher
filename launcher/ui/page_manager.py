@@ -9,6 +9,7 @@ from .pages.launch import WindowLauncher
 from ..utils.font_manager import FontManager
 from .style import set_style
 from ..core.skin_cape_manager import get_type_skin_nickname
+from ..utils.error_manager import ErrorExc
 
 class ClickableQLabel(QtWidgets.QLabel):
     clicked = QtCore.pyqtSignal()
@@ -59,7 +60,10 @@ class HiveLauncher(QMainWindow):
         self.setCentralWidget(self.centralwidget)
         
         self.logger.info("Added version minecraft")
-        versions_add(self)
+        try:
+            versions_add(self)
+        except Exception as e:
+            ErrorExc(e)
 
         if how_start_page() == 'setup':
             set_style(self, 'setup')

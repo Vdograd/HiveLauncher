@@ -9,8 +9,13 @@ import requests
 import os
 import minecraft_launcher_lib as mn
 from ...utils.logger import logger
+import re
 from ...core.texture_manager import TextureSize64, TextureSize1024
 from PIL import Image
+from ...core.version_manager import obj_Version_Manager
+from ...utils.helper import Helper
+
+helper = Helper()
 configurator = Configurator()
 logger = logger
 
@@ -20,7 +25,7 @@ def how_start_page():
             data = json.load(file)
             return 'setup' if data["nicknames"] == [] else 'login'
     except Exception as e:
-        return e
+        raise e
 
 def create_shadow(type_shadow):
     if type_shadow == 'light':
@@ -130,17 +135,18 @@ def forge_enabled_bool() -> bool:
     return forge
 
 def versions_add(self):
-    self.select_version = QtWidgets.QComboBox(parent=self.centralwidget)
-    self.select_version.setGeometry(QtCore.QRect(400, 623, 300, 55))
-    self.select_version.setFont(self.font.get_font(12, "1"))
-    self.select_version.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
-    self.select_version.setIconSize(QtCore.QSize(26, 26)) 
-    self.select_version.setGraphicsEffect(create_shadow(configurator.get_color_theme()))
-    self.select_version.setObjectName("select_version")
-    self.select_version.hide()
-
-    forge = forge_enabled_bool()
     try:
+        self.select_version = QtWidgets.QComboBox(parent=self.centralwidget)
+        self.select_version.setGeometry(QtCore.QRect(400, 623, 300, 55))
+        self.select_version.setFont(self.font.get_font(12, "1"))
+        self.select_version.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.select_version.setIconSize(QtCore.QSize(26, 26)) 
+        self.select_version.setGraphicsEffect(create_shadow(configurator.get_color_theme()))
+        self.select_version.setObjectName("select_version")
+        self.select_version.hide()
+        forge = forge_enabled_bool()
+        fabric = mn.fabric.get_stable_minecraft_versions()
+        versions = configurator.get_installed_versions()["versions"]
         for version_get in mn.utils.get_version_list():
             versions_not_use = ["1.7.9", "1.7.8", "1.7.7", "1.7.6", "1.7.5", "1.7.4", "1.7.3", "1.7.2", "1.6.4", "1.6.3", "1.6.2", "1.6.1", "1.5.2", "1.5.1", "1.5", "1.4.7", "1.4.6", "1.4.5", "1.4.4", "1.4.3", "1.4.2", "1.4.1", "1.3.2", "1.3.1", "1.2.5", "1.2.4", "1.2.3", "1.2.2", "1.2.1", "1.1", "1.0"]
             if version_get['id'] in versions_not_use:
@@ -148,43 +154,77 @@ def versions_add(self):
             else:
                 if version_get['type'] == 'release':
                     color = configurator.get_color_theme()
-                    icon = QtGui.QIcon()
-                    icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
-                    icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
-                    icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
-                    icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
-                    icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
-                    icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
-                    icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
+
+                    version_clear = re.sub(r'[^0-9.-]', '', version_get['id'])
+                    if obj_Version_Manager.version_to_folder_json(version_clear) in versions:
+                        icon = QtGui.QIcon()
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
+                    else:
+                        icon = QtGui.QIcon()
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+                        icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
                     self.select_version.addItem(icon, f'Minecraft {version_get['id']}')
-                if version_get['type'] == 'release':
-                    for version_fabric in mn.fabric.get_stable_minecraft_versions():
+
+                    for version_fabric in fabric:
                         if version_fabric == version_get['id']:
-                            icon1 = QtGui.QIcon()
-                            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
-                            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
-                            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
-                            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
-                            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
-                            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
-                            icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)       
+                            version_clear = f'Minecraft Fabric {version_fabric}'
+                            if obj_Version_Manager.version_to_folder_json(version_clear) in versions:
+                                icon1 = QtGui.QIcon()
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
+                            else:
+                                icon1 = QtGui.QIcon()
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+                                icon1.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
                             self.select_version.addItem(icon1, f'Minecraft Fabric {version_fabric}')
-                if version_get['type'] == 'release':
+
                     if forge:
-                        versions_forge = mn.forge.find_forge_version(version_get['id'])
+                        versions_forge = helper.find_forge_versions(version_get['id'])
                         if not versions_forge: pass
                         else:
-                            icon2 = QtGui.QIcon()
-                            icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
-                            icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
-                            icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
-                            icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
-                            icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
-                            icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
-                            icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)       
+                            version_clear = f'Minecraft Forge {version_get["id"]}'
+                            if obj_Version_Manager.version_to_folder_json(version_clear) in versions:
+                                icon2 = QtGui.QIcon()
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
+                            else:
+                                icon2 = QtGui.QIcon()
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+                                icon2.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
                             self.select_version.addItem(icon2, f'Minecraft Forge {version_get["id"]}')
+        vpl = configurator.get_installed_versions()
+        if vpl["last_version"] != None:
+            self.select_version.setCurrentText(vpl["last_version"])
     except Exception as e:
-        logger.error(e)
-    vpl = configurator.get_installed_versions()
-    if vpl["last_version"] != None:
-        self.select_version.setCurrentText(vpl["last_version"])
+        raise e

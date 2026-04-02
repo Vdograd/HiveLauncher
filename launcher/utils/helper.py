@@ -5,8 +5,11 @@ from screeninfo import get_monitors
 import subprocess
 import traceback
 import hashlib
+import minecraft_launcher_lib as mn
 
 class Helper:
+    def __init__(self):
+        self.list_forge_versions = None
     def get_rem(self, rem):
         virtual_memory = psutil.virtual_memory()
         total_gb = virtual_memory.total / (1024 ** 3)
@@ -96,3 +99,16 @@ class Helper:
         hash256 = hashlib.sha256()
         hash256.update(time.encode('utf-8'))
         return hash256.hexdigest()
+
+    def find_forge_versions(self, version: str):
+        if self.list_forge_versions == None:
+            try:
+                output = mn.forge.list_forge_versions()
+                self.list_forge_versions = output
+            except Exception as e:
+                raise e
+        for i in self.list_forge_versions:
+            version_split = i.split("-")
+            if version_split[0] == version:
+                return i
+        return None
