@@ -4,6 +4,7 @@ from ...ui.style import set_style
 from ...utils.configurator import Configurator
 from ...utils.font_manager import FontManager
 from PyQt6.QtCore import Qt
+from ...core.report_email import ReportEmail
 
 class DialogError(QtWidgets.QDialog):
     def __init__(self, code, message):
@@ -113,4 +114,10 @@ class DialogError(QtWidgets.QDialog):
 """)
                 
     def send_report_func(self):
-        ...
+        self.worker = ReportEmail()
+        self.worker.finished.connect(self.report_finished)
+        self.send_report.setEnabled(False)
+        self.send_report.setText("Отправляем")
+        self.worker.start()
+    def report_finished(self):
+        sys.exit()
