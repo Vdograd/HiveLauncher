@@ -2,13 +2,12 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMainWindow
 from ..utils.logger import logger
 from ..utils.configurator import Configurator
-from .page_functions.page_manager import how_start_page, versions_add
+from .page_functions.page_manager import how_start_page, versions_add, get_typeskin_nickname
 from .pages.setup import WindowSetup
 from .pages.login import WindowLogin
 from .pages.launch import WindowLauncher
 from ..utils.font_manager import FontManager
 from .style import set_style
-from ..core.skin_cape_manager import get_type_skin_nickname
 from ..utils.error_manager import ErrorExc
 
 class ClickableQLabel(QtWidgets.QLabel):
@@ -41,9 +40,12 @@ class HiveLauncher(QMainWindow):
             if child.__class__.__name__ == 'QFrame' or child.__class__.__name__ == 'QListView' or child.__class__.__name__ == 'QScrollBar' or child.__class__.__name__ == 'QWidget':
                 continue
             child.hide()
-        set_style(self, self.configuration.get_color_theme())
+        try:
+            set_style(self, self.configuration.get_color_theme())
+        except Exception as e:
+            ErrorExc(e)
 
-        self.type_skin = get_type_skin_nickname(self.nickname)
+        get_typeskin_nickname(self, self.nickname)
         self.launcher_page = WindowLauncher(self, ClickableQLabel, picture)
         self.launcher_page.launcher_show()
 
@@ -66,8 +68,14 @@ class HiveLauncher(QMainWindow):
             ErrorExc(e)
 
         if how_start_page() == 'setup':
-            set_style(self, 'setup')
-            self.setup_page.setup_show() 
+            try:
+                set_style(self, 'setup')
+            except Exception as e:
+                ErrorExc(e)
+            self.setup_page.setup_show()
         else:
-            set_style(self, self.configuration.get_color_theme())
+            try:
+                set_style(self, self.configuration.get_color_theme())
+            except Exception as e:
+                ErrorExc(e)
             self.login_page.login_show()

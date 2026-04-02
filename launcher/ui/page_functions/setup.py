@@ -4,83 +4,90 @@ from ...auth.auth_manager import AuthManager
 from ..page_functions.page_manager import GetPixture
 from ...utils.logger import logger
 auth = AuthManager()
+from ...utils.error_manager import ErrorExc
 logger = logger
 
 def scroll_page_setup(main_window, page):
-    if page == 0:
-        main_window.text_hello.hide()
-        main_window.text_description.hide()
-        main_window.person1.hide()
-        main_window.down_text_1.hide()
-        main_window.down_text_2.hide()
-        main_window.button_continue_setup.hide()
+    try:
+        if page == 0:
+            main_window.text_hello.hide()
+            main_window.text_description.hide()
+            main_window.person1.hide()
+            main_window.down_text_1.hide()
+            main_window.down_text_2.hide()
+            main_window.button_continue_setup.hide()
 
-        main_window.text_register_login.show()
-        main_window.button_or_setup.show()
-        main_window.nickname_setup.show()
-        main_window.password_setup.show()
-        main_window.password_retry_setup.show()
-        main_window.button_auth_setup.show()
-        main_window.text_rules_nickname_setup.show()
-        main_window.rules_setup.show()
-        main_window.person2.show()
+            main_window.text_register_login.show()
+            main_window.button_or_setup.show()
+            main_window.nickname_setup.show()
+            main_window.password_setup.show()
+            main_window.password_retry_setup.show()
+            main_window.button_auth_setup.show()
+            main_window.text_rules_nickname_setup.show()
+            main_window.rules_setup.show()
+            main_window.person2.show()
 
-    elif page == 1:
-        main_window.text_register_login.hide()
-        main_window.button_or_setup.hide()
-        main_window.nickname_setup.hide()
-        main_window.password_setup.hide()
-        main_window.password_retry_setup.hide()
-        main_window.button_auth_setup.hide()
-        main_window.text_rules_nickname_setup.hide()
-        main_window.rules_setup.hide()
-        main_window.person2.hide()
+        elif page == 1:
+            main_window.text_register_login.hide()
+            main_window.button_or_setup.hide()
+            main_window.nickname_setup.hide()
+            main_window.password_setup.hide()
+            main_window.password_retry_setup.hide()
+            main_window.button_auth_setup.hide()
+            main_window.text_rules_nickname_setup.hide()
+            main_window.rules_setup.hide()
+            main_window.person2.hide()
 
-        main_window.color_text.show()
-        main_window.color_set_text.show()
-        main_window.after_edit_text_setup.show()
-        main_window.color_stamp_setup.show()
-        main_window.person3.show()
-        main_window.button_continue_setup.show()
-        main_window.down_text_1.show()
-        main_window.down_text_2.show()
-        main_window.button_continue_setup.setText("Завершить")
-        main_window.down_text_1.setGeometry(QtCore.QRect(80, 618, 620, 20))
-        main_window.down_text_1.setText("Для завершения нажмите кнопку «Завершить»")
-    page += 1
-    return page
+            main_window.color_text.show()
+            main_window.color_set_text.show()
+            main_window.after_edit_text_setup.show()
+            main_window.color_stamp_setup.show()
+            main_window.person3.show()
+            main_window.button_continue_setup.show()
+            main_window.down_text_1.show()
+            main_window.down_text_2.show()
+            main_window.button_continue_setup.setText("Завершить")
+            main_window.down_text_1.setGeometry(QtCore.QRect(80, 618, 620, 20))
+            main_window.down_text_1.setText("Для завершения нажмите кнопку «Завершить»")
+        page += 1
+        return page
+    except Exception as e:
+        ErrorExc(e)
 
 def replace_auth_register_setup(main_window, window_auth):
-    if window_auth == 0:
-        window_auth = 1
-        main_window.text_register_login.setText("Авторизоваться")
-        main_window.button_or_setup.setText("или зарегистрироваться")
-        main_window.button_auth_setup.setText("Войти и продолжить")
-        main_window.nickname_setup.setPlaceholderText("Никнейм")
-        main_window.password_retry_setup.hide()
-        main_window.text_rules_nickname_setup.hide()
-        main_window.rules_setup.hide()
-        main_window.button_auth_setup.setGeometry(QtCore.QRect(80, 362, 300, 35))
-        main_window.password_setup.clear()
-        main_window.password_retry_setup.clear()
-        main_window.nickname_setup.clear()
-        main_window.error_auth_setup.hide()
+    try:
+        if window_auth == 0:
+            window_auth = 1
+            main_window.text_register_login.setText("Авторизоваться")
+            main_window.button_or_setup.setText("или зарегистрироваться")
+            main_window.button_auth_setup.setText("Войти и продолжить")
+            main_window.nickname_setup.setPlaceholderText("Никнейм")
+            main_window.password_retry_setup.hide()
+            main_window.text_rules_nickname_setup.hide()
+            main_window.rules_setup.hide()
+            main_window.button_auth_setup.setGeometry(QtCore.QRect(80, 362, 300, 35))
+            main_window.password_setup.clear()
+            main_window.password_retry_setup.clear()
+            main_window.nickname_setup.clear()
+            main_window.error_auth_setup.hide()
 
-    elif window_auth == 1:
-        window_auth = 0
-        main_window.text_register_login.setText("Зарегистрироваться")
-        main_window.button_or_setup.setText("или авторизоваться")
-        main_window.button_auth_setup.setText("Создать аккаунт и продолжить")
-        main_window.nickname_setup.setPlaceholderText("Никнейм (В Minecraft)")
-        main_window.password_retry_setup.show()
-        main_window.text_rules_nickname_setup.show()
-        main_window.rules_setup.show()
-        main_window.button_auth_setup.setGeometry(QtCore.QRect(80, 423, 300, 35))
-        main_window.password_setup.clear()
-        main_window.password_retry_setup.clear()
-        main_window.nickname_setup.clear()
-        main_window.error_auth_setup.hide()
-    return window_auth
+        elif window_auth == 1:
+            window_auth = 0
+            main_window.text_register_login.setText("Зарегистрироваться")
+            main_window.button_or_setup.setText("или авторизоваться")
+            main_window.button_auth_setup.setText("Создать аккаунт и продолжить")
+            main_window.nickname_setup.setPlaceholderText("Никнейм (В Minecraft)")
+            main_window.password_retry_setup.show()
+            main_window.text_rules_nickname_setup.show()
+            main_window.rules_setup.show()
+            main_window.button_auth_setup.setGeometry(QtCore.QRect(80, 423, 300, 35))
+            main_window.password_setup.clear()
+            main_window.password_retry_setup.clear()
+            main_window.nickname_setup.clear()
+            main_window.error_auth_setup.hide()
+        return window_auth
+    except Exception as e:
+        ErrorExc(e)
 
 
 def access_step_continue_auth(self):

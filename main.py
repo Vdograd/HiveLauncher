@@ -29,9 +29,12 @@ def main():
 
     logger.info("Connect Window")
     app = QApplication(sys.argv)
-    window = HiveLauncher()
-    window.show()
-    return app.exec()
+    try:
+        window = HiveLauncher()
+        window.show()
+        return app.exec()
+    except Exception as e:
+        ErrorExc(e)
 
 if __name__ == "__main__":
     sys.exit(main())

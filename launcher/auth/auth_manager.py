@@ -4,19 +4,19 @@ from supabase import create_client, Client
 from ..utils.configurator import Configurator
 from .auth_verify import AuthVerify
 from .encryption import encryption_password
-from dotenv import load_dotenv
 import os
 from ..utils.helper import Helper
+from ..utils.getenv import GetEnv
+GetEnv = GetEnv()
 
 class AuthManager:
     def __init__(self):
-        load_dotenv()
         self.verify = AuthVerify()
         self.helper = Helper()
         self.configurator = Configurator()
         self.supabase: Client = create_client(
-            os.getenv('DATABASE_URL'),
-            os.getenv('API_KEY')
+            GetEnv.get_env('DATABASE_URL'),
+            GetEnv.get_env('API_KEY')
         )
     
     def initial_database(self):

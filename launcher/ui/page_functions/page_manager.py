@@ -14,6 +14,7 @@ from ...core.texture_manager import TextureSize64, TextureSize1024
 from PIL import Image
 from ...core.version_manager import obj_Version_Manager
 from ...utils.helper import Helper
+from ...core.skin_cape_manager import GetTypeSkinNickname
 
 helper = Helper()
 configurator = Configurator()
@@ -228,3 +229,11 @@ def versions_add(self):
             self.select_version.setCurrentText(vpl["last_version"])
     except Exception as e:
         raise e
+    
+def get_typeskin_nickname(self, nickname):
+    self.worker = GetTypeSkinNickname(nickname)
+    self.worker.finished.connect(lambda x: get_type_skin_nickname_finished(self, x))
+    self.worker.start()
+
+def get_type_skin_nickname_finished(self, type_skin):
+    self.type_skin = type_skin

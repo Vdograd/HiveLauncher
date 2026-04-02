@@ -2,6 +2,7 @@ from PyQt6 import QtCore, QtGui, QtWidgets
 from ...utils.font_manager import FontManager
 from ..page_functions.login import *
 from ..page_functions.page_manager import create_shadow
+from ...utils.error_manager import ErrorExc
 from ...auth.auth_manager import AuthManager
 
 class WindowLogin:
@@ -74,23 +75,26 @@ class WindowLogin:
         self.select_nickname_combobox.setObjectName("select_nickname_combobox")
         self.select_nickname_combobox.setIconSize(QtCore.QSize(22, 22))
         self.select_nickname_combobox.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
-        data_users = self.auth.list_nicknames()
+        try:
+            data_users = self.auth.list_nicknames()
 
-        for user in data_users:
-            if user[1] == "success":
-                self.select_nickname_combobox.addItem(user[0])
-            else:
-                icon = QtGui.QIcon()
-                color = self.conf.get_color_theme()
-                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
-                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
-                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
-                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
-                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
-                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
-                icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
-                self.select_nickname_combobox.addItem(icon, user[0])
-        self.select_nickname_combobox.setCurrentText(self.conf.get_nickname_session())
+            for user in data_users:
+                if user[1] == "success":
+                    self.select_nickname_combobox.addItem(user[0])
+                else:
+                    icon = QtGui.QIcon()
+                    color = self.conf.get_color_theme()
+                    icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+                    icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+                    icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+                    icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+                    icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+                    icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+                    icon.addPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\login\\{color}\\warn_verify.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
+                    self.select_nickname_combobox.addItem(icon, user[0])
+            self.select_nickname_combobox.setCurrentText(self.conf.get_nickname_session())
+        except Exception as e:
+            ErrorExc(e)
 
         self.select_nickname_combobox_view = QtWidgets.QListView(self.select_nickname_combobox)
         self.select_nickname_combobox_view.setIconSize(QtCore.QSize(22, 22))

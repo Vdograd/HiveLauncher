@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import json
 import re
+from ..utils.error_manager import ErrorExc
 
 class VersionManager:
     def __init__(self):
@@ -34,7 +35,7 @@ class VersionManager:
                     data["folder_game"] = self.minecraft_directory
                     json.dump(data, file_wtire, indent=4, ensure_ascii=False)
         except Exception as e:
-            return e
+            raise e
         
     def change_minecraft_directory(self, path_directory):
         try:
@@ -45,7 +46,7 @@ class VersionManager:
                 json.dump(data, file_wtire, indent=4, ensure_ascii=False)
             self.minecraft_directory = path_directory
         except Exception as e:
-            return e
+            raise e
 
     def get_versions_folder_path(self, version):
         path_minecraft_version = f"{self.minecraft_directory}\\{version.replace(" ", "_")}"
@@ -54,7 +55,7 @@ class VersionManager:
             if not os.path.exists(path_minecraft_versions):
                 os.makedirs(path_minecraft_versions)
         except Exception as e:
-            return e
+            raise e
         return path_minecraft_versions
     
     def get_version_path(self, version):
@@ -63,7 +64,7 @@ class VersionManager:
             if not os.path.exists(path_minecraft_version):
                 os.makedirs(path_minecraft_version)
         except Exception as e:
-            return e
+            raise e
         return path_minecraft_version
     
     def get_version_path_vers(self, version):
@@ -72,41 +73,44 @@ class VersionManager:
             if not os.path.exists(path_minecraft_version):
                 os.makedirs(path_minecraft_version)
         except Exception as e:
-            return e
+            raise e
         return path_minecraft_version
     
     def version_to_folder_json(self, version: str):
-        minecraft_directory_vers = self.get_version_path_vers(version.replace("Minecraft ", ""))
-        versions = self.helper.find_versions_folders(minecraft_directory_vers)
-        c = ""
-        original_version = version
-        clean_version = re.sub(r'[^0-9.]', '', version)
-        for x in versions:
-            if "forge" in original_version.lower() and "fabric" not in original_version.lower() or "-" in original_version and "fabric" not in original_version.lower():
-                if "forge" in x.lower() or "-" in x:
-                    if original_version in x or clean_version in x:
-                        if self.helper.find_pattern(x, clean_version):
+        try:
+            minecraft_directory_vers = self.get_version_path_vers(version.replace("Minecraft ", ""))
+            versions = self.helper.find_versions_folders(minecraft_directory_vers)
+            c = ""
+            original_version = version
+            clean_version = re.sub(r'[^0-9.]', '', version)
+            for x in versions:
+                if "forge" in original_version.lower() and "fabric" not in original_version.lower() or "-" in original_version and "fabric" not in original_version.lower():
+                    if "forge" in x.lower() or "-" in x:
+                        if original_version in x or clean_version in x:
+                            if self.helper.find_pattern(x, clean_version):
+                                folder = Path(f"{minecraft_directory_vers}\\{x}")
+                                for file in os.listdir(folder):
+                                    if file.endswith(".json"):
+                                        c += x
+                                        return c
+                    
+                elif "Fabric" in original_version:
+                    if "-" in x and "fabric" in x.lower() or "fabric" in x.lower():
+                        if original_version in x or clean_version in x:
                             folder = Path(f"{minecraft_directory_vers}\\{x}")
                             for file in os.listdir(folder):
                                 if file.endswith(".json"):
                                     c += x
                                     return c
-                
-            elif "Fabric" in original_version:
-                if "-" in x and "fabric" in x.lower() or "fabric" in x.lower():
-                    if original_version in x or clean_version in x:
-                        folder = Path(f"{minecraft_directory_vers}\\{x}")
-                        for file in os.listdir(folder):
-                            if file.endswith(".json"):
-                                c += x
-                                return c
-            else:
-                if (original_version in x or clean_version in x) and ("forge" not in x.lower() or "-" not in x) and ("fabric" not in x.lower() or "-" not in x):
-                    if original_version == x:
-                        folder = Path(f"{minecraft_directory_vers}\\{x}")
-                        for file in os.listdir(folder):
-                            if file.endswith(".json"):
-                                c += x
-                                return c
+                else:
+                    if (original_version in x or clean_version in x) and ("forge" not in x.lower() or "-" not in x) and ("fabric" not in x.lower() or "-" not in x):
+                        if original_version == x:
+                            folder = Path(f"{minecraft_directory_vers}\\{x}")
+                            for file in os.listdir(folder):
+                                if file.endswith(".json"):
+                                    c += x
+                                    return c
+        except Exception as e:
+            ErrorExc(e)
                             
 obj_Version_Manager = VersionManager()

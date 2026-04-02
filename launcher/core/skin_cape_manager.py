@@ -1,19 +1,19 @@
 from PyQt6.QtCore import QThread, pyqtSignal
-from dotenv import load_dotenv
 import os
 import shutil
 import hashlib
 import requests
 from ..utils.logger import logger
 from ..utils.configurator import Configurator
-
+from ..utils.getenv import GetEnv
+GetEnv = GetEnv()
 config = Configurator()
 
-url_s = os.getenv('SYSTEM_SKIN_CAPE_URL')
-key_s = f"OAuth {os.getenv('SYSTEM_SKIN_CAPE_KEY')}"
-url_delete = os.getenv('SYSTEM_SKIN_CAPE_URL_DEL')
-url_get = os.getenv('SYSTEM_HEAD_TEXTURE_URL')
-key_get = f"OAuth {os.getenv('SYSTEM_HEAD_TEXTURE_KEY')}"
+url_s = GetEnv.get_env('SYSTEM_SKIN_CAPE_URL')
+key_s = f"OAuth {GetEnv.get_env('SYSTEM_SKIN_CAPE_KEY')}"
+url_delete = GetEnv.get_env('SYSTEM_SKIN_CAPE_URL_DEL')
+url_get = GetEnv.get_env('SYSTEM_HEAD_TEXTURE_URL')
+key_get = f"OAuth {GetEnv.get_env('SYSTEM_HEAD_TEXTURE_KEY')}"
 
 class LoadSkin(QThread):
     progress = pyqtSignal()
@@ -290,3 +290,17 @@ def get_type_skin_nickname(nickname):
     except Exception as e:
         logger.error(str(e))
         return 'classic'
+
+class GetTypeSkinNickname(QThread):
+    finished = pyqtSignal(str)
+
+    def __init__(self, nickname):
+        super().__init__()
+        self.nickname = nickname
+
+    def run(self):
+        try:
+            skin_type = get_type_skin_nickname(self.nickname)
+            self.finished.emit(skin_type)
+        except Exception as e:
+            logger.error(str(e))
