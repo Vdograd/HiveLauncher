@@ -372,6 +372,7 @@ def update_version_icons(self):
             self.select_version.setItemIcon(i, icon)
     except Exception as e:
         ErrorExc(e)
+    
 
 def browse_folder(self):
     try:
