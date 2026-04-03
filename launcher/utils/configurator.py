@@ -10,7 +10,7 @@ class Configurator:
         self.config_folder = f"{os.path.dirname(os.path.abspath("main.py"))}\\launcher\\data"
         self.theme_folder = f"{os.path.dirname(os.path.abspath("main.py"))}\\launcher\\data\\themes"
         self.logs_folder = f"{os.path.dirname(os.path.abspath("main.py"))}\\launcher\\data\\logs"
-        self.version_launcher = "3.2.1"
+        self.version_launcher = "3.3.0"
         self.helper = Helper()
     
     def get_color_theme(self):
