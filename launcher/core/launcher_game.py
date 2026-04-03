@@ -8,21 +8,30 @@ from PyQt6.QtCore import QThread, pyqtSignal
 import minecraft_launcher_lib as mn
 import json
 from ..utils.error_manager import ErrorExc
+from ..utils.getenv import GetEnv
+import requests
 import re
+import time
+from ..auth.auth_manager import AuthManager
+import subprocess
+
+link_raw = GetEnv().get_env("GITHUB_LINK_RAW")
 conf = Configurator()
+auth = AuthManager()
 
 class InstallStartGame(QThread):
     progress = pyqtSignal(str)
     finished = pyqtSignal(float)
     hide_launcher_signal = pyqtSignal(bool)
     show_launcher_signal = pyqtSignal(bool)
-    close = pyqtSignal()
+    close = pyqtSignal(float)
 
     def __init__(self, nickname, version, play_time):
         super().__init__()
         self.username = nickname
         self.version = version
         self.play_time = play_time
+        self.mode = None
 
     def run(self):
         try:
@@ -52,17 +61,20 @@ class InstallStartGame(QThread):
             self.after_download_game = data["after_download"]
 
             logger.info("Step 2 - Preparing install version")
-            version_clear = re.sub(r'[^0-9.]', '', self.version)
+            self.version_clear = re.sub(r'[^0-9.]', '', self.version)
 
             if 'Fabric' in self.version:
                 version_for_get_json = self.version
-                version_install = version_clear
+                version_install = self.version_clear
+                self.mode = 'Fabric'
             elif 'Forge' in self.version:
                 version_for_get_json = self.version
-                version_install = mn.forge.find_forge_version(version_clear)
+                version_install = mn.forge.find_forge_version(self.version_clear)
+                self.mode = 'Forge'
             else:
-                version_for_get_json = version_clear
-                version_install = version_clear
+                version_for_get_json = self.version_clear
+                version_install = self.version_clear
+                self.mode = ''
 
             logger.info("Step 3 - Found version in installed versions")
             version_found = False
@@ -90,49 +102,116 @@ class InstallStartGame(QThread):
                 if self.after_download_game == "nothing":
                     self.finished.emit(self.play_time)
                 else:
-                    self.start_game(...)
+                    self.start_game(obj_Version_Manager.version_to_folder_json(version_for_get_json))
             else:
                 logger.info(f"Step 4.3 - Version found, starting game {self.version}")
-                self.start_game(...)
+                self.start_game(obj_Version_Manager.version_to_folder_json(version_for_get_json))
         except Exception as e:
             ErrorExc(e)
 
-    def start_game(self):
-        ...
+    def start_game(self, version_name):
+        try:
+            logger.info("Step 5 - Install all mods for playing")
+            self.install_hlskins_skins()
+            self.install_addMod()
 
+            logger.info("Step 6 - Move files versions minecraft")
+            self.copy_minecraft_files_before_start(self.version)
             
+            logger.info("Step 7 - Starting game")
+            self.progress.emit("Запуск...")
 
+            logger.info('Create command to start game')
+            command = mn.command.get_minecraft_command(
+                version=version_name, 
+                minecraft_directory=self.version_directory, 
+                options=self.options
+            )
 
+            if self.after_start_game == "hide" or self.after_start_game == "close":
+                logger.info(f"After start game action: {self.after_start_game}")
+                self.hide_launcher_signal.emit(True)
 
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = 0
+            
+            process = subprocess.Popen(
+                command,
+                creationflags=subprocess.CREATE_NO_WINDOW
+            )
 
+            start_time = time.time()
+            process.wait()
+            end_time = time.time()
+            execution_time_hours = (end_time - start_time) / 3600
+            logger.info(f"Game process finished. Execution time: {execution_time_hours:.2f} hours")
 
+            logger.info("Step 8 - Update play time in database")
+            try:
+                time_all = auth.update_play_time(self.username, self.play_time + execution_time_hours)
+            except Exception as e:
+                logger.error(f"Failed to update play time: {e}")
+                logger.info("Write time for file")
+                conf.state_time_players(self.username, execution_time_hours)
+                time_all = self.play_time + execution_time_hours
+            
+            logger.info('Switch last minecraft version')
+            versions_config = conf.get_installed_versions()
+            versions_config['last_version'] = self.version
+            with open(f"{conf.config_folder}\\versions.json", "w", encoding="ansi") as file:
+                json.dump(versions_config, file, indent=4, ensure_ascii=False)
+            
+            logger.info("Step 9 - Game closed, show launcher")
+            if self.after_start_game == "hide":
+                self.show_launcher_signal.emit(True)
+            elif self.after_start_game == "close":
+                self.close.emit(time_all)
+            self.finished.emit(time_all)
+        except Exception as e:
+            ErrorExc(e)
 
+    def install_addMod(self):
+        if self.version_clear == "1.16.5" and self.mode != "" or self.version_clear == "1.16.4" and self.mode != "":
+            self.download_file(f'AddonMod1.16_{self.mode}.jar')
 
+    def download_file(self, filename):
+        TIMEOUT = 10
+        full_mods_path = os.path.join(self.version_directory, "mods")
+        try:
+            os.makedirs(full_mods_path, exist_ok=True)
+        except:
+            pass
 
+        file_url = f"{link_raw}{filename}"
+        save_path = os.path.join(full_mods_path, filename)
 
+        try:
+            logger.info(f"Downloading {filename}")
+            response = requests.get(file_url, timeout=TIMEOUT)
+            if response.status_code == 404:
+                logger.warn(f"File not found: {filename}")
+                return 404
+            response.raise_for_status()
+            with open(save_path, 'wb') as file:
+                file.write(response.content)
+        except Exception as e:
+            logger.error(e)
+            
+    def install_hlskins_skins(self):
+        try:
+            api_file = None
+            if self.mode != "":
+                file_mode_hl = f"skinsHL-Forge-{self.mode}.jar"
+                if self.mode == 'Fabric':
+                    api_file = f"fabric-api-{self.version_clear}.jar"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                logger.info("Installing HLSkins mods")
+                try1 = self.download_file(file_mode_hl)
+                if try1 != 404 and api_file != None:
+                    self.download_file(api_file)
+        except Exception as e:
+            logger.error(e)
 
     def copy_minecraft_files_before_start(self, version):
         try:
