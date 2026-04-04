@@ -8,6 +8,7 @@ from PyQt6.QtWidgets import QFileDialog
 from ...utils.helper import Helper
 import re
 import json
+from ...core.launcher_game import InstallStartGame
 import time
 from ...core.texture_manager import *
 from ..style import set_style
@@ -389,39 +390,40 @@ def browse_folder(self):
     except Exception as e:
         ErrorExc(e)
 
-def change_version(self):
+def change_version(self, atr=None):
     try:
         version_combobox = self.select_version.currentText()
-        version_clear = re.sub(r'[^0-9.-]', '', version_combobox)
-        
-        if 'Fabric' in version_combobox:
-            version_if = version_combobox
-        elif 'Forge' in version_combobox:
-            version_if = version_combobox
-        else:
-            version_if = version_clear
-        
-        version_found = False
-        with open(f"{self.conf.config_folder}\\versions.json", "r", encoding="ansi") as file:
-            data = json.load(file)
-            for vers in data["versions"]:
-                if vers == obj_Version_Manager.version_to_folder_json(version_if):
-                    version_found = True
-                    break
-        
-        # Обновляем кнопку запуска
-        self.button_start.setEnabled(True)
-        if not version_found:
-            if 'Forge' in version_combobox or 'Fabric' in version_combobox:
-                if self.java != None:
-                    self.button_start.setText("Установить")
-                else:
-                    self.button_start.setText("Требуется Java")
-                    self.button_start.setEnabled(False)
+        text_button = self.button_start.text()
+        if text_button == 'Требуется Java' or text_button == '' or text_button == 'Запустить' or text_button == 'Установить' or text_button == 'Подготовка...' and atr=='yes' or text_button=='Установка...' and atr=='yes' or text_button=='Запуск...' and atr=='yes':
+            version_clear = re.sub(r'[^0-9.-]', '', version_combobox)
+            
+            if 'Fabric' in version_combobox:
+                version_if = version_combobox
+            elif 'Forge' in version_combobox:
+                version_if = version_combobox
             else:
-                self.button_start.setText("Установить")
-        else:
-            self.button_start.setText("Запустить")
+                version_if = version_clear
+            
+            version_found = False
+            with open(f"{self.conf.config_folder}\\versions.json", "r", encoding="ansi") as file:
+                data = json.load(file)
+                for vers in data["versions"]:
+                    if vers == obj_Version_Manager.version_to_folder_json(version_if):
+                        version_found = True
+                        break
+            
+            self.button_start.setEnabled(True)
+            if not version_found:
+                if 'Forge' in version_combobox or 'Fabric' in version_combobox:
+                    if self.java != None:
+                        self.button_start.setText("Установить")
+                    else:
+                        self.button_start.setText("Требуется Java")
+                        self.button_start.setEnabled(False)
+                else:
+                    self.button_start.setText("Установить")
+            else:
+                self.button_start.setText("Запустить")
     except Exception as e:
         ErrorExc(e)
 
@@ -568,3 +570,125 @@ def logout(user):
             sys.exit()
     except Exception as e:
         ErrorExc(e)
+
+def start_game(self):
+    self.worker = InstallStartGame(self.main.nickname, self.select_version.currentText(), self.main.play_time)
+    self.worker.close.connect(lambda: close_game(self))
+    self.worker.progress.connect(lambda x: update_progress(self, x))
+    self.worker.finished.connect(lambda x: game_finished(self, x))
+    self.worker.hide_launcher_signal.connect(lambda: hide_launcher(self))
+    self.worker.show_launcher_signal.connect(lambda: show_launcher(self))
+    self.worker.error.connect(lambda e: show_error_game(self, e))
+    self.worker.start()
+
+def show_error_game(self, e):
+    ErrorExc(e)
+
+def close_game(self):
+    try:
+        sys.exit()
+    except Exception as e:
+        ErrorExc(e)
+
+def update_progress(self, x):
+    self.button_start.setText(x)
+    self.button_start.setEnabled(False)
+    self.select_version.setEnabled(False)
+    self.button_logout_account.setEnabled(False)
+    self.edit_folder_game.setEnabled(False)
+    self.button_start.setStyleSheet("""
+    QPushButton {
+        border-radius: 10px;
+        background: #0054E4;
+        color: white;
+    }""")
+
+def hide_launcher(self):
+    self.main.hide()
+
+def show_launcher(self):
+    self.main.show()
+    self.main.raise_()
+    self.main.activateWindow()
+
+def game_finished(self, time):
+    self.button_start.setEnabled(True)
+    self.button_start.setStyleSheet("""
+            QPushButton {
+                border-radius: 10px;
+                background: #005FFF;
+                color: white;
+            }
+            QPushButton:hover {
+                background: #0054E4
+            }
+    """)
+    self.button_start.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+    self.select_version.setEnabled(True)
+    self.button_logout_account.setEnabled(True)
+    self.edit_folder_game.setEnabled(True)
+    change_version(self, atr='yes')
+    change_time_play(self, time)
+    change_icon(self)
+
+def change_time_play(self, time):
+    self.play_time.setText(f"Наигранно времени: {round(time, 1)}ч")
+    self.main.play_time = time
+
+def change_icon(self):
+    try:
+        text_version = self.select_version.currentText()
+        text_index = self.select_version.currentIndex()
+        versions = self.conf.get_installed_versions()['versions']
+        color = self.conf.get_color_theme()
+
+        if 'Forge' in text_version:
+            name = text_version
+            text = 'Forge'
+        elif 'Fabric' in text_version:
+            name = text_version
+            text = 'Fabric'
+        else:
+            name = re.sub(r'[^0-9.]', '', text_version)
+            text = 'Minecraft'
+        configurator = self.conf
+        if obj_Version_Manager.version_to_folder_json(name) in versions:
+            if text == 'Forge':
+                icon = QtGui.QIcon()
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\forge.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
+            elif text == 'Fabric':
+                icon = QtGui.QIcon()
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\fabric.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
+            else:
+                icon = QtGui.QIcon()
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+                icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\minecraft.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
+        else:
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Normal,QtGui.QIcon.State.On)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.Off)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Disabled,QtGui.QIcon.State.On)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.Off)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Active,QtGui.QIcon.State.On)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.Off)
+            icon.addPixmap(QtGui.QPixmap(f"{configurator.static_folder}\\home\\{color}\\download.svg"), QtGui.QIcon.Mode.Selected,QtGui.QIcon.State.On)
+        self.select_version.setItemIcon(text_index, icon)
+    except Exception as e:
+        logger.error(e)

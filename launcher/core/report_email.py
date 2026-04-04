@@ -32,6 +32,10 @@ class ReportEmail(QThread):
             text = msg.as_string()
             server.sendmail(self.email, self.email, text)
             server.quit()
-        except:
-            pass
-        self.finished.emit()
+        except Exception as e:
+            try:
+                logger.error(e)
+            except:
+                pass
+        finally:
+            self.finished.emit()

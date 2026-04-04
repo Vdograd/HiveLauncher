@@ -15,16 +15,16 @@ import time
 from ..auth.auth_manager import AuthManager
 import subprocess
 
-link_raw = GetEnv().get_env("GITHUB_LINK_RAW")
 conf = Configurator()
 auth = AuthManager()
 
 class InstallStartGame(QThread):
     progress = pyqtSignal(str)
     finished = pyqtSignal(float)
-    hide_launcher_signal = pyqtSignal(bool)
-    show_launcher_signal = pyqtSignal(bool)
-    close = pyqtSignal(float)
+    hide_launcher_signal = pyqtSignal()
+    show_launcher_signal = pyqtSignal()
+    error = pyqtSignal(Exception)
+    close = pyqtSignal()
 
     def __init__(self, nickname, version, play_time):
         super().__init__()
@@ -78,8 +78,8 @@ class InstallStartGame(QThread):
 
             logger.info("Step 3 - Found version in installed versions")
             version_found = False
-            all_installed_versions = conf.get_installed_versions()['versions']
-            if obj_Version_Manager.version_to_folder_json(version_for_get_json) in all_installed_versions:
+            all_installed_versions = conf.get_installed_versions()
+            if obj_Version_Manager.version_to_folder_json(version_for_get_json) in all_installed_versions['versions']:
                 version_found = True
 
             logger.info("Step 4 - Install version | Start game")
@@ -94,7 +94,9 @@ class InstallStartGame(QThread):
                 else:
                     mn.install.install_minecraft_version(version_install, self.version_directory)
 
-                all_installed_versions["versions"].append(obj_Version_Manager.version_to_folder_json(version_for_get_json))
+                version_name_add = obj_Version_Manager.version_to_folder_json(version_for_get_json)
+                if version_name_add == None: raise
+                all_installed_versions['versions'].append(version_name_add)
                 with open(f"{conf.config_folder}\\versions.json", "w", encoding="ansi") as file:
                     json.dump(all_installed_versions, file, indent=4, ensure_ascii=False)
 
@@ -107,7 +109,7 @@ class InstallStartGame(QThread):
                 logger.info(f"Step 4.3 - Version found, starting game {self.version}")
                 self.start_game(obj_Version_Manager.version_to_folder_json(version_for_get_json))
         except Exception as e:
-            ErrorExc(e)
+            self.error.emit(e)
 
     def start_game(self, version_name):
         try:
@@ -130,7 +132,7 @@ class InstallStartGame(QThread):
 
             if self.after_start_game == "hide" or self.after_start_game == "close":
                 logger.info(f"After start game action: {self.after_start_game}")
-                self.hide_launcher_signal.emit(True)
+                self.hide_launcher_signal.emit()
 
             startupinfo = subprocess.STARTUPINFO()
             startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
@@ -149,7 +151,7 @@ class InstallStartGame(QThread):
 
             logger.info("Step 8 - Update play time in database")
             try:
-                time_all = auth.update_play_time(self.username, self.play_time + execution_time_hours)
+                time_all = auth.update_play_time(self.username, execution_time_hours)
             except Exception as e:
                 logger.error(f"Failed to update play time: {e}")
                 logger.info("Write time for file")
@@ -164,37 +166,29 @@ class InstallStartGame(QThread):
             
             logger.info("Step 9 - Game closed, show launcher")
             if self.after_start_game == "hide":
-                self.show_launcher_signal.emit(True)
+                self.show_launcher_signal.emit()
             elif self.after_start_game == "close":
-                self.close.emit(time_all)
+                self.close.emit()
             self.finished.emit(time_all)
         except Exception as e:
-            ErrorExc(e)
+            self.error.emit(e)
 
     def install_addMod(self):
         if self.version_clear == "1.16.5" and self.mode != "" or self.version_clear == "1.16.4" and self.mode != "":
             self.download_file(f'AddonMod1.16_{self.mode}.jar')
 
     def download_file(self, filename):
-        TIMEOUT = 10
         full_mods_path = os.path.join(self.version_directory, "mods")
         try:
             os.makedirs(full_mods_path, exist_ok=True)
         except:
             pass
 
-        file_url = f"{link_raw}{filename}"
         save_path = os.path.join(full_mods_path, filename)
 
         try:
             logger.info(f"Downloading {filename}")
-            response = requests.get(file_url, timeout=TIMEOUT)
-            if response.status_code == 404:
-                logger.warn(f"File not found: {filename}")
-                return 404
-            response.raise_for_status()
-            with open(save_path, 'wb') as file:
-                file.write(response.content)
+            return auth.download_mods_from_supabase(filename, save_path)
         except Exception as e:
             logger.error(e)
             
@@ -202,7 +196,7 @@ class InstallStartGame(QThread):
         try:
             api_file = None
             if self.mode != "":
-                file_mode_hl = f"skinsHL-Forge-{self.mode}.jar"
+                file_mode_hl = f"skinsHL-{self.mode}-{self.version_clear}.jar"
                 if self.mode == 'Fabric':
                     api_file = f"fabric-api-{self.version_clear}.jar"
 
@@ -247,5 +241,3 @@ class InstallStartGame(QThread):
                     shutil.copy2(file_path, target_path)
         except Exception as e:
             logger.error(e)
-
-    

@@ -20,6 +20,9 @@ class DialogError(QtWidgets.QDialog):
         self.message: str = message
         self.show_error()
 
+    def closeEvent(self, event):
+        sys.exit()
+
     def show_error(self):
         self.setWindowTitle("HiveLauncher Error")
         self.resize(500, 220)
@@ -115,6 +118,7 @@ class DialogError(QtWidgets.QDialog):
                 
     def send_report_func(self):
         self.worker = ReportEmail()
+        self.worker.setParent(self)
         self.worker.finished.connect(self.report_finished)
         self.send_report.setEnabled(False)
         self.send_report.setText("Отправляем")

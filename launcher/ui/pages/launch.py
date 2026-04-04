@@ -70,7 +70,7 @@ class WindowLauncher:
         self.button_start.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.button_start.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.button_start.setFont(self.font.get_font(14, "1"))
-        #self.button_start.clicked.connect(self.redit_game)
+        self.button_start.clicked.connect(lambda: start_game(self))
         self.button_start.setGraphicsEffect(create_shadow(self.conf.get_color_theme()))
 
         self.button_open_folder_version = QtWidgets.QPushButton(parent=self.main.centralwidget)

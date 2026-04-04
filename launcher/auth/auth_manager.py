@@ -161,7 +161,7 @@ class AuthManager:
             try:
                 with open(f"{self.configurator.config_folder}\\time_fixed.json", "r", encoding="ansi") as file:
                     data = json.load(file)
-                for nickname in data:
+                for nickname in list(data.keys()):
                     if data[nickname][1] != self.helper.hash_time_add(data[nickname][0]):
                         continue
                     play_time_plus = data[nickname][0]
@@ -170,7 +170,8 @@ class AuthManager:
                     del data[nickname]
                 with open(f"{self.configurator.config_folder}\\time_fixed.json", "w", encoding="ansi") as file:
                     json.dump(data, file, indent=4, ensure_ascii=False)
-                os.remove(f"{self.configurator.config_folder}\\time_fixed.json")
+                if len(data) == 0:
+                    os.remove(f"{self.configurator.config_folder}\\time_fixed.json")
             except Exception as e:
                 raise e
 
@@ -180,3 +181,19 @@ class AuthManager:
         except Exception as e:
             raise e
         return (user_from_database.data[0]["nickname"], user_from_database.data[0]["play_time"], user_from_database.data[0]["register_time"])
+    
+    def download_mods_from_supabase(self, filename, path):
+        try:
+            response = (
+                self.supabase.storage
+                .from_("mods")
+                .download(filename)
+            )
+            if len(response) != 0:
+                with open(path, "wb") as f:
+                    f.write(response)
+        except Exception as e:
+            if 'Object not found' in str(e):
+                return 404
+            else:
+                raise e

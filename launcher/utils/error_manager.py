@@ -15,10 +15,18 @@ class ErrorExc():
             logger.report(self.code, self.error)
         except:
             pass
-        app = QApplication(sys.argv)
-        window = DialogError(self.code, self.message)
-        window.show()
-        return app.exec()
+        self.show_dialog()
+
+    def show_dialog(self):
+        app = QApplication.instance()
+
+        if app is None:
+            app = QApplication(sys.argv)
+        dialog = DialogError(self.code, self.message)
+        try:
+            dialog.exec()
+        except Exception:
+            dialog.show()
 
     def get_code(self):
         errors = {
