@@ -2,6 +2,7 @@ import os
 import json
 import minecraft_launcher_lib as mn
 from .helper import Helper
+import shutil
 
 class Configurator:
     def __init__(self):
@@ -127,5 +128,37 @@ class Configurator:
                         nickname: [timeplus, self.helper.hash_time_add(timeplus)]
                     }
                     json.dump(data, file,indent=4, ensure_ascii=False)
+        except Exception as e:
+            raise e
+        
+    def copy_old_to_new_config(self):
+        try:
+            os.makedirs(self.config_folder, exist_ok=True)
+        except Exception as e:
+            raise e
+        try:
+            config = None
+            nicknames = None
+            versions = None
+            alls = []
+
+            if os.path.exists(os.path.join(self.folder_launcher,"configuration","config.json")):
+                config = os.path.join(self.folder_launcher,"configuration","config.json")
+                alls.append([config, "config.json"])
+
+            if os.path.exists(os.path.join(self.folder_launcher,"configuration","nicknames.json")):
+                nicknames = os.path.join(self.folder_launcher,"configuration","nicknames.json")
+                alls.append([nicknames, "nicknames.json"])
+                
+            if os.path.exists(os.path.join(self.folder_launcher,"configuration","versions_installed.json")):
+                versions = os.path.join(self.folder_launcher,"configuration","versions_installed.json")
+                alls.append([versions, "versions.json"])
+
+            for x in alls:
+                target_path = os.path.join(self.config_folder, x[1])
+                shutil.copy2(x[0], target_path)
+                os.remove(x[0])
+            if os.path.exists(os.path.join(self.folder_launcher,"configuration")):
+                os.removedirs(os.path.join(self.folder_launcher,"configuration"))
         except Exception as e:
             raise e
