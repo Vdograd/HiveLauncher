@@ -15,6 +15,7 @@ from PIL import Image
 from ...core.version_manager import obj_Version_Manager
 from ...utils.helper import Helper
 from ...core.skin_cape_manager import GetTypeSkinNickname
+from ...utils.getenv import GetEnv
 
 helper = Helper()
 configurator = Configurator()
@@ -55,9 +56,9 @@ class GetPixture(QThread):
         sha256.update(nickname.encode('utf-8'))
         file_name = sha256.hexdigest()
 
-        url = os.getenv("SYSTEM_HEAD_TEXTURE_URL")
+        url = GetEnv().get_env("SYSTEM_HEAD_TEXTURE_URL")
         headers = {
-            "Authorization": f"OAuth {os.getenv('SYSTEM_HEAD_TEXTURE_KEY')}"
+            "Authorization": f"OAuth {GetEnv().get_env('SYSTEM_HEAD_TEXTURE_KEY')}"
         }
 
         params = {
