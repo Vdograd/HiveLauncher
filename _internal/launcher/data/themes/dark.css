@@ -1,0 +1,294 @@
+QMainWindow {
+    background: #181818;
+}
+#logo {
+    background: rgba(0, 0, 0, 0);
+}
+#version_launcher {
+    background: rgba(0, 0, 0, 0); 
+    color: #005FFF;
+}
+#creeper {
+    background: rgba(1, 1, 0, 0);
+}
+#select_nickname_text {
+    background: rgba(1, 1, 0, 0);
+    color: #ffffff;
+}
+#button_change_page_log_reg {
+    color: #005FFF;
+}
+#button_change_page_log_reg:hover {
+    color: rgb(0, 80, 218);
+}
+#select_nickname_combobox {
+    border-radius: 5px;
+    background: #181818;
+    color: #ffffff;
+    padding-left: 20px;
+}
+#select_nickname_combobox:hover {
+    background: #1A1A1A;
+}
+#select_nickname_combobox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 30px;
+    border: none;
+}
+#select_nickname_combobox::down-arrow {
+    padding-right: 20px;
+    image: url('launcher/data/static/login/dark/arrow.svg');
+    width: 24px;
+    height: 24px;
+    border: none;
+}
+#select_nickname_combobox_view {
+    border: none;
+    background: #181818;
+    outline: none;
+    color: #ffffff;
+}
+#select_nickname_combobox_view::item {
+    background: transparent;
+    padding: 0.4px 20px;
+    border-bottom: 1px solid rgba(74, 74, 74, 0.1);
+    min-height: 30px;
+    color: #ffffff;
+}
+#select_nickname_combobox_view::item:hover {
+    background-color: #1E1E1E;
+    color: #ffffff;
+}
+#select_nickname_combobox_view:vertical {
+    border: none;
+    background: transparent;
+    width: 8px;
+    margin: 0px;
+}
+#select_nickname_combobox_view::handle:vertical {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    min-height: 30px;
+}
+#select_nickname_combobox_view::handle:vertical:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+#select_nickname_combobox_view::handle:vertical:pressed {
+    background: rgba(255, 255, 255, 0.4);
+}
+#select_nickname_combobox_view::add-line:vertical,
+#select_nickname_combobox_view::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+}
+#select_nickname_combobox_view::add-page:vertical,
+#select_nickname_combobox_view::sub-page:vertical {
+    background: none;
+}
+#password_account_login {
+    border-radius: 5px;
+    background: #181818;
+    color: #ffffff;
+    padding-left: 20px;
+}
+#use_in_minecraft_text {
+    background: rgba(0,0,0,0.0); 
+    color: rgba(255,255,255,0.3);
+}
+#login_in_launcher {
+    border-radius: 8px;
+    background: #005FFF;
+    color: white;
+}
+#login_in_launcher:hover {
+    background: rgb(0, 80, 218);
+}
+#error_auth_setup {
+    color: rgba(255, 0, 0, 1);
+}
+#text_registr_login2 {
+    background: rgba(1, 1, 0, 0);
+    color: #ffffff;
+}
+#rule_login2 {
+    background: rgba(1, 1, 0, 0); 
+    color: rgba(255, 255, 255, 0.5);
+}
+#rules_nickname_page2 {
+    background: rgba(1, 1, 0, 0);
+    color: #ffffff;
+}
+
+#nickname_text {
+    color: #ffffff;
+}
+
+#but_nav {
+    background: rgba(1, 1, 0, 0);
+}
+
+QComboBox#select_version {
+    border-radius: 5px;
+    background: #181818;
+    color: #ffffff;
+    padding-left: 20px;
+}
+
+QComboBox#select_version:hover {
+    background: #1A1A1A;
+}
+
+QComboBox#select_version::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 30px;
+    border: none;
+}
+
+QComboBox#select_version::down-arrow {
+    padding-right: 20px;
+    image: url('launcher/data/static/login/dark/arrow.svg');
+    width: 24px;
+    height: 24px;
+    border: none;
+}
+
+QComboBox#select_version QListView {
+    border: none;
+    background: #181818;
+    outline: none;
+    color: #ffffff;
+}
+
+QComboBox#select_version QListView::item {
+    background: transparent;
+    padding: 0.4px 20px;
+    border-bottom: 1px solid rgba(181, 181, 181, 0.1);
+    min-height: 30px;
+    color: #ffffff;
+}
+
+QComboBox#select_version QListView::item:hover {
+    background-color: #1E1E1E;
+    color: #ffffff;
+}
+
+QComboBox#select_version QListView QScrollBar:vertical {
+    border: none;
+    background: transparent;
+    width: 8px;
+    margin: 0px;
+}
+
+QComboBox#select_version QListView QScrollBar::handle:vertical {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    min-height: 30px;
+}
+
+QComboBox#select_version QListView QScrollBar::handle:vertical:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+QComboBox#select_version QListView QScrollBar::add-line:vertical,
+QComboBox#select_version QListView QScrollBar::sub-line:vertical {
+    border: none;
+    background: none;
+    height: 0px;
+}
+
+QComboBox#select_version QListView QScrollBar::add-page:vertical,
+QComboBox#select_version QListView QScrollBar::sub-page:vertical {
+    background: none;
+}
+
+#button_start {
+    border-radius: 10px;
+    background: #005FFF;
+    color: white;
+}
+#button_start:hover {
+    background: #0054E4
+}
+
+#button_open_folder_version {
+    border-radius: 5px;
+    background: #181818;
+}
+#button_open_folder_version:hover {
+    background: #1A1A1A;
+}
+
+#panel_base_account {
+    background: #181818; 
+    border-radius: 15px
+}
+
+#nickname_text_account, #register_account, #play_time {
+    color: #ffffff
+}
+#text_change_skin, #text_change_cape {
+    color: #ffffff;
+}
+#load_but_ac {
+    border-radius: 4px;
+    background: #005FFF;
+    color: white;
+}
+#load_but_ac:hover {
+    background: #0052DE
+}
+#cur_size {
+    color: rgba(255, 255, 255, 0.3);
+}
+#delete_but_ac {
+    border-radius: 4px;
+    background: #C90000;
+    color: white;
+}
+#delete_but_ac:hover {
+    background: #aa0000
+}
+
+#tab_show_folder_game {
+    background: #181818;
+    color: #ffffff;
+    border-radius: 4px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Error Dialog */
+#ErrorDialog {
+    background-color: #181818;
+}
+
+#reason_text {
+    color: #ffffff
+}
+#logo_error {
+    background: rgba(0,0,0,0);
+}
+
+#code_text {
+    color: rgba(255,255, 255, 0.8)
+}
+
+#send_report {
+    border-radius: 4px;
+    background: #005FFF;
+    color: white;
+}
+#send_report:hover {
+    background: #0054E4
+}
+
+#panel_error {
+    background: rgba(0,95,255,0.8);
+}
+
+#cross {
+    border: none;
+}
