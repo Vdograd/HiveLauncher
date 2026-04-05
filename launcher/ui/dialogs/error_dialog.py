@@ -33,8 +33,8 @@ class DialogError(QtWidgets.QDialog):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
 
         self.logo_error = QtWidgets.QLabel(self)
-        self.logo_error.setGeometry(QtCore.QRect(38, 25, 60, 40))
-        self.logo_error.setMinimumSize(QtCore.QSize(60, 40))
+        self.logo_error.setGeometry(QtCore.QRect(35, 31, 34, 34))
+        self.logo_error.setMinimumSize(QtCore.QSize(34, 34))
         self.logo_error.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\error\\icon_{self.color}.svg"))
         self.logo_error.setObjectName("logo_error")
 
