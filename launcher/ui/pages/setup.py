@@ -21,13 +21,13 @@ class WindowSetup:
 
     def setup_show(self):
         self.logo = QtWidgets.QLabel(parent=self.main.centralwidget)
-        self.logo.setGeometry(QtCore.QRect(76, 40, 68, 46))
-        self.logo.setMinimumSize(QtCore.QSize(68, 46))
+        self.logo.setGeometry(QtCore.QRect(70, 50, 61, 61))
+        self.logo.setMinimumSize(QtCore.QSize(61, 61))
         self.logo.setPixmap(QtGui.QPixmap(f"{self.conf.static_folder}\\global\\HLlogo.svg"))
         self.logo.setObjectName("logo")
 
         self.version_launcher = QtWidgets.QLabel(parent=self.main.centralwidget)
-        self.version_launcher.setGeometry(QtCore.QRect(80, 85, 64, 46))
+        self.version_launcher.setGeometry(QtCore.QRect(60, 106, 61, 61))
         self.version_launcher.setFont(self.font.get_font(8, "1"))
         self.version_launcher.setText(self.conf.version_launcher)
         self.version_launcher.setObjectName("version_launcher")
