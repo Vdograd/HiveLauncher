@@ -1,0 +1,12 @@
+.env
+.env.local
+*.env
+/launcher/data/logs
+**/__pycache__/
+/launcher/data/config.json
+/launcher/data/nicknames.json
+/launcher/data/versions.json
+/launcher/data/time_fixed.json
+/launcher/data/static/head_skins_response
+/logs
+/Update.exe
