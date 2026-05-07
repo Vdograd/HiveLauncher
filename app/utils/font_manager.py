@@ -65,3 +65,5 @@ class FontManager:
         font.setPointSize(size)
 
         return font
+    
+font = FontManager()
