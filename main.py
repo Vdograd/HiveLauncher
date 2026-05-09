@@ -14,7 +14,7 @@ def main():
         window.show()
         return app.exec()
     except Exception as e:
-        pass
+        logger.error(e)
         #ErrorExc(e)
 
 if __name__ == "__main__":

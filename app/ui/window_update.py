@@ -78,6 +78,74 @@ class App(QMainWindow):
         self.github.setIcon(QtGui.QIcon(f"{build.static_folder}\\logotypes\\GitHub\\logotype_{self.color}.svg"))
         self.github.clicked.connect(lambda: open_github())
 
+        # Layout для текущей версии - иконка - новая версия | текущая версия
+
+        self.version_layout = QtWidgets.QHBoxLayout()
+        self.version_layout.setContentsMargins(0, 0, 0, 0)
+        self.version_layout.setSpacing(2)
+
+        self.cloud_layout = QtWidgets.QWidget(self.centralwidget)
+        self.cloud_layout.setLayout(self.version_layout)
+        self.cloud_layout.setGeometry(QtCore.QRect(45, 361, 300, 18))
+
+        self.cloud_layout_ver = QtWidgets.QWidget()
+        self.cloud_layout_ver.setStyleSheet("""
+            background-color: #EDEDED;
+            border-radius: 9px;
+        """)
+
+        self.version_current_layout = QtWidgets.QHBoxLayout(self.cloud_layout_ver)
+        self.version_current_layout.setContentsMargins(5, 0, 5, 0)
+        self.version_current_layout.setSpacing(5)
+
+        self.ellips_cur_ver = QtWidgets.QLabel()
+        self.ellips_cur_ver.setFixedSize(8, 8)
+        self.ellips_cur_ver.setStyleSheet('background-color: #005FFF; border-radius: 4px;')
+
+        self.text_version = QtWidgets.QLabel()
+        self.text_version.setFont(font.font(12, 12))
+        self.text_version.setText("v3.3.0")
+        self.text_version.setStyleSheet('color: #000000;')
+
+        self.version_current_layout.addWidget(self.ellips_cur_ver)
+        self.version_current_layout.addWidget(self.text_version)
+
+        self.version_layout.addWidget(self.cloud_layout_ver)
+
+        self.arrow_version = QtWidgets.QLabel()
+        self.arrow_version.setFixedSize(12, 12)
+        self.arrow_version.setObjectName("arrow_version")
+        self.arrow_version.setPixmap(QtGui.QPixmap(f"{build.static_folder}\\icons\\arrow_right_12x12_{self.color}.svg"))
+
+        #self.version_layout.addWidget(self.arrow_version)
+
+        self.cloud_layout_new_ver = QtWidgets.QWidget()
+        self.cloud_layout_new_ver.setStyleSheet("""
+            background-color: #EDEDED;
+            border-radius: 9px;
+        """)
+
+        self.version_new_layout = QtWidgets.QHBoxLayout(self.cloud_layout_new_ver)
+        self.version_new_layout.setContentsMargins(5, 0, 5, 0)
+        self.version_new_layout.setSpacing(5)
+
+        self.ellips_new_ver = QtWidgets.QLabel()
+        self.ellips_new_ver.setFixedSize(8, 8)
+        self.ellips_new_ver.setStyleSheet('background-color: #005FFF; border-radius: 4px;')
+
+        self.text_new_version = QtWidgets.QLabel()
+        self.text_new_version.setFont(font.font(12, 12))
+        self.text_new_version.setText("v4.0")
+        self.text_new_version.setStyleSheet('color: #000000;')
+
+        self.version_new_layout.addWidget(self.ellips_new_ver)
+        self.version_new_layout.addWidget(self.text_new_version)
+
+        #self.version_layout.addWidget(self.cloud_layout_new_ver)
+
+        self.version_layout.addStretch()
+
+
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
             if event.pos().y() <= 20:
