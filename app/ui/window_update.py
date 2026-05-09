@@ -13,6 +13,12 @@ class App(QMainWindow):
         self.color = build.get_color_theme()
         self.drag_pos = NotImplementedError
         self.setup_stage()
+        logger.info('Set styles')
+        try:
+            set_style(self, self.color)
+        except Exception as e:
+            ...
+
 
     def setup_stage(self) -> None:
         self.setObjectName("AppWindow")
@@ -38,10 +44,39 @@ class App(QMainWindow):
 
         self.text_launcher = QtWidgets.QLabel(parent=self.centralwidget)
         self.text_launcher.setGeometry(QtCore.QRect(0, 88, 500, 31))
-        self.text_launcher.setFont(font.font(12, 20))
+        self.text_launcher.setFont(font.font(12, 24))
         self.text_launcher.setText("HiveLauncher")
         self.text_launcher.setObjectName("text_launcher")
         self.text_launcher.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+
+        self.text_global_status = QtWidgets.QLabel(parent=self.centralwidget)
+        self.text_global_status.setGeometry(QtCore.QRect(45, 148, 250, 15))
+        self.text_global_status.setFont(font.font(12, 12))
+        self.text_global_status.setText("Проверка обновлений")
+        self.text_global_status.setObjectName("text_global_status")
+
+        self.text_status = QtWidgets.QLabel(parent=self.centralwidget)
+        self.text_status.setGeometry(QtCore.QRect(45, 169, 250, 18))
+        self.text_status.setFont(font.font(12, 14))
+        self.text_status.setText("Сканирование...")
+        self.text_status.setObjectName("text_status")
+
+        self.progress_bar = QtWidgets.QProgressBar(parent=self.centralwidget)
+        self.progress_bar.setGeometry(QtCore.QRect(45, 198, 410, 10))
+        self.progress_bar.setMinimum(0)
+        self.progress_bar.setMaximum(100)
+        self.progress_bar.setValue(0)
+        self.progress_bar.setObjectName("progress_bar")
+        self.progress_bar.setTextVisible(False)
+
+        self.github = QtWidgets.QPushButton(parent=self.centralwidget)
+        self.github.setGeometry(QtCore.QRect(388, 360, 67, 20))
+        self.github.setObjectName("github")
+        self.github.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.github.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.github.setIconSize(QtCore.QSize(67, 20))
+        self.github.setIcon(QtGui.QIcon(f"{build.static_folder}\\logotypes\\GitHub\\logotype_{self.color}.svg"))
+        self.github.clicked.connect(lambda: open_github())
 
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.MouseButton.LeftButton:

@@ -8,3 +8,28 @@
 #text_launcher {
     color: #000000
 }
+
+#text_global_status {
+    color: #005FFF
+}
+
+#text_status {
+    color: #000000
+}
+
+#progress_bar {
+    border: none;
+    border-radius: 5px;
+    background-color: #DFDFDF;
+}
+
+#progress_bar::chunk {
+    border-radius: 4px;
+    background-color: #005FFF;
+    margin: 1px;
+}
+
+#github {
+    background: rgba(0,0,0,0);
+    border: none
+}

@@ -81,8 +81,10 @@ class FontManager:
         font = QFont()
         if font_family:
             font.setFamily(font_family)
-        font.setPointSize(size)
+        font.setPixelSize(size)
         font.setWeight(font_weight)
+        font.setHintingPreference(QFont.HintingPreference.PreferNoHinting)
+        font.setStyleStrategy(QFont.StyleStrategy.PreferAntialias | QFont.StyleStrategy.NoFontMerging)
 
         return font
     
