@@ -1,12 +1,12 @@
 #AppWindow {
-    background: #F5F5F5
+    background: #1D1D1D
 }
 #logo_hl {
     background: rgba(0,0,0,0);
 }
 
 #text_launcher {
-    color: #000000
+    color: #FFFFFF
 }
 
 #text_global_status {
@@ -14,13 +14,13 @@
 }
 
 #text_status {
-    color: #000000
+    color: #FFFFFF
 }
 
 #progress_bar {
     border: none;
     border-radius: 5px;
-    background-color: #DFDFDF;
+    background-color: #323232;
 }
 
 #progress_bar::chunk {
@@ -36,12 +36,12 @@
 
 #first_version_step_1 {
     border-radius: 9px;
-    background-color: #E3E3E3;
+    background-color: #2D2D2D;
 }
 
 #first_version_step_2 {
     border-radius: 9px;
-    background-color: #ECECEC;
+    background-color: #252525;
 }
 
 #ellips_first_version_step_1 {
@@ -50,20 +50,20 @@
 }
 
 #ellips_first_version_step_2 {
-    background-color: #C7C7C7; 
+    background-color: #4B4B4B; 
     border-radius: 4px;
 }
 
 #text_first_version_step_1 {
-    color: #000000;
+    color: #FFFFFF;
 }
 
 #text_first_version_step_2 {
-    color: #ADB0BA;
+    color: #585B5D;
 }
 
 #two_version {
-    background-color: #E3E3E3;
+    background-color: #2D2D2D;
     border-radius: 9px;
 }
 #ellips_two_version {
@@ -72,20 +72,20 @@
 }
 
 #text_two_version {
-    color: #000000;
+    color: #FFFFFF;
 }
 
 #text_speed {
-    color: #656976;
+    color: #999999;
     background: rgba(0,0,0,0)
 }
 
 #text_speed_realtime {
-    color: #000000;
+    color: #FFFFFF;
     background: rgba(0,0,0,0)
 }
 
 #text_approximate_time {
-    color: #656976;
+    color: #999999;
     background: rgba(0,0,0,0)
 }

@@ -11,7 +11,8 @@ class App(QMainWindow):
     def __init__(self):
         super().__init__()
         self.color = build.get_color_theme()
-        self.drag_pos = NotImplementedError
+        self.drag_pos = None
+        self.drag_start_pos = None
         self.setup_stage()
         logger.info('Set styles')
         try:
@@ -89,10 +90,7 @@ class App(QMainWindow):
         self.cloud_layout.setGeometry(QtCore.QRect(45, 361, 300, 18))
 
         self.cloud_layout_ver = QtWidgets.QWidget()
-        self.cloud_layout_ver.setStyleSheet("""
-            background-color: #EDEDED;
-            border-radius: 9px;
-        """)
+        self.cloud_layout_ver.setObjectName('first_version_step_1')
 
         self.version_current_layout = QtWidgets.QHBoxLayout(self.cloud_layout_ver)
         self.version_current_layout.setContentsMargins(5, 0, 5, 0)
@@ -101,11 +99,12 @@ class App(QMainWindow):
         self.ellips_cur_ver = QtWidgets.QLabel()
         self.ellips_cur_ver.setFixedSize(8, 8)
         self.ellips_cur_ver.setStyleSheet('background-color: #005FFF; border-radius: 4px;')
+        self.ellips_cur_ver.setObjectName('ellips_first_version_step_1')
 
         self.text_version = QtWidgets.QLabel()
         self.text_version.setFont(font.font(12, 12))
         self.text_version.setText("v3.3.0")
-        self.text_version.setStyleSheet('color: #000000;')
+        self.text_version.setObjectName('text_first_version_step_1')
 
         self.version_current_layout.addWidget(self.ellips_cur_ver)
         self.version_current_layout.addWidget(self.text_version)
@@ -117,13 +116,10 @@ class App(QMainWindow):
         self.arrow_version.setObjectName("arrow_version")
         self.arrow_version.setPixmap(QtGui.QPixmap(f"{build.static_folder}\\icons\\arrow_right_12x12_{self.color}.svg"))
 
-        #self.version_layout.addWidget(self.arrow_version)
+        self.version_layout.addWidget(self.arrow_version) #
 
         self.cloud_layout_new_ver = QtWidgets.QWidget()
-        self.cloud_layout_new_ver.setStyleSheet("""
-            background-color: #EDEDED;
-            border-radius: 9px;
-        """)
+        self.cloud_layout_new_ver.setObjectName('two_version')
 
         self.version_new_layout = QtWidgets.QHBoxLayout(self.cloud_layout_new_ver)
         self.version_new_layout.setContentsMargins(5, 0, 5, 0)
@@ -131,19 +127,40 @@ class App(QMainWindow):
 
         self.ellips_new_ver = QtWidgets.QLabel()
         self.ellips_new_ver.setFixedSize(8, 8)
-        self.ellips_new_ver.setStyleSheet('background-color: #005FFF; border-radius: 4px;')
+        self.ellips_new_ver.setObjectName('ellips_two_version')
 
         self.text_new_version = QtWidgets.QLabel()
         self.text_new_version.setFont(font.font(12, 12))
         self.text_new_version.setText("v4.0")
-        self.text_new_version.setStyleSheet('color: #000000;')
+        self.text_new_version.setObjectName('text_two_version')
 
         self.version_new_layout.addWidget(self.ellips_new_ver)
         self.version_new_layout.addWidget(self.text_new_version)
 
-        #self.version_layout.addWidget(self.cloud_layout_new_ver)
+        self.version_layout.addWidget(self.cloud_layout_new_ver) #
 
         self.version_layout.addStretch()
+
+        self.text_speed = QtWidgets.QLabel(parent=self.centralwidget)
+        self.text_speed.setGeometry(QtCore.QRect(500 - 45 - 110, 148, 110, 15))
+        self.text_speed.setFont(font.font(12, 12))
+        self.text_speed.setText("СКОРОСТЬ")
+        self.text_speed.setObjectName("text_speed")
+        self.text_speed.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+
+        self.text_speed_realtime = QtWidgets.QLabel(parent=self.centralwidget)
+        self.text_speed_realtime.setGeometry(QtCore.QRect(500 - 45 - 210, 169, 210, 18))
+        self.text_speed_realtime.setFont(font.font(12, 14))
+        self.text_speed_realtime.setText("12.4MB/s")
+        self.text_speed_realtime.setObjectName("text_speed_realtime")
+        self.text_speed_realtime.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
+
+        self.text_approximate_time = QtWidgets.QLabel(parent=self.centralwidget)
+        self.text_approximate_time.setGeometry(QtCore.QRect(500 - 45 - 210, 216, 210, 15))
+        self.text_approximate_time.setFont(font.font(11, 12))
+        self.text_approximate_time.setText("~ 4 минуты")
+        self.text_approximate_time.setObjectName("text_approximate_time")
+        self.text_approximate_time.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 
 
     def mousePressEvent(self, event):
@@ -155,12 +172,12 @@ class App(QMainWindow):
 
     def mouseMoveEvent(self, event):
         if event.buttons() == QtCore.Qt.MouseButton.LeftButton and self.drag_pos is not None:
-            if self.drag_pos is not None:
-                delta = event.globalPosition().toPoint() - self.drag_pos
-                self.move(self.drag_start_pos + delta)
-                event.accept()
+            delta = event.globalPosition().toPoint() - self.drag_pos
+            self.move(self.drag_start_pos + delta)
+            event.accept()
 
     def mouseReleaseEvent(self, event):
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
             self.drag_pos = None
+            self.drag_start_pos = None
             event.accept()
