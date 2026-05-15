@@ -32,7 +32,7 @@ class Logger:
         with open(self.log_file, "a", encoding="ansi") as file_log:
             file_log.write(f"[{time}] [WARN]: {message}\n")
 
-    def error(self, message: str) -> None:
+    def error(self, message: str | Exception) -> None:
         message = str(message)
         time = self.get_time()
         print(f"[{time}] [ERROR]: {message}")

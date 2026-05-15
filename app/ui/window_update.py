@@ -5,6 +5,7 @@ from ..utils.build import build
 from .functions import *
 from ..utils.font_manager import font
 from .style import set_style
+from ..core.folder_manager import get_currect_version
 #from ..utils.error import ErrorExc
 
 class App(QMainWindow):
@@ -103,7 +104,7 @@ class App(QMainWindow):
 
         self.text_version = QtWidgets.QLabel()
         self.text_version.setFont(font.font(12, 12))
-        self.text_version.setText("v3.3.0")
+        self.text_version.setText(f"v{get_currect_version()}" if get_currect_version() != None else 'None')
         self.text_version.setObjectName('text_first_version_step_1')
 
         self.version_current_layout.addWidget(self.ellips_cur_ver)
@@ -162,6 +163,16 @@ class App(QMainWindow):
         self.text_approximate_time.setObjectName("text_approximate_time")
         self.text_approximate_time.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 
+        # Set scanning
+        self.text_approximate_time.hide()
+        self.text_speed_realtime.hide()
+        self.text_speed.hide()
+
+        self.cloud_layout_new_ver.hide()
+        self.arrow_version.hide()
+
+        #Start scanning
+        scanning(self)
 
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
