@@ -54,13 +54,11 @@ class App(QMainWindow):
         self.text_global_status = QtWidgets.QLabel(parent=self.centralwidget)
         self.text_global_status.setGeometry(QtCore.QRect(45, 148, 250, 15))
         self.text_global_status.setFont(font.font(12, 12))
-        self.text_global_status.setText("Проверка обновлений")
         self.text_global_status.setObjectName("text_global_status")
 
         self.text_status = QtWidgets.QLabel(parent=self.centralwidget)
         self.text_status.setGeometry(QtCore.QRect(45, 169, 250, 18))
         self.text_status.setFont(font.font(12, 14))
-        self.text_status.setText("Сканирование...")
         self.text_status.setObjectName("text_status")
 
         self.progress_bar = QtWidgets.QProgressBar(parent=self.centralwidget)
@@ -91,7 +89,6 @@ class App(QMainWindow):
         self.cloud_layout.setGeometry(QtCore.QRect(45, 361, 300, 18))
 
         self.cloud_layout_ver = QtWidgets.QWidget()
-        self.cloud_layout_ver.setObjectName('first_version_step_1')
 
         self.version_current_layout = QtWidgets.QHBoxLayout(self.cloud_layout_ver)
         self.version_current_layout.setContentsMargins(5, 0, 5, 0)
@@ -99,13 +96,9 @@ class App(QMainWindow):
 
         self.ellips_cur_ver = QtWidgets.QLabel()
         self.ellips_cur_ver.setFixedSize(8, 8)
-        self.ellips_cur_ver.setStyleSheet('background-color: #005FFF; border-radius: 4px;')
-        self.ellips_cur_ver.setObjectName('ellips_first_version_step_1')
 
         self.text_version = QtWidgets.QLabel()
         self.text_version.setFont(font.font(12, 12))
-        self.text_version.setText(f"v{get_currect_version()}" if get_currect_version() != None else 'None')
-        self.text_version.setObjectName('text_first_version_step_1')
 
         self.version_current_layout.addWidget(self.ellips_cur_ver)
         self.version_current_layout.addWidget(self.text_version)
@@ -132,7 +125,7 @@ class App(QMainWindow):
 
         self.text_new_version = QtWidgets.QLabel()
         self.text_new_version.setFont(font.font(12, 12))
-        self.text_new_version.setText("v4.0")
+        #self.text_new_version.setText("v4.0")
         self.text_new_version.setObjectName('text_two_version')
 
         self.version_new_layout.addWidget(self.ellips_new_ver)
@@ -152,24 +145,16 @@ class App(QMainWindow):
         self.text_speed_realtime = QtWidgets.QLabel(parent=self.centralwidget)
         self.text_speed_realtime.setGeometry(QtCore.QRect(500 - 45 - 210, 169, 210, 18))
         self.text_speed_realtime.setFont(font.font(12, 14))
-        self.text_speed_realtime.setText("12.4MB/s")
+        self.text_speed_realtime.setText("")
         self.text_speed_realtime.setObjectName("text_speed_realtime")
         self.text_speed_realtime.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 
         self.text_approximate_time = QtWidgets.QLabel(parent=self.centralwidget)
         self.text_approximate_time.setGeometry(QtCore.QRect(500 - 45 - 210, 216, 210, 15))
         self.text_approximate_time.setFont(font.font(11, 12))
-        self.text_approximate_time.setText("~ 4 минуты")
+        self.text_approximate_time.setText("")
         self.text_approximate_time.setObjectName("text_approximate_time")
         self.text_approximate_time.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-
-        # Set scanning
-        self.text_approximate_time.hide()
-        self.text_speed_realtime.hide()
-        self.text_speed.hide()
-
-        self.cloud_layout_new_ver.hide()
-        self.arrow_version.hide()
 
         #Start scanning
         scanning(self)
