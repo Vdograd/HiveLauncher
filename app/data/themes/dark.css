@@ -89,3 +89,58 @@
     color: #999999;
     background: rgba(0,0,0,0)
 }
+
+/* Error window*/
+
+#ErrorDialog {
+    background: #1D1D1D;
+}
+
+#cross {
+    background: rgba(0,0,0,0)
+}
+
+#ellips_error {
+    background: #181818;
+    border-radius: 35px;
+}
+
+#text_error {
+    color: #ffffff;
+}
+
+#text_error_message {
+    color: #999999
+}
+
+#box_footer {
+    background: #181818;
+}
+
+#version_update_launcher {
+    color: #6C6C6C;
+}
+
+#text_type_error {
+    color: #A33301;
+}
+
+#send_report_button {
+    background: #0055E6;
+    color: #ffffff;
+    border-radius: 12px;
+}
+
+#send_report_button:hover {
+    background: #004ED1; /*+8*/
+}
+
+#copy_log_button {
+    background: #262626;
+    color: #999999;
+    border-radius: 12px;
+}
+
+#copy_log_button:hover {
+    background: #242424;
+}

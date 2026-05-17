@@ -6,7 +6,7 @@ from .functions import *
 from ..utils.font_manager import font
 from .style import set_style
 from ..core.folder_manager import get_currect_version
-#from ..utils.error import ErrorExc
+from ..utils.error import ErrorExc
 
 class App(QMainWindow):
     def __init__(self):
@@ -19,7 +19,7 @@ class App(QMainWindow):
         try:
             set_style(self, self.color)
         except Exception as e:
-            ...
+            ErrorExc(e)
 
 
     def setup_stage(self) -> None:

@@ -3,6 +3,7 @@ from ..db.db_manager import Manager
 from .folder_manager import *
 import os
 from ..utils.build import build
+import pyperclip
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from ..utils.logger import logger
 import time
@@ -437,7 +438,7 @@ class StartLauncher(QThread):
     def download_file(self, file_info: dict) -> bool:
         download_url = file_info['download_url']
         file_path = file_info['path']
-        file_size = file_info.get('size', 0)
+        #file_size = file_info.get('size', 0)
         
         try:
             response = self.session.get(download_url, timeout=60)
@@ -559,3 +560,20 @@ class StartLauncher(QThread):
 
         except Exception as e:
             self.error.emit(e)
+
+class CopyLog(QThread):
+    finished = pyqtSignal()
+
+    def __init__(self):
+        super().__init__()
+
+    def run(self):
+        try:
+            file = logger.log_file
+            with open(file, 'r', encoding="ansi") as f:
+                content = f.read()
+
+            pyperclip.copy(content)
+        except Exception as e:
+            logger.error(e)
+        self.finished.emit()

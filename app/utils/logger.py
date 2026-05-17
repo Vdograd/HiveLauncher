@@ -43,7 +43,7 @@ class Logger:
         helper = Helper()
         time = self.get_time()
         report_message = f"""{'='*40}
-| REPORT ERROR [{time}]
+| UPDATE REPORT ERROR [{time}]
 | {'-'*20}| base:
 |   Code error: {code}
 |   Update version: {build.update_version}

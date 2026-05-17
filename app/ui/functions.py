@@ -5,6 +5,7 @@ from ..core.thread_classes import *
 import subprocess
 from PyQt6 import QtCore, QtWidgets
 from .style import set_style
+from ..utils.error import ErrorExc
 
 def open_github() -> None:
     try:
@@ -21,7 +22,7 @@ def scanning(self) -> None:
     logger.info("Start scanning version update")
     self.scanning.start()
 
-def start_s(self, version):
+def start_s(self, version: str) -> None:
     self.progress_bar.setValue(0)
     self.text_version.setText(version)
     self.text_version.setObjectName('text_first_version_step_1')
@@ -58,7 +59,7 @@ def start_download(self, version) -> None:
         show_error(self, e)
 
 
-def show_error(self, error: Exception) -> None: logger.error(error)
+def show_error(self, error: Exception) -> None: ErrorExc(error)
 
 def completed_scanning(self, status: int, version: str) -> None:
     self.start = StartLauncher(status, version)
@@ -86,7 +87,7 @@ def launcher_open(self, path: str, version: str) -> None:
         logger.warn('HiveLauncher.exe not found. Send process on scanning')
         scanning(self)
 
-def close_application(self):
+def close_application(self) -> None:
     try:
         app = QtWidgets.QApplication.instance()
         if app:
@@ -94,8 +95,5 @@ def close_application(self):
     except Exception as e:
         show_error(self, e)
 
-def speed_realtime_set(self, speed: str) -> None:
-    self.text_speed_realtime.setText(speed)
-
-def approximate_time_set(self, time: str) -> None:
-    self.text_approximate_time.setText(time)
+def speed_realtime_set(self, speed: str) -> None: self.text_speed_realtime.setText(speed)
+def approximate_time_set(self, time: str) -> None: self.text_approximate_time.setText(time)
