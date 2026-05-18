@@ -335,28 +335,21 @@ class StartLauncher(QThread):
                     'reason': 'missing',
                     **github_info
                 })
-                new_sha_cache[file_path] = github_sha
             else:
                 cached_sha = sha_cache.get(file_path, '')
                 if cached_sha == github_sha:
+                    # Файл уже скачан и актуален - сохраняем хэш
                     new_sha_cache[file_path] = github_sha
-                elif github_info['size'] != local_info['size']:
+                elif github_info['size'] != local_info['size'] or cached_sha != github_sha:
                     files_to_download.append({
                         'path': file_path,
                         'reason': 'sha_mismatch',
                         **github_info
                     })
-                    new_sha_cache[file_path] = github_sha
-                elif cached_sha != github_sha:
-                    files_to_download.append({
-                        'path': file_path,
-                        'reason': 'sha_mismatch',
-                        **github_info
-                    })
-                    new_sha_cache[file_path] = github_sha
                 else:
                     new_sha_cache[file_path] = github_sha
 
+        # Сохраняем только хэши уже существующих актуальных файлов
         self.save_sha_cache(new_sha_cache)
         return files_to_download
 
@@ -438,7 +431,7 @@ class StartLauncher(QThread):
     def download_file(self, file_info: dict) -> bool:
         download_url = file_info['download_url']
         file_path = file_info['path']
-        #file_size = file_info.get('size', 0)
+        file_sha = file_info.get('sha', '')
         
         try:
             response = self.session.get(download_url, timeout=60)
@@ -451,6 +444,7 @@ class StartLauncher(QThread):
                     f.write(content)
                 
                 self.update_speed_stats(len(content))
+                self._update_sha_cache(file_path, file_sha)
                 
                 return True
             elif response.status_code != 404:
@@ -461,6 +455,12 @@ class StartLauncher(QThread):
         except Exception as e:
             logger.warn(f"Error downloading {file_path}: {e}")
             return False
+        
+    def _update_sha_cache(self, file_path: str, sha: str) -> None:
+        with self._download_lock:
+            cache = self.load_sha_cache()
+            cache[file_path] = sha
+            self.save_sha_cache(cache)
 
     def install_launcher(self) -> None:
         try:
