@@ -209,6 +209,7 @@ class StartLauncher(QThread):
         self.local_folder = Path(build.folders_versions_launcher) / version.replace('.', '#')
         self.branch = Env.get_env('GITHUB_BRANCH')
         self.session = requests.Session()
+        self._stop_event = threading.Event()
         self.session.headers.update({
             'Authorization': f'token {self.token}',
             'Accept': 'application/vnd.github.v3+json'
@@ -428,7 +429,9 @@ class StartLauncher(QThread):
                 self._last_speed_update = current_time
                 self._last_bytes = self._bytes_downloaded
 
-    def download_file(self, file_info: dict) -> bool:
+    def download_file(self, file_info: dict) -> bool | Exception | None:
+        if self._stop_event.is_set():
+            return
         download_url = file_info['download_url']
         file_path = file_info['path']
         file_sha = file_info.get('sha', '')
@@ -449,12 +452,12 @@ class StartLauncher(QThread):
                 return True
             elif response.status_code != 404:
                 logger.warn(f"Error downloading {file_path}: status {response.status_code}")
-                return False
+                return requests.exceptions.HTTPError(f"Status code {response.status_code} for {file_path}")
             else:
-                return False
+                return requests.exceptions.HTTPError(f"Status code {response.status_code} for {file_path}")
         except Exception as e:
             logger.warn(f"Error downloading {file_path}: {e}")
-            return False
+            return e
         
     def _update_sha_cache(self, file_path: str, sha: str) -> None:
         with self._download_lock:
@@ -464,6 +467,7 @@ class StartLauncher(QThread):
 
     def install_launcher(self) -> None:
         try:
+            self._stop_event.clear()
             self.start_download.emit(self.version)
             github_files = self.get_github_files()
             local_files = self.get_local_files()
@@ -488,37 +492,49 @@ class StartLauncher(QThread):
                         for file_info in files_to_download
                     }
                     for future in as_completed(futures):
-                        file_info = futures[future]
-                        success = future.result()
+                        if self._stop_event.is_set():
+                            executor.shutdown(wait=False, cancel_futures=True)
+                            return
                         
-                        if success:
+                        file_info = futures[future]
+                        result = future.result()
+                        
+                        if result is True:
                             downloaded += 1
                             consecutive_errors = 0
                         else:
-                            failed_files.append(file_info)
+                            failed_files.append((file_info, result))
                             consecutive_errors += 1
                             
                             if consecutive_errors >= 3:
+                                self._stop_event.set()
                                 executor.shutdown(wait=False, cancel_futures=True)
-                                self.error.emit(Exception(f"3 consecutive download failures. Last failed: {file_info['path']}"))
+                                self.error.emit(result)
                                 return
                         
                         progress = int((downloaded / total) * 100)
                         self.add_progress.emit(progress)
 
-                if failed_files:
+                if failed_files and not self._stop_event.is_set():
                     logger.info(f"Retrying {len(failed_files)} failed files...")
                     
-                    for file_info in failed_files:
-                        success = self.download_file(file_info)
+                    for file_info, last_error in failed_files:
+                        if self._stop_event.is_set():
+                            return
                         
-                        if success:
+                        result = self.download_file(file_info)
+                        
+                        if result is True:
                             downloaded += 1
                             progress = int((downloaded / total) * 100)
                             self.add_progress.emit(progress)
                         else:
-                            self.error.emit(Exception(f"Failed to download file after retry: {file_info['path']}"))
+                            self._stop_event.set()
+                            self.error.emit(result)
                             return
+
+            if self._stop_event.is_set():
+                return
 
             # Удаляем папки и файлы прошлых версий
             try:

@@ -44,7 +44,8 @@ class Logger:
         time = self.get_time()
         report_message = f"""{'='*40}
 | UPDATE REPORT ERROR [{time}]
-| {'-'*20}| base:
+| {'-'*20}
+| base:
 |   Code error: {code}
 |   Update version: {build.update_version}
 | {'-'*20}

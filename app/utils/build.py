@@ -7,7 +7,7 @@ class Build:
         self.folders_versions_launcher = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..")
         self.logs_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "logs")
         self.theme_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "themes")
-        self.update_version = '3.0'
+        self.update_version = '3.1'
 
     def get_color_theme(self) -> str:
         try:
