@@ -10,7 +10,7 @@ class DialogError(QtWidgets.QDialog):
     def __init__(self, code, message):
         super().__init__()
         self.conf = Configurator()
-        self.font = FontManager()
+        self.fontc = FontManager()
         try:
             self.color = self.conf.get_color_theme()
         except:
@@ -40,19 +40,19 @@ class DialogError(QtWidgets.QDialog):
 
         self.reason_text = QtWidgets.QLabel(parent=self)
         self.reason_text.setGeometry(QtCore.QRect(40, 75, 370, 18))
-        self.reason_text.setFont(self.font.get_font(12,"1"))
+        self.reason_text.setFont(self.fontc.get_font(12,"1"))
         self.reason_text.setText(self.message)
         self.reason_text.setObjectName('reason_text')
 
         self.code_text = QtWidgets.QLabel(parent=self)
         self.code_text.setGeometry(QtCore.QRect(40, 103, 370, 15))
-        self.code_text.setFont(self.font.get_font(10,"1"))
+        self.code_text.setFont(self.fontc.get_font(10,"1"))
         self.code_text.setText(f'Код ошибки: {self.code}')
         self.code_text.setObjectName('code_text')
 
         self.send_report = QtWidgets.QPushButton(self)
         self.send_report.setGeometry(QtCore.QRect(40, 156, 189, 32)) 
-        self.send_report.setFont(self.font.get_font(10, "1"))
+        self.send_report.setFont(self.fontc.get_font(10, "1"))
         self.send_report.setText("Отправить репорт")
         self.send_report.setObjectName("send_report")
         self.send_report.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))

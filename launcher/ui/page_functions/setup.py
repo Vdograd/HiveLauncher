@@ -5,6 +5,7 @@ from ..page_functions.page_manager import GetPixture
 from ...utils.logger import logger
 auth = AuthManager()
 from ...utils.error_manager import ErrorExc
+import json
 logger = logger
 
 def scroll_page_setup(main_window, page):
@@ -287,6 +288,17 @@ def auth_setup_finished(self, nickname, play_time, datetime):
     self.update_page(scroll_page_setup(self, self.page_setup))
 
 def show_launcher(self):
+    colorc = self.color_stamp_setup.currentText()
+    if colorc == 'Темная':
+        cr = 'dark'
+    elif colorc == 'Светлая':
+        cr = 'light'
+
+    with open(f"{self.main.configuration.config_folder}\\config.json", "r", encoding="ansi") as file:
+        data = json.load(file)
+    data['color'] = cr
+    with open(f"{self.main.configuration.config_folder}\\config.json", "w", encoding="ansi") as file:
+        json.dump(data, file, indent=4, ensure_ascii=False)
     logger.info('Get Texture')
     self.worker = GetPixture(self.main.nickname)
     self.worker.progress.connect(lambda: getpixture_progress(self))

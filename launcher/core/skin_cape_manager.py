@@ -6,6 +6,8 @@ import requests
 from ..utils.logger import logger
 from ..utils.configurator import Configurator
 from ..utils.getenv import GetEnv
+from ..utils.error_manager import ErrorExc
+
 GetEnv = GetEnv()
 config = Configurator()
 
@@ -288,8 +290,7 @@ def get_type_skin_nickname(nickname):
             logger.error(f'Code get type skin nickname: {response.status_code}')
             return 'classic'
     except Exception as e:
-        logger.error(str(e))
-        return 'classic'
+        ErrorExc(e)
 
 class GetTypeSkinNickname(QThread):
     finished = pyqtSignal(str)
@@ -303,4 +304,4 @@ class GetTypeSkinNickname(QThread):
             skin_type = get_type_skin_nickname(self.nickname)
             self.finished.emit(skin_type)
         except Exception as e:
-            logger.error(str(e))
+            ErrorExc(e)
