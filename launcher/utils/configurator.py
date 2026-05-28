@@ -6,12 +6,18 @@ import shutil
 
 class Configurator:
     def __init__(self):
-        self.folder_launcher = f"{os.path.dirname(os.path.abspath("main.py"))}"
-        self.static_folder = f"{os.path.dirname(os.path.abspath("main.py"))}\\launcher\\data\\static"
-        self.config_folder = f"{os.path.dirname(os.path.abspath("main.py"))}\\launcher\\data"
-        self.theme_folder = f"{os.path.dirname(os.path.abspath("main.py"))}\\launcher\\data\\themes"
-        self.logs_folder = f"{os.path.dirname(os.path.abspath("main.py"))}\\launcher\\data\\logs"
-        self.version_launcher = "3.3.0"
+        # self.folder_launcher = f"{os.path.dirname(os.path.abspath("main.py"))}"
+        # self.static_folder = f"{os.path.dirname(os.path.abspath("main.py"))}\\launcher\\data\\static"
+        # self.config_folder = f"{os.path.dirname(os.path.abspath("main.py"))}\\launcher\\data"
+        # self.theme_folder = f"{os.path.dirname(os.path.abspath("main.py"))}\\launcher\\data\\themes"
+        # self.logs_folder = f"{os.path.dirname(os.path.abspath("main.py"))}\\launcher\\data\\logs"
+
+        self.folder_launcher = f"{os.path.join(os.path.dirname(os.path.abspath("main.py")), '_internal')}"
+        self.static_folder = f"{os.path.join(os.path.dirname(os.path.abspath("main.py")), '_internal')}\\launcher\\data\\static"
+        self.config_folder = f"{os.path.join(os.path.dirname(os.path.abspath("main.py")), '_internal')}\\launcher\\data"
+        self.theme_folder = f"{os.path.join(os.path.dirname(os.path.abspath("main.py")), '_internal')}\\launcher\\data\\themes"
+        self.logs_folder = f"{os.path.join(os.path.dirname(os.path.abspath("main.py")), '_internal')}\\launcher\\data\\logs"
+        self.version_launcher = "3.3.1"
         self.helper = Helper()
     
     def get_color_theme(self):

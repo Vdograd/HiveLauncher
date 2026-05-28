@@ -5,9 +5,11 @@ import socket
 from ..ui.dialogs.error_dialog import DialogError
 from PyQt6.QtWidgets import QApplication
 import sys
+import urllib3
 
 class ErrorExc():
     def __init__(self, error: Exception):
+        logger.warn(f'Class type error: {type(error)}')
         self.error = error
         self.code = self.get_code()
         self.message = self.get_message()
@@ -28,7 +30,7 @@ class ErrorExc():
         except Exception:
             dialog.show()
 
-    def get_code(self):
+    def get_code(self) -> int:
         errors = {
             requests.exceptions.ConnectionError: 100,
             requests.exceptions.Timeout: 101,
@@ -36,7 +38,14 @@ class ErrorExc():
             requests.exceptions.ConnectTimeout: 103,
             requests.exceptions.ReadTimeout: 104,
             requests.exceptions.HTTPError: 105,
+            ConnectionAbortedError: 106,
+            ConnectionResetError: 107,
+            ConnectionRefusedError: 108,
+            requests.exceptions.ProxyError: 110,
+            ConnectionError: 109,
+
             PermissionError: 201,
+
             json.JSONDecodeError: 301,
             KeyError: 302,
             ValueError: 303,
@@ -51,28 +60,60 @@ class ErrorExc():
             NameError: 312,
             ImportError: 313,
             SyntaxError: 314,
+
             OSError: 401,
             FileNotFoundError: 402,
             FileExistsError: 403,
+
             socket.gaierror: 501,
             UnboundLocalError: 502,
+
+            urllib3.exceptions.PoolError: 601,
+            urllib3.exceptions.ProxyError: 602,
+            urllib3.exceptions.DecodeError: 603,
+            urllib3.exceptions.RequestError: 604,
+            urllib3.exceptions.TimeoutError: 605,
+            urllib3.exceptions.FullPoolError: 606,
+            urllib3.exceptions.MaxRetryError: 607,
+            urllib3.exceptions.ProtocolError: 608,
+            urllib3.exceptions.ResponseError: 609,
+            urllib3.exceptions.EmptyPoolError: 610,
+            urllib3.exceptions.ClosedPoolError: 611,
+            urllib3.exceptions.HostChangedError: 612,
+            urllib3.exceptions.ReadTimeoutError: 613,
+            urllib3.exceptions.TimeoutStateError: 614,
+            urllib3.exceptions.HeaderParsingError: 615,
+            urllib3.exceptions.LocationParseError: 616,
+            urllib3.exceptions.LocationValueError: 617,
+            urllib3.exceptions.NewConnectionError: 618,
+            urllib3.exceptions.ConnectTimeoutError: 619,
+            urllib3.exceptions.NameResolutionError: 620,
+            urllib3.exceptions.UnrewindableBodyError: 621,
+
             Exception: 999
         }
         for error in errors.items():
             if type(self.error) == error[0]:
                 return error[1]
         else:
-            return errors.get(Exception)
+            return 999
         
     def get_message(self):
-        messages = {
+        names = {
             100: 'Не удалось подключиться к серверу.',
             101: 'Сервер не отвечает.',
-            102: 'Не получен ответ от сервера.',
+            102: 'Не удалось подключиться к серверу.',
             103: 'Сервер не отвечает.',
             104: 'Сервер не отвечает.',
             105: 'Код статуса сервера 4xx / 5xx.',
+            106: 'Соединение с сервером прервано.',
+            107: 'Соединение сброшено.',
+            108: 'Сервер не отвечает.',
+            109: 'Проблема с соединением.',
+            110: 'Не удалось подключиться к прокси.',
+
             201: 'Недостаточно прав к Windows.',
+
             301: 'Ошибка кодирования.',
             302: 'Непредвиденная ошибка.',
             303: 'Непредвиденная ошибка.',
@@ -87,11 +128,35 @@ class ErrorExc():
             312: 'Непредвиденная ошибка.',
             313: 'Непредвиденная ошибка.',
             314: 'Непредвиденная ошибка.',
+
             401: 'Системная ошибка.',
             402: 'Файл не найден.',
             403: 'Файл/путь не найден.',
-            501: 'Нет соединения с сервером',
-            502: 'Непредвиденная ошибка.',
+
+            501: 'Нет соединения с сервером.',
+
+            601: 'Пул соединений не доступен.',
+            602: 'Не удалось подключиться к прокси.',
+            603: 'Ошибка декодирования.',
+            604: 'Ошибка соединения с сервером.',
+            605: 'Превышено время ожидания.',
+            606: 'Пул соединений занят.',
+            607: 'Превышен лимит запросов к серверу.',
+            608: 'Данные ответа сервера некорректны.',
+            609: 'Ошибка обработки ответа от сервера.',
+            610: 'Пул соединений не может выдать соединение.',
+            611: 'Пул соединений закрыт для использования.',
+            612: 'Хост запроса изменился.',
+            613: 'Таймаут ответа на запрос.',
+            614: 'Непредвиденная ошибка запроса.',
+            615: 'Данные ответа сервера некорректны.',
+            616: 'Непредвиденная ошибка запроса.',
+            617: 'Непредвиденная ошибка запроса.',
+            618: 'Не удалось подключиться к серверу.',
+            619: 'Соединение оборвалось.',
+            620: 'Непредвиденная ошибка запроса.',
+            621: 'Ошибка отправки запроса.',
+
             999: 'Неизвестная ошибка.'
         }
-        return messages.get(self.code, 'Неизвестная ошибка.')
+        return names.get(self.code, 'Неизвестная ошибка.')

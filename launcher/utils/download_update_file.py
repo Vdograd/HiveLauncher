@@ -20,15 +20,15 @@ def download():
             github_file_size = file_info['size']
             download_url = file_info['download_url']
             
-            if os.path.exists('Update.exe'):
-                local_file_size = os.path.getsize('Update.exe')
+            if os.path.exists('../Update.exe'):
+                local_file_size = os.path.getsize('../Update.exe')
                 
                 if github_file_size != local_file_size:
                     logger.info("Download new update-file")
                     file_response = requests.get(download_url, headers=headers)
                     
                     if file_response.status_code == 200:
-                        with open('Update.exe', 'wb') as file:
+                        with open('../Update.exe', 'wb') as file:
                             file.write(file_response.content)
                         logger.info('Update-file success updated')
                     else:
@@ -38,7 +38,7 @@ def download():
                 file_response = requests.get(download_url, headers=headers)
                 
                 if file_response.status_code == 200:
-                    with open('Update.exe', 'wb') as file:
+                    with open('../Update.exe', 'wb') as file:
                         file.write(file_response.content)
                     logger.info('Update-file success download')
                 else:

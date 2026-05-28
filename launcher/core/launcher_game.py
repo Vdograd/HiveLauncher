@@ -95,7 +95,7 @@ class InstallStartGame(QThread):
                     mn.install.install_minecraft_version(version_install, self.version_directory)
 
                 version_name_add = obj_Version_Manager.version_to_folder_json(version_for_get_json)
-                if version_name_add == None: raise
+                if version_name_add == None: raise FileNotFoundError('Not found json-file for start game')
                 all_installed_versions['versions'].append(version_name_add)
                 with open(f"{conf.config_folder}\\versions.json", "w", encoding="ansi") as file:
                     json.dump(all_installed_versions, file, indent=4, ensure_ascii=False)

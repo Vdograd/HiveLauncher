@@ -5,7 +5,7 @@ from ...utils.logger import logger
 from ..page_functions.page_manager import GetPixture
 auth = AuthManager()
 logger = logger
-
+import json
 class AuthRegisterAccount(QThread):
     progress = pyqtSignal()
     finished = pyqtSignal(str, float, str)
@@ -264,6 +264,15 @@ def ail_finished(self, nickname, playtime, datetime):
     self.main.nickname = nickname
     self.main.datetime = datetime
     self.main.play_time = playtime
+    try:
+        with open(f"{self.main.configuration.config_folder}\\nicknames.json", "r", encoding="ansi") as file:
+            data = json.load(file)
+        data['last_nickname'] = nickname
+        with open(f"{self.main.configuration.config_folder}\\nicknames.json", "w", encoding="ansi") as file:
+            json.dump(data, file, indent=4, ensure_ascii=False)
+    except Exception as e:
+        raise e
+
     logger.info('Get Texture')
     self.worker = GetPixture(self.main.nickname)
     self.worker.progress.connect(lambda: getpixture_progress(self))
@@ -349,6 +358,14 @@ def auth_login_finished(self, nickname, play_time, datetime):
     self.main.nickname = nickname
     self.main.datetime = datetime
     self.main.play_time = play_time
+    try:
+        with open(f"{self.main.configuration.config_folder}\\nicknames.json", "r", encoding="ansi") as file:
+            data = json.load(file)
+        data['last_nickname'] = nickname
+        with open(f"{self.main.configuration.config_folder}\\nicknames.json", "w", encoding="ansi") as file:
+            json.dump(data, file, indent=4, ensure_ascii=False)
+    except Exception as e:
+        raise e
     logger.info('Get Texture')
     self.worker = GetPixture(self.main.nickname)
     self.worker.progress.connect(lambda: getpixture_progress(self))
