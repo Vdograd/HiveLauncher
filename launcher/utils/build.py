@@ -13,6 +13,19 @@ class Build:
         self.theme_folder = os.path.join(self.path_project, 'launcher', 'data', 'themes')
         self.logs_folder = os.path.join(self.path_project, 'launcher', 'data', 'logs')
         self.version_launcher = "4.0-beta"
+        self.lang = None
+
+        self.lang_cache = [] # index 0: en, index 1: ru
+        self.load_lang_cache()
+
+    def load_lang_cache(self) -> None:
+        all_langs = [
+            os.path.join(self.static_folder, 'lang', 'en.json'),
+            os.path.join(self.static_folder, 'lang', 'ru.json'),
+        ]
+        for lang_file in all_langs:
+            with open(lang_file, 'r', encoding="utf-8") as file:
+                self.lang_cache.append(json.load(file))
 
     def get_color_theme(self) -> str:
         try:
@@ -28,6 +41,15 @@ class Build:
                 nickname = json.load(file)["last_nickname"]
                 if type(nickname) != str: raise ValueError('Invalid data type in nicknames[last_nickname]')
             return nickname
+        except Exception as e:
+            raise e
+        
+    def get_lang(self) -> str:
+        try:
+            with open(os.path.join(self.config_folder, 'config.json'), "r", encoding="ansi") as file:
+                lang = json.load(file)["lang"]
+                if type(lang) != str: raise ValueError('Invalid data type in config[lang]')
+            return lang
         except Exception as e:
             raise e
         
@@ -81,6 +103,30 @@ class Build:
                     json.dump(data, file,indent=4, ensure_ascii=False)
         except Exception as e:
             raise e
+        
+    def get_lang_text(self, key: str) -> str | None:
+        if len(key) == 0: raise ValueError('Invalid value')
+        lang = self.lang
+        if lang == None:
+            lang = self.get_lang()
+            self.lang = lang
+
+        if lang == 'ru':
+            index = 1
+        elif lang == 'en':
+            index = 0
+        else: raise ValueError('Invalid value config[lang]')
+
+        path_json = self.lang_cache[index]
+        path_json_list = key.split('-')
+
+        try:
+            for j in path_json_list:
+                path_json = path_json[j]
+            if type(path_json) != str: raise
+            return path_json
+        except:
+            return None
 
 build = Build(1)
 
@@ -104,12 +150,13 @@ class RestartConfig:
         try:
             with open(file_edit, "r", encoding="ansi") as file:
                 data = json.load(file)
-                _ = [data["color"], data["folder_game"], data["maxm"], data["window_size"], data["after_download"], data["after_start"]]
-                if not self.check_type_correct(data, [str, str, str, str, str, str]): raise
+                _ = [data["color"], data["lang"], data["folder_game"], data["maxm"], data["window_size"], data["after_download"], data["after_start"]]
+                if not self.check_type_correct(data, [str, str, str, str, str, str, str]): raise
         except:
             try:
                 data = {
                     "color": "light",
+                    "lang": helper.get_lang_system(),
                     "folder_game": mn.utils.get_minecraft_directory().replace('minecraft', 'hivelauncher'),
                     "maxm": helper.default_rem(),
                     "window_size": helper.access_screens()[0],

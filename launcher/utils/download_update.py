@@ -32,6 +32,8 @@ def search_file() -> None:
                 local_file_size = os.path.getsize(PATH_UPDATE_FILE)
                 if github_file_size != local_file_size:
                     download_file(download_url)
+                else:
+                    logger.info('Installations Update.exe not required')
             else:
                 download_file(download_url)
         else:

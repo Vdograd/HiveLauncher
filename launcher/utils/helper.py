@@ -2,6 +2,8 @@ from screeninfo import get_monitors
 import subprocess
 import traceback
 import hashlib
+import locale
+import ctypes
 import psutil
 import os
 import re
@@ -108,5 +110,29 @@ class Helper:
             if scr[0] <= screen_home[0] and scr[1] <= screen_home[1]:
                 ren.append(f"{scr[0]}x{scr[1]}")
         return ren
+    
+    def get_lang_system(self) -> str:
+        try:
+            user32 = ctypes.windll.kernel32
+            lang_id = user32.GetSystemDefaultUILanguage()
+
+            if lang_id == 1049:
+                return "ru"
+            else:
+                return "en"
+        
+        except Exception:
+            try:
+                system_locale = locale.windows_locale.get(
+                    ctypes.windll.kernel32.GetSystemDefaultLCID(), 
+                    ''
+                )
+                
+                if system_locale and system_locale.startswith('ru_'):
+                    return "ru"
+                return "en"
+            
+            except Exception:
+                return "ru"
     
 helper = Helper()
