@@ -1,4 +1,4 @@
-#from ..ui.error.error import DialogError
+from ..ui.error.error import DialogError
 from PyQt6.QtWidgets import QApplication
 from .logger import logger
 from .build import build
@@ -32,13 +32,13 @@ class ErrorExc:
 
     def show_dialog(self) -> None:
         print(self.name, self.message, self.type_error)
-        # app = QApplication.instance()
-        # if app is None:
-        #     app = QApplication(sys.argv)
+        app = QApplication.instance()
+        if app is None:
+            app = QApplication(sys.argv)
 
-        # dialog = DialogError(self.name, self.message, self.type_error)
-        # try: dialog.exec()
-        # except Exception: dialog.show()
+        dialog = DialogError(self.name, self.message, self.type_error)
+        try: dialog.exec()
+        except Exception: dialog.show()
 
     def get_code(self) -> int:
         errors = {
