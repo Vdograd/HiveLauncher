@@ -12,7 +12,7 @@ headers = {
     "Accept": "application/vnd.github.v3+raw"
 }
     
-def update_file():
+def update_file() -> None:
     try:
         search_file()
     except Exception as e:
@@ -20,7 +20,7 @@ def update_file():
 
 def search_file() -> None:
     logger.info("Find the file Update.exe...")
-    
+
     try:
         api_response = requests.get(api_url, headers=headers)
         if api_response.status_code == 200:
