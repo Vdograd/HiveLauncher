@@ -1,0 +1,54 @@
+/* Error window*/
+
+#ErrorDialog {
+    background: #F5F5F5;
+}
+
+#cross {
+    background: rgba(0,0,0,0)
+}
+
+#ellips_error {
+    background: #ffffff;
+    border-radius: 35px;
+}
+
+#text_error {
+    color: #000000;
+}
+
+#text_error_message {
+    color: #656976
+}
+
+#box_footer {
+    background: #FFFFFF;
+}
+
+#version_update_launcher {
+    color: #A2A2A2;
+}
+
+#text_type_error {
+    color: #A33301;
+}
+
+#send_report_button {
+    background: #005FFF;
+    color: #ffffff;
+    border-radius: 12px;
+}
+
+#send_report_button:hover {
+    background: #0055E6; /*+8*/
+}
+
+#copy_log_button {
+    background: #656976;
+    color: #E3E3E3;
+    border-radius: 12px;
+}
+
+#copy_log_button:hover {
+    background: #5D606C;
+}

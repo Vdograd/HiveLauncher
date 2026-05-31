@@ -9,6 +9,12 @@ import os
 import re
 
 class Helper:
+    def encryption(self, data: str | float | int) -> str:
+        if type(data) == float or type(data) == int: data = str(data)
+        data_hash = hashlib.sha256()
+        data_hash.update(data.encode('utf-8')) #type: ignore
+        return data_hash.hexdigest()
+
     def get_path_project(self, type_start: int) -> str:
         internal = os.path.join(os.path.dirname(os.path.abspath("main.py")), '_internal')
         default = os.path.join(os.path.dirname(os.path.abspath("main.py")))
@@ -20,12 +26,6 @@ class Helper:
             else: raise FileNotFoundError("Default directory not found.")
         else:
             raise ValueError("Invalid type_start value. Must be 0 or 1.")
-        
-    def hash_time_add(self, plustime: float) -> str:
-        time = str(plustime)
-        hash256 = hashlib.sha256()
-        hash256.update(time.encode('utf-8'))
-        return hash256.hexdigest()
     
     def get_traceback(self, e: Exception) -> list:
         message = f"{e}" if f"{e}" != '' else 'None data error'

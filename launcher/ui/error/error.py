@@ -1,15 +1,14 @@
-# from PyQt6.QtWidgets import QGraphicsDropShadowEffect
-# from ...core.report_email import ReportEmail
-# from PyQt6 import QtCore, QtGui, QtWidgets
-# from ...core.thread_classes import CopyLog
-# from ...utils.font_manager import font
-# from ...utils.logger import logger
-# from ...ui.style import set_style
-# from ...utils.build import build
-# from PyQt6.QtGui import QColor
-# from PyQt6.QtCore import Qt
-# import sys
-# import os
+from ...core.thread_classes import CopyLog, ReportEmail
+from PyQt6.QtWidgets import QGraphicsDropShadowEffect
+from PyQt6 import QtCore, QtGui, QtWidgets
+from ...utils.fonts import font
+from ...utils.logger import logger
+from ...ui.style import set_style
+from ...utils.build import build
+from PyQt6.QtGui import QColor
+from PyQt6.QtCore import Qt
+import sys
+import os
 
 class DialogError(QtWidgets.QDialog):
     def __init__(self, name: str, message: str, type_error: str):
@@ -108,7 +107,7 @@ class DialogError(QtWidgets.QDialog):
         self.send_report_button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.send_report_button.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.send_report_button.setFont(font.font(10, 14))
-        self.send_report_button.setText('Отправить репорт')
+        self.send_report_button.setText(build.get_lang_text('errors-interface-send_report'))
         self.send_report_button.clicked.connect(lambda: self.send_report_func())
 
         self.copy_log_button = QtWidgets.QPushButton(self)
@@ -117,7 +116,7 @@ class DialogError(QtWidgets.QDialog):
         self.copy_log_button.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.copy_log_button.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.copy_log_button.setFont(font.font(10, 14))
-        self.copy_log_button.setText('Скопировать логи')
+        self.copy_log_button.setText(build.get_lang_text('errors-interface-copy_button'))
         self.copy_log_button.clicked.connect(lambda: self.copy_log())
 
     def closeEvent(self, event):
@@ -142,16 +141,16 @@ class DialogError(QtWidgets.QDialog):
             self.drag_start_pos = None
             event.accept()
 
-    def send_report_func(self):
+    def send_report_func(self) -> None:
         self.worker = ReportEmail()
         self.worker.setParent(self)
         self.worker.finished.connect(lambda: sys.exit())
         self.send_report_button.setEnabled(False)
-        self.send_report_button.setText("Отправляем")
+        self.send_report_button.setText(build.get_lang_text('errors-interface-sending'))
         logger.info("Send report error...")
         self.worker.start()
 
-    def create_shadow(self):
+    def create_shadow(self) -> QGraphicsDropShadowEffect:
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(4)
         shadow.setXOffset(0)
@@ -167,9 +166,9 @@ class DialogError(QtWidgets.QDialog):
         self.copy.start()
 
     def end_copy(self) -> None:
-        self.copy_log_button.setText('Скопировано!')
+        self.copy_log_button.setText(build.get_lang_text('errors-interface-succes_copy'))
         QtCore.QTimer.singleShot(1500, lambda: self.end())
 
     def end(self) -> None:
-        self.copy_log_button.setText('Скопировать логи')
+        self.copy_log_button.setText(build.get_lang_text('errors-interface-copy_button'))
         self.copy_log_button.setEnabled(True)

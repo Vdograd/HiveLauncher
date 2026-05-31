@@ -90,15 +90,15 @@ class Build:
                     try:
                         _ = data[nickname]
                         data[nickname][0] += timeplus
-                        data[nickname][1] = helper.hash_time_add(data[nickname][0])
+                        data[nickname][1] = helper.encryption(data[nickname][0])
                     except:
-                        data[nickname] = [timeplus, helper.hash_time_add(timeplus)]
+                        data[nickname] = [timeplus, helper.encryption(timeplus)]
                     json.dump(data, file,indent=4, ensure_ascii=False)
 
             else:
                 with open(file_time_fix, "w", encoding="ansi") as file:
                     data = {
-                        nickname: [timeplus, helper.hash_time_add(timeplus)]
+                        nickname: [timeplus, helper.encryption(timeplus)]
                     }
                     json.dump(data, file,indent=4, ensure_ascii=False)
         except Exception as e:
@@ -109,6 +109,8 @@ class Build:
         lang = self.lang
         if lang == None:
             lang = self.get_lang()
+            if lang != 'ru' and lang != 'en':
+                lang = 'ru'
             self.lang = lang
 
         if lang == 'ru':
@@ -134,6 +136,7 @@ class RestartConfig:
     def __init__(self):
         self.config_folder = build.config_folder
         self.create_config_folder()
+        self.add_lang_to_config()
         self.config_file()
         self.versions_file()
         self.nicknames_file()
@@ -143,10 +146,27 @@ class RestartConfig:
             os.makedirs(self.config_folder, exist_ok=True)
         except Exception as e:
             raise e
-        
+    
+    def add_lang_to_config(self) -> None:
+        file_edit = os.path.join(self.config_folder, 'config.json')
+        try:
+            with open(file_edit, "r", encoding="ansi") as file:
+                data = json.load(file)
+                lgn = data["lang"]
+                if not self.check_type_correct({"lang": lgn}, [str]): raise
+        except:
+            try:
+                with open(file_edit, "r", encoding="ansi") as file:
+                    data = json.load(file)
+
+                data['lang'] = helper.get_lang_system()
+
+                with open(file_edit, "w", encoding="ansi") as file:
+                    json.dump(data, file, indent=4, ensure_ascii=False)
+            except: pass
+
     def config_file(self) -> None:
         file_edit = os.path.join(self.config_folder, 'config.json')
-
         try:
             with open(file_edit, "r", encoding="ansi") as file:
                 data = json.load(file)

@@ -52,7 +52,8 @@
             "619": "Connection lost.",
             "620": "Unexpected request error.",
             "621": "Error sending request.",
-            "999": "Unknown error."
+            "999": "Unknown error.",
+            "1001": "Database error."
         },
         "center": {
             "100": "Failed to connect to the remote server. Check your internet connection and restart the launcher.",
@@ -106,7 +107,14 @@
             "619": "Failed to connect to the remote server. Check your internet connection and restart the launcher.",
             "620": "Check your internet connection and restart the launcher.",
             "621": "Check your internet connection and restart the launcher.",
-            "999": "An unknown error occurred. Try restarting or reinstalling the launcher."
+            "999": "An unknown error occurred. Try restarting or reinstalling the launcher.",
+            "1001": "A database error occurred. Please check your internet connection and restart the launcher."
+        },
+        "interface": {
+            "copy_button": "Copy logs",
+            "send_report": "Send report",
+            "sending": "Sending",
+            "succes_copy": "Copied!"
         }
     }
 }

@@ -1,7 +1,8 @@
-from ..ui.error.error import DialogError
+from ...ui.error.error import DialogError
 from PyQt6.QtWidgets import QApplication
-from .logger import logger
-from .build import build
+from .error_classes import *
+from ..logger import logger
+from ..build import build
 import requests
 import urllib3
 import socket
@@ -11,14 +12,12 @@ import sys
 class ErrorExc:
     def __init__(self, error: Exception):
         self.all_code_error = [
-            100, 101, 102, 103, 104, 105, 106, 107, 
-            108, 109, 110, 201, 301, 302 ,303, 304, 
-            305, 306, 307, 308, 309, 310, 311, 312, 
-            313, 314, 401, 402 ,403, 501 ,502, 601, 
-            602, 603, 604, 605, 606, 607, 608, 609,
-            610, 611, 612, 613, 614, 615, 616, 617, 
-            618, 619, 620, 621, 
-            999
+            100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110,
+            201, 301, 302, 303, 304, 305, 306, 307, 308, 309, 310,
+            311, 312, 313, 314, 401, 402, 403, 501, 502, 601, 602,
+            603, 604, 605, 606, 607, 608, 609, 610, 611, 612, 613,
+            614, 615, 616, 617, 618, 619, 620, 621,
+            1001, 999
         ]
         
         self.error = error
@@ -31,7 +30,6 @@ class ErrorExc:
         self.show_dialog()
 
     def show_dialog(self) -> None:
-        print(self.name, self.message, self.type_error)
         app = QApplication.instance()
         if app is None:
             app = QApplication(sys.argv)
@@ -51,16 +49,9 @@ class ErrorExc:
             ConnectionAbortedError: 106,
             ConnectionResetError: 107,
             ConnectionRefusedError: 108,
-            requests.exceptions.ProxyError: 110,
             ConnectionError: 109,
+            requests.exceptions.ProxyError: 110,
             PermissionError: 201,
-            json.JSONDecodeError: 301,
-            KeyError: 302,
-            ValueError: 303,
-            WindowsError: 304,
-            TypeError: 305,
-            SystemError: 306,
-            UnicodeDecodeError: 307,
             ChildProcessError: 308,
             AttributeError: 309,
             MemoryError: 310,
@@ -68,6 +59,13 @@ class ErrorExc:
             NameError: 312,
             ImportError: 313,
             SyntaxError: 314,
+            json.JSONDecodeError: 301,
+            KeyError: 302,
+            ValueError: 303,
+            WindowsError: 304,
+            TypeError: 305,
+            SystemError: 306,
+            UnicodeDecodeError: 307,
             OSError: 401,
             FileNotFoundError: 402,
             FileExistsError: 403,
@@ -94,6 +92,7 @@ class ErrorExc:
             urllib3.exceptions.ConnectTimeoutError: 619,
             urllib3.exceptions.NameResolutionError: 620,
             urllib3.exceptions.UnrewindableBodyError: 621,
+            DataBaseError: 1001,
             Exception: 999
         }
         for error in errors.items():
@@ -161,7 +160,8 @@ class ErrorExc:
             619: 'CONNECTION_ERROR',
             620: 'CONNECTION_ERROR',
             621: 'CONNECTION_ERROR',
-            999: 'UNKNOWN_ERROR'
+            999: 'UNKNOWN_ERROR',
+            1001: 'DATABASE_ERROR',
         }
         return error_types.get(self.code, 'UNKNOWN_ERROR')
     
