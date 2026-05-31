@@ -1,14 +1,10 @@
+from ..utils.helper import helper
 import socket
-import hashlib
 
 class AuthVerify:
-    def generate_verify_code(self, nickname):
-        nickname = str(nickname)
-        hostname = str(socket.gethostname())
+    def generate_verify_code(self, nickname: str) -> str:
+        hostname = socket.gethostname()
         str_verify = nickname + hostname
-        sha256_code = hashlib.sha256()
-        sha256_code.update(str_verify.encode('utf-8'))
-        code_sha256 = sha256_code.hexdigest()
-        return str(code_sha256)
+        return helper.encryption(str_verify)
     
 auth_verify = AuthVerify()
