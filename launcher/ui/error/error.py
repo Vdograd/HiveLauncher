@@ -1,14 +1,14 @@
 from ...core.thread_classes import CopyLog, ReportEmail
 from PyQt6.QtWidgets import QGraphicsDropShadowEffect
 from PyQt6 import QtCore, QtGui, QtWidgets
-from ...utils.fonts import font
+from os.path import join as pathjoin
 from ...utils.logger import logger
 from ...ui.style import set_style
 from ...utils.build import build
+from ...utils.fonts import font
 from PyQt6.QtGui import QColor
 from PyQt6.QtCore import Qt
 import sys
-import os
 
 class DialogError(QtWidgets.QDialog):
     def __init__(self, name: str, message: str, type_error: str):
@@ -31,7 +31,7 @@ class DialogError(QtWidgets.QDialog):
         self.setMinimumSize(QtCore.QSize(450, 400))
         self.setMaximumSize(QtCore.QSize(450, 400))
         self.setObjectName('ErrorDialog')
-        self.setWindowIcon(QtGui.QIcon(f"{os.path.join(build.static_folder, 'logotypes', 'HiveLauncher', 'logotype_66x66_light.svg')}"))
+        self.setWindowIcon(QtGui.QIcon(pathjoin(build.static_folder, 'logotypes', 'HiveLauncher', 'logotype_66x66_light.svg')))
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         
         self.cross = QtWidgets.QPushButton(self)
@@ -39,7 +39,7 @@ class DialogError(QtWidgets.QDialog):
         self.cross.setObjectName("cross")
         self.cross.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
         self.cross.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
-        self.cross.setIcon(QtGui.QIcon(os.path.join(build.static_folder, 'icons', 'cross.svg')))
+        self.cross.setIcon(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'cross.svg')))
         self.cross.clicked.connect(lambda: sys.exit())
 
         self.ellips_error = QtWidgets.QLabel(self)
@@ -49,7 +49,7 @@ class DialogError(QtWidgets.QDialog):
 
         self.cloud = QtWidgets.QLabel(parent=self)
         self.cloud.setGeometry(QtCore.QRect(207, 43, 35, 35))
-        self.cloud.setPixmap(QtGui.QPixmap(os.path.join(build.static_folder, 'icons', 'cloud.svg')))
+        self.cloud.setPixmap(QtGui.QPixmap(pathjoin(build.static_folder, 'icons', 'cloud.svg')))
         self.cloud.setObjectName("cloud")
 
         self.text_error = QtWidgets.QLabel(self)
@@ -83,7 +83,7 @@ class DialogError(QtWidgets.QDialog):
 
         self.error_icon = QtWidgets.QLabel(parent=self)
         self.error_icon.setFixedSize(QtCore.QSize(13, 13))
-        self.error_icon.setPixmap(QtGui.QPixmap(os.path.join(build.static_folder, 'icons', 'warn.svg')))
+        self.error_icon.setPixmap(QtGui.QPixmap(pathjoin(build.static_folder, 'icons', 'warn.svg')))
         self.error_icon.setObjectName("error_icon")
 
         self.text_type_error = QtWidgets.QLabel(self)

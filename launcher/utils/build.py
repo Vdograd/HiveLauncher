@@ -35,6 +35,18 @@ class Build:
             return color
         except Exception as e: raise e
 
+    def get_all_nicknames(self) -> list | None:
+        try:
+            with open(os.path.join(self.config_folder, 'nicknames.json'), "r", encoding="ansi") as file:
+                nicknames = json.load(file)["nicknames"]
+                if len(nicknames) == 0: return None
+                for nick in nicknames:
+                    if type(nick) != str: raise ValueError('Invalid data type in nicknames[nicknames]')
+                return nicknames
+        except Exception as e:
+            raise e
+
+
     def get_last_nickname(self) -> str:
         try:
             with open(os.path.join(self.config_folder, 'nicknames.json'), "r", encoding="ansi") as file:
@@ -113,10 +125,8 @@ class Build:
                 lang = 'ru'
             self.lang = lang
 
-        if lang == 'ru':
-            index = 1
-        elif lang == 'en':
-            index = 0
+        if lang == 'ru': index = 1
+        elif lang == 'en': index = 0
         else: raise ValueError('Invalid value config[lang]')
 
         path_json = self.lang_cache[index]

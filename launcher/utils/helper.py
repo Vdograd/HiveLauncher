@@ -134,5 +134,8 @@ class Helper:
             
             except Exception:
                 return "ru"
+
+    def valid_email(self, email: str) -> bool:
+        return bool(re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email))
     
 helper = Helper()

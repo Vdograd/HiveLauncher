@@ -1,4 +1,4 @@
-from ..utils.error_manager.error_classes import DataBaseError, UserAlreadyExistsError, UserNotFoundError, UserAlreadyAddedError, NotCorrectPasswordError
+from ..utils.error_manager.error_classes import DataBaseError, UserAlreadyExistsError, UserNotFoundError, UserAlreadyAddedError, NotCorrectPasswordError, VaildEmailError
 from supabase import create_client, Client
 from .auth_verify import auth_verify
 from ..utils.helper import helper
@@ -19,11 +19,13 @@ class AuthManager:
         except Exception as e:
             raise DataBaseError(e)
     
-    def create_user(self, nickname: str, password_static: str) -> tuple[str, float, str]:
+    def create_user(self, nickname: str, password_static: str, email: str) -> tuple[str, float, str]:
         password = helper.encryption(password_static)
         verify_code_for_nickname = auth_verify.generate_verify_code(nickname)
 
         try:
+            if not helper.valid_email(email): raise VaildEmailError()
+
             reg_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             reg_f = datetime.datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
             self.supabase.table("Users").insert({
