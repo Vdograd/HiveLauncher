@@ -1,5 +1,10 @@
+from PyQt6.QtWidgets import QScrollArea, QFrame, QWidget, QVBoxLayout
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtCore import Qt, pyqtSignal
+from PyQt6.QtGui import QCursor
 from ..utils.build import build
+from pathlib import Path
+from typing import Union
 
 class ClickableQLabel(QtWidgets.QLabel):
     clicked = QtCore.pyqtSignal()

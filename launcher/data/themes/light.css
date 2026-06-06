@@ -52,3 +52,67 @@
 #copy_log_button:hover {
     background: #5D606C;
 }
+
+/* Window Authorization */
+
+#HiveLauncher {
+    background: #F5F5F5;
+}
+
+#logo_auth {
+    background: rgba(0,0,0,0);
+}
+
+#auth_text_1 {
+    color: #000000;
+}
+
+#auth_text_2 {
+    color: #656976;
+}
+
+#auth_panel_user {
+    background: #ffffff;
+    border-radius: 24px;
+}
+
+#auth_text_select_account {
+    color: #656976;
+}
+
+#auth_text_count_saved {
+    color: #005FFF;
+}
+
+#accountCard {
+    background-color: #F5F5F5;
+    border-radius: 26px;
+}
+
+#accountCard:hover {
+    background-color: #EBEBEB;
+}
+
+#name_account_in_card {
+    color: #000000; 
+    background: transparent;
+} 
+
+#time_account_in_card {
+    color: #4C4F5E; 
+    background: transparent;
+}
+
+#auth_button_auth_new_account {
+    color: #000000;
+    background: #F5F5F5;
+    border-radius: 16px;
+}
+
+#auth_button_auth_new_account:hover {
+    background-color: #EBEBEB;
+}
+
+#auth_text_change_theme {
+    color: #B7B6B4;
+}

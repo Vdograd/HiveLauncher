@@ -1,4 +1,19 @@
 {
+    "auth_page": {
+        "hello": "Welcome",
+        "direction": "Select an account to continue",
+        "select_account": "SELECT ACCOUNT",
+        "saved": "SAVED",
+        "add_account": "ADD ACCOUNT",
+        "change_theme": "Change theme",
+        "register": "Sign up",
+        "login": "Log in"
+    },
+    "global": {
+        "times": {
+            "hour": "h"
+        }
+    },
     "errors": {
         "header": {
             "100": "Failed to connect to the server.",

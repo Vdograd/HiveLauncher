@@ -19,7 +19,7 @@ class AuthManager:
         except Exception as e:
             raise DataBaseError(e)
     
-    def create_user(self, nickname: str, password_static: str, email: str) -> tuple[str, float, str]:
+    def create_user(self, nickname: str, password_static: str, email: str) -> tuple[str, float, str, str]:
         password = helper.encryption(password_static)
         verify_code_for_nickname = auth_verify.generate_verify_code(nickname)
 
@@ -33,7 +33,8 @@ class AuthManager:
                 "password": password, 
                 "play_time": 0.0,
                 "register_time": reg_time,
-                "verify_code": verify_code_for_nickname
+                "verify_code": verify_code_for_nickname,
+                "email": email
             }).execute()
 
             with open(os.path.join(build.config_folder, 'nicknames.json'), "r", encoding="ansi") as file:
@@ -45,7 +46,7 @@ class AuthManager:
                 data["last_nickname"] = nickname
                 json.dump(data, file, indent=4, ensure_ascii=False)
 
-            return (nickname, 0.0, reg_f)
+            return (nickname, 0.0, reg_f, email)
         except Exception as e:
             if "duplicate key value violates unique constraint" in str(e): raise UserAlreadyExistsError()
             else: raise e
@@ -61,19 +62,21 @@ class AuthManager:
             for name in nicknames:
                 try:
                     verify_code = data["verify_code"][name]
-                    verify_code_from_database = self.supabase.table("Users").select("verify_code").eq("nickname", name).execute().data[0]['verify_code'] #type: ignore
+                    response = self.supabase.table("Users").select("*").eq("nickname", name).execute().data[0] # type: ignore
+                    verify_code_from_database = response['verify_code'] # type: ignore
+                    time_play = response['play_time'] # type: ignore
                 except Exception as e:
                     raise e
                 
                 if verify_code == verify_code_from_database:
-                    all_users += [[name, "success"]]
+                    all_users += [[name, True, time_play]]
                 else:
-                    all_users += [[name, "failed"]]
+                    all_users += [[name, False, time_play]]
             return all_users
         except Exception as e:
             raise e
         
-    def auth_in_account(self, nickname: str, password_static: str) -> tuple[str, float, str]:
+    def auth_in_account(self, nickname: str, password_static: str) -> tuple[str, float, str, str | None]:
         try:
             verify_code_for_nickname = auth_verify.generate_verify_code(nickname)
             password = helper.encryption(password_static)
@@ -100,13 +103,13 @@ class AuthManager:
                     data["last_nickname"] = nickname
                     json.dump(data, file, indent=4, ensure_ascii=False)
 
-                return (user_from_database.data[0]["nickname"], user_from_database.data[0]["play_time"], user_from_database.data[0]["register_time"]) #type: ignore
+                return (user_from_database.data[0]["nickname"], user_from_database.data[0]["play_time"], user_from_database.data[0]["register_time"], user_from_database.data[0]["email"]) #type: ignore
             else:
                 raise NotCorrectPasswordError()
         except Exception as e:
             raise e
 
-    def auth_in_account_retry(self, nickname: str, password_static: str) -> tuple[str, float, str]:
+    def auth_in_account_retry(self, nickname: str, password_static: str) -> tuple[str, float, str, str | None]:
         try:
             verify_code_for_nickname = auth_verify.generate_verify_code(nickname)
             password = helper.encryption(password_static)
@@ -130,7 +133,7 @@ class AuthManager:
                     data["last_nickname"] = nickname
                     json.dump(data, file, indent=4, ensure_ascii=False)
 
-                return (user_from_database.data[0]["nickname"], user_from_database.data[0]["play_time"], user_from_database.data[0]["register_time"]) #type: ignore
+                return (user_from_database.data[0]["nickname"], user_from_database.data[0]["play_time"], user_from_database.data[0]["register_time"], user_from_database.data[0]["email"]) #type: ignore
             else:
                 raise NotCorrectPasswordError()
         except Exception as e:
@@ -174,12 +177,12 @@ class AuthManager:
             except Exception as e:
                 raise e
             
-    def select_data_user(self, nickname: str) -> tuple[str, float, str]:
+    def select_data_user(self, nickname: str) -> tuple[str, float, str, str | None]:
         try:
             user_from_database = self.supabase.table("Users").select("*").eq("nickname", nickname).execute()
         except Exception as e:
             raise DataBaseError(e)
-        return (user_from_database.data[0]["nickname"], user_from_database.data[0]["play_time"], user_from_database.data[0]["register_time"]) #type: ignore
+        return (user_from_database.data[0]["nickname"], user_from_database.data[0]["play_time"], user_from_database.data[0]["register_time"], user_from_database.data[0]["email"]) #type: ignore
     
     def download_mods_from_supabase(self, filename: str, path: pathlib.Path | str) -> int | None:
         try:

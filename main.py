@@ -2,6 +2,8 @@ from launcher.utils.error_manager.error import ErrorExc
 from launcher.utils.download_update import update_file
 from launcher.auth.auth_manager import auth_manager
 from launcher.utils.build import RestartConfig
+from launcher.ui.manager import HiveLauncher
+from PyQt6.QtWidgets import QApplication
 from launcher.utils.logger import logger
 import sys
 
@@ -32,6 +34,15 @@ def main() -> None:
         auth_manager.retry_update_time()
     except Exception as e:
         logger.error(f"Failed updated play time: {e}")
+
+    logger.info("Connect Window")
+    app = QApplication(sys.argv)
+    try:
+        window = HiveLauncher()
+        window.show()
+        return app.exec() #type: ignore
+    except Exception as e:
+        ErrorExc(e)
 
 if __name__ == "__main__":
     sys.exit(main())

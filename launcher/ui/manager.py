@@ -4,12 +4,14 @@ from PyQt6.QtWidgets import QMainWindow
 from os.path import join as pathjoin
 from ..utils.logger import logger
 from ..utils.build import build
+from .window_classes.authorization import WindowAuthorization
 from .style import set_style
 from .helper_ui import *
 
 class HiveLauncher(QMainWindow):
     def __init__(self):
         super().__init__()
+        self.auth_window = WindowAuthorization(self, ClickableQLabel)
         self.nickname = None
         self.datetime = None
         self.play_time = None
@@ -17,14 +19,8 @@ class HiveLauncher(QMainWindow):
         self.type_skin = None
         self.setup_default_settings()
 
-    def show_launcher_main(self) -> None:
-        try:
-            set_style(self, build.get_color_theme())
-        except Exception as e:
-            ErrorExc(e)
-
     def setup_default_settings(self):
-        self.setObjectName("MainWindow")
+        self.setObjectName("HiveLauncher")
         self.resize(1100, 700)
         self.setMinimumSize(QtCore.QSize(1100, 700))
         self.setMaximumSize(QtCore.QSize(1100, 700))
@@ -40,15 +36,11 @@ class HiveLauncher(QMainWindow):
     def set_page_start(self) -> None:
         try:
             page = currect_show_page()
-            
             if page == 0:
-                set_style(self, 'setup')
+                set_style(self, build.get_color_theme())
             else:
-                set_style(self, 'login')
+                set_style(self, build.get_color_theme())
+                logger.info('Show authorization.')
+                self.auth_window.show_page()
         except Exception as e:
             ErrorExc(e)
-        
-
-
-
-    
