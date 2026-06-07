@@ -33,7 +33,6 @@ class ErrorExc:
         app = QApplication.instance()
         if app is None:
             app = QApplication(sys.argv)
-
         dialog = DialogError(self.name, self.message, self.type_error)
         try: dialog.exec()
         except Exception: dialog.show()
@@ -105,7 +104,7 @@ class ErrorExc:
 
         for code in self.all_code_error:
             names[str(code)] = build.get_lang_text(f'errors-header-{code}')
-        return names.get(str(self.code), 'Error')
+        return names[(str(self.code))]
     
     def get_type_error(self) -> str:
         error_types = {
@@ -139,6 +138,7 @@ class ErrorExc:
             402: 'FILE_ERROR',
             403: 'FILE_ERROR',
             501: 'NETWORK_ERROR',
+            502: 'LAUNCHER_ERROR',
             601: 'POOL_ERROR',
             602: 'PROXY_ERROR',
             603: 'DECODE_ERROR',
@@ -163,7 +163,7 @@ class ErrorExc:
             999: 'UNKNOWN_ERROR',
             1001: 'DATABASE_ERROR',
         }
-        return error_types.get(self.code, 'UNKNOWN_ERROR')
+        return error_types[self.code]
     
     def get_message(self) -> str:
         messages = {}
@@ -171,4 +171,4 @@ class ErrorExc:
         for code in self.all_code_error:
             messages[str(code)] = build.get_lang_text(f'errors-center-{code}')
     
-        return messages.get(str(self.code), 'Error')
+        return messages[(str(self.code))]

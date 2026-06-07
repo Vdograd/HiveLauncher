@@ -1,6 +1,7 @@
 from ..utils.error_manager.error_classes import DataBaseError, UserAlreadyExistsError, UserNotFoundError, UserAlreadyAddedError, NotCorrectPasswordError, VaildEmailError
 from supabase import create_client, Client
 from .auth_verify import auth_verify
+from ..utils.logger import logger
 from ..utils.helper import helper
 from ..utils.build import build
 from ..utils.env import env
@@ -57,22 +58,22 @@ class AuthManager:
                 data = json.load(file)
                 
             nicknames = data["nicknames"]
-            all_users = []
+            return_list = []
 
-            for name in nicknames:
-                try:
-                    verify_code = data["verify_code"][name]
-                    response = self.supabase.table("Users").select("*").eq("nickname", name).execute().data[0] # type: ignore
-                    verify_code_from_database = response['verify_code'] # type: ignore
-                    time_play = response['play_time'] # type: ignore
-                except Exception as e:
-                    raise e
-                
-                if verify_code == verify_code_from_database:
-                    all_users += [[name, True, time_play]]
+            response = self.supabase.table("Users").select("*").in_("nickname", nicknames).execute().data
+            users_dict = {user['nickname']: user for user in response} # type: ignore
+            sorted_users = [users_dict[name] for name in nicknames if name in users_dict]
+
+            for user, nickname in zip(sorted_users, nicknames):
+                time_play = user['play_time'] # type: ignore
+                verify_code_db = user['verify_code'] # type: ignore
+                verify_code = data["verify_code"][nickname]
+                if verify_code == verify_code_db:
+                    return_list += [[nickname, True, time_play]]
                 else:
-                    all_users += [[name, False, time_play]]
-            return all_users
+                    return_list += [[nickname, False, time_play]]
+
+            return return_list
         except Exception as e:
             raise e
         

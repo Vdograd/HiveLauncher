@@ -1,9 +1,8 @@
+from ..functions.authorization import add_all_card, pos_size_with_count_accounts
 from ..functions.authorization import ScrollableCardContainer
-from ...utils.error_manager.error import ErrorExc
-from ...auth.auth_manager import auth_manager
 from PyQt6 import QtCore, QtGui, QtWidgets
 from os.path import join as pathjoin
-from PyQt6.QtWidgets import QWidget
+from PyQt6.QtWidgets import QWidget, QHBoxLayout
 from ...utils.build import build
 from ...utils.fonts import font
 from ..helper_ui import *
@@ -56,14 +55,14 @@ class WindowAuthorization(QWidget):
         # Box with card users
         self.box_users_card = ScrollableCardContainer(parent=self.main.centralwidget)
         self.box_users_card.move(397, 250)
-        self.add_all_card()
+        add_all_card(self)
 
-        self.auth_text_select_account = QtWidgets.QLabel(parent=self.main.centralwidget)
-        self.auth_text_select_account.setFont(font.font(10,10))
-        self.auth_text_select_account.setText(build.get_lang_text('auth_page-add_account'))
-        self.auth_text_select_account.setObjectName("auth_text_select_account")
-        self.auth_text_select_account.setGeometry(QtCore.QRect(400, 419, 300, 13))
-
+        self.auth_text_add_account = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.auth_text_add_account.setFont(font.font(10,10))
+        self.auth_text_add_account.setText(build.get_lang_text('auth_page-add_account'))
+        self.auth_text_add_account.setObjectName("auth_text_select_account")
+        self.auth_text_add_account.setGeometry(QtCore.QRect(400, 419, 300, 13))
+        
         self.auth_button_auth_new_account = QtWidgets.QPushButton(parent=self.main.centralwidget)
         self.auth_button_auth_new_account.setGeometry(QtCore.QRect(397, 444, 306, 40))
         self.auth_button_auth_new_account.setFont(font.font(11,14))
@@ -86,23 +85,22 @@ class WindowAuthorization(QWidget):
         self.auth_button_reg_new_account.setObjectName("auth_button_auth_new_account")
         #self.auth_button_reg_new_account.clicked.connect(self.auth_new_account)
 
-        self.auth_text_change_theme = QtWidgets.QLabel(parent=self.main.centralwidget)
+        self.auth_text_change_theme_container = QtWidgets.QWidget(parent=self.main.centralwidget)
+        self.auth_text_change_theme_container.setGeometry(QtCore.QRect(375, 597, 350, 15))
+        self.auth_text_change_theme_container.setObjectName("auth_text_change_theme_container")
+
+        self.auth_layout_text_change_theme = QHBoxLayout(self.auth_text_change_theme_container)
+        self.auth_layout_text_change_theme.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.auth_layout_text_change_theme.setContentsMargins(0, 0, 0, 0)
+
+        self.auth_text_change_theme = ClickableQLabel(parent=self.auth_text_change_theme_container)
         self.auth_text_change_theme.setFont(font.font(11,12))
         self.auth_text_change_theme.setText(build.get_lang_text('auth_page-change_theme'))
         self.auth_text_change_theme.setObjectName("auth_text_change_theme")
-        self.auth_text_change_theme.setGeometry(QtCore.QRect(375, 597, 350, 15))
-        self.auth_text_change_theme.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
+        self.auth_text_change_theme.clicked.connect(lambda: change_color_theme(self))
+        self.auth_layout_text_change_theme.addWidget(self.auth_text_change_theme)
 
-    def add_all_card(self) -> None:
-        players = auth_manager.list_nicknames()
-        self.auth_text_count_saved.setText(f"{len(players)} {build.get_lang_text('auth_page-saved')}")
-        for player in players:
-            name = player[0]
-            verify = player[1]
-            play_time = player[2]
-
-            self.box_users_card.add_user(name, play_time, pathjoin(build.static_folder, 'textures_heads', 'icon.png'), verify)
-
+        pos_size_with_count_accounts(self)
     def mousePressEvent(self, event):
         if event.button() == QtCore.Qt.MouseButton.LeftButton:
             if event.pos().y() <= 20:

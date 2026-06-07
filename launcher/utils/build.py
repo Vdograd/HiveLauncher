@@ -12,6 +12,7 @@ class Build:
         self.config_folder = os.path.join(self.path_project, 'launcher', 'data')
         self.theme_folder = os.path.join(self.path_project, 'launcher', 'data', 'themes')
         self.logs_folder = os.path.join(self.path_project, 'launcher', 'data', 'logs')
+        self.theme = None
         self.version_launcher = "4.0-beta"
         self.lang = None
 
@@ -27,12 +28,28 @@ class Build:
             with open(lang_file, 'r', encoding="utf-8") as file:
                 self.lang_cache.append(json.load(file))
 
+    def set_color_theme(self, color: str) -> None:
+        try:
+            if type(color) != str or color != 'dark' and color != 'light': raise ValueError('Invalid data type in config[color]')
+            with open(os.path.join(self.config_folder, 'config.json'), "r", encoding="ansi") as file:
+                data = json.load(file)
+            data["color"] = color
+            with open(os.path.join(self.config_folder, 'config.json'), "w", encoding="ansi") as file:
+                json.dump(data, file,indent=4, ensure_ascii=False)
+            self.theme = color
+        except Exception as e:
+            raise e
+        
     def get_color_theme(self) -> str:
         try:
-            with open(os.path.join(self.config_folder, 'config.json'), "r", encoding="ansi") as file:
-                color = json.load(file)["color"]
-                if type(color) != str: raise ValueError('Invalid data type in config[color]')
-            return color
+            if self.theme == None:
+                with open(os.path.join(self.config_folder, 'config.json'), "r", encoding="ansi") as file:
+                    color = json.load(file)["color"]
+                    if type(color) != str: raise ValueError('Invalid data type in config[color]')
+                self.theme = color
+                return color
+            else:
+                return self.theme
         except Exception as e: raise e
 
     def get_all_nicknames(self) -> list | None:

@@ -1,10 +1,10 @@
+from .window_classes.authorization import WindowAuthorization
 from ..utils.error_manager.error import ErrorExc
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMainWindow
 from os.path import join as pathjoin
 from ..utils.logger import logger
 from ..utils.build import build
-from .window_classes.authorization import WindowAuthorization
 from .style import set_style
 from .helper_ui import *
 
