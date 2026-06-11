@@ -1,9 +1,10 @@
-from PyQt6.QtWidgets import QScrollArea, QFrame, QWidget, QVBoxLayout
+from PyQt6.QtWidgets import QScrollArea, QFrame, QWidget, QVBoxLayout, QHBoxLayout, QLabel
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import Qt, pyqtSignal
 from os.path import join as pathjoin
 from PyQt6.QtGui import QCursor
 from ..utils.build import build
+from ..utils.fonts import font
 from .style import set_style
 from pathlib import Path
 from typing import Union

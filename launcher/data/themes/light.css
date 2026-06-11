@@ -116,3 +116,33 @@
 #auth_text_change_theme {
     color: #B7B6B4;
 }
+
+#auth_text_change_theme:hover {
+    color: #acaba9;
+}
+
+#auth_qlineedit_1 {
+    background: #F5F5F5;
+    border-radius: 12px;
+    color: #000000;
+}
+
+#auth_button_login_to_account {
+    background: rgba(0, 95, 255, 1);
+    color: #FFFFFF;
+    border-radius: 12px;
+}
+
+#auth_button_login_to_account:hover {
+    background: #0156E4;
+}
+
+#auth_btn_back {
+    border: none;
+    background: #FFFFFF;
+    color: #005FFF;
+}
+
+#auth_btn_back:hover {
+    color: #0156E4;
+}

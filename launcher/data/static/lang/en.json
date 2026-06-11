@@ -7,7 +7,30 @@
         "add_account": "ADD ACCOUNT",
         "change_theme": "Change theme",
         "register": "Sign up",
-        "login": "Log in"
+        "login": "Log in",
+        "login_page": {
+            "text_1": "Authorization",
+            "text_2": "Fill in the details",
+            "text_3": "NICKNAME",
+            "text_4": "PASSWORD",
+            "button": "Log in",
+            "placeholder_1": "Nickname",
+            "placeholder_2": "Password",
+            "back": "BACK",
+            "forgot_password": "FORGOT PASSWORD?"
+        },
+        "register_page": {
+            "text_1": "Registration",
+            "text_2": "Fill in the details",
+            "text_3": "EMAIL",
+            "text_4": "NICKNAME",
+            "text_5": "PASSWORD",
+            "placeholder_1": "Email",
+            "placeholder_2": "Nickname",
+            "placeholder_3": "Password",
+            "back": "BACK",
+            "button": "Create"
+        }
     },
     "global": {
         "times": {
