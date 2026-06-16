@@ -1,7 +1,7 @@
-from ..functions.authorization import *
-from PyQt6 import QtCore, QtGui, QtWidgets
-from os.path import join as pathjoin
 from PyQt6.QtWidgets import QWidget, QHBoxLayout
+from PyQt6 import QtCore, QtGui, QtWidgets
+from ..functions.authorization import *
+from os.path import join as pathjoin
 from ...utils.build import build
 from ...utils.fonts import font
 from ..helper_ui import *
@@ -13,7 +13,6 @@ class WindowAuthorization(QWidget):
         self.main = main
     
     def show_page(self):
-
         self.logo_auth = QtWidgets.QLabel(parent=self.main.centralwidget)
         self.logo_auth.setGeometry(QtCore.QRect(70, 40, 70, 70))
         self.logo_auth.setMinimumSize(QtCore.QSize(70, 70))
@@ -86,6 +85,7 @@ class WindowAuthorization(QWidget):
         self.btn_back.setObjectName('auth_btn_back')
         self.btn_back.clicked.connect(lambda: show_home(self))
         self.btn_back.setIconSize(QtCore.QSize(10, 10))
+        self.btn_back.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
 
         # Auth page
         self.auth_qlineedit_1 = QtWidgets.QLineEdit(parent=self.main.centralwidget)
@@ -157,5 +157,18 @@ class WindowAuthorization(QWidget):
         self.auth_button_create_to_account.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
         self.auth_button_create_to_account.setObjectName("auth_button_login_to_account")
         #self.auth_button_create_to_account.clicked.connect(self.auth_new_account)
+
+        self.auth_button_confirm_email = QtWidgets.QPushButton(parent=self.main.centralwidget)
+        self.auth_button_confirm_email.setFont(font.font(8,16))
+        self.auth_button_confirm_email.setIconSize(QtCore.QSize(20, 20))
+        self.auth_button_confirm_email.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.PointingHandCursor))
+        self.auth_button_confirm_email.setFocusPolicy(QtCore.Qt.FocusPolicy.NoFocus)
+        self.auth_button_confirm_email.setObjectName("auth_button_login_to_account")
+        #self.auth_button_confirm_email.clicked.connect(self.auth_new_account)
+
+        self.auth_forgot_password = ClickableQLabel(self.main.centralwidget)
+        self.auth_forgot_password.setObjectName('auth_forgot_password')
+        self.auth_forgot_password.setFont(font.font(10,10))
+        self.auth_forgot_password.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
 
         show_home(self)

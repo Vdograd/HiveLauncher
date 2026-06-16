@@ -15,6 +15,235 @@ from typing import Union
 from PyQt6 import QtCore
 from PyQt6 import QtGui
 
+
+# ------------------------------------------------
+
+# POSITION ELEMENTS AND SHOW/HIDE PAGES
+
+# ------------------------------------------------
+
+
+def pos_size_with_count_accounts(self) -> None:
+    count = len(build.get_all_nicknames()) # type: ignore
+
+    if count == 1:
+        self.auth_text_add_account.move(QPoint(400, 310+24))
+        self.auth_button_auth_new_account.move(QPoint(400, self.auth_text_add_account.pos().y()+13+12))
+        self.auth_button_reg_new_account.move(QPoint(400, self.auth_button_auth_new_account.pos().y()+40+8))
+        self.auth_panel_user.setFixedHeight(292)
+        self.auth_text_change_theme_container.move(QPoint(375, 205+292+15))
+
+    if count == 2:
+        self.auth_text_add_account.move(QPoint(400, 250+(60*2)+8+24))
+        self.auth_button_auth_new_account.move(QPoint(400, self.auth_text_add_account.pos().y()+13+12))
+        self.auth_button_reg_new_account.move(QPoint(400, self.auth_button_auth_new_account.pos().y()+40+8))
+        self.auth_panel_user.setFixedHeight(360)
+        self.auth_text_change_theme_container.move(QPoint(375, 205+360+15))
+
+def show_login_account(self) -> None:
+    hide_all_elements(self)
+
+    self.auth_qlineedit_1.clear()
+    self.auth_qlineedit_2.clear()
+    self.auth_qlineedit_3.clear()
+
+    self.logo_auth.show()
+    self.auth_text_1.show()
+    self.auth_text_2.show()
+    self.auth_panel_user.show()
+    self.auth_text_select_account.show()
+    self.auth_qlineedit_1.show()
+    self.auth_text_add_account.show()
+    self.auth_qlineedit_2.show()
+    self.auth_button_login_to_account.show()
+    self.auth_text_change_theme_container.show()
+    self.auth_forgot_password.show()
+
+    self.auth_qlineedit_2.setGeometry(QtCore.QRect(397, 339, 306, 40))
+    self.auth_text_1.setText(build.get_lang_text('auth_page-login_page-text_1'))
+    self.auth_text_2.setText(build.get_lang_text('auth_page-login_page-text_2'))
+    self.auth_text_select_account.setText(build.get_lang_text('auth_page-login_page-text_3'))
+    self.auth_qlineedit_1_icon.setPixmap(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'user.svg')).pixmap(16, 16))
+    self.auth_qlineedit_1.setPlaceholderText(build.get_lang_text('auth_page-login_page-placeholder_1'))
+    self.auth_text_add_account.move(400, 314)
+    self.auth_text_add_account.setText(build.get_lang_text('auth_page-login_page-text_4'))
+    self.auth_qlineedit_2.setPlaceholderText(build.get_lang_text('auth_page-login_page-placeholder_2'))
+    self.auth_qlineedit_2_icon.setPixmap(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'lock.svg')).pixmap(16, 16))
+    self.auth_button_login_to_account.setText(build.get_lang_text('auth_page-login_page-button'))
+    self.auth_panel_user.setFixedHeight(288)
+    self.auth_text_change_theme_container.move(QPoint(375, 508))
+    self.btn_back.setIcon(QtGui.QIcon(pathjoin(build.static_folder, 'icons', f'arrow_left_10x10.svg')))
+    self.btn_back.setText(build.get_lang_text('auth_page-login_page-back'))
+    self.btn_back.show()
+    self.btn_back.move(1100-400-self.btn_back.size().width(), 225)
+    self.auth_forgot_password.setText(build.get_lang_text('auth_page-login_page-forgot_password'))
+    self.auth_forgot_password.adjustSize()
+    self.auth_forgot_password.move(1100-400-self.auth_forgot_password.size().width(), 314)
+
+def show_register_account(self) -> None:
+    hide_all_elements(self)
+
+    self.auth_qlineedit_1.clear()
+    self.auth_qlineedit_2.clear()
+    self.auth_qlineedit_3.clear()
+
+    self.logo_auth.show()
+    self.auth_text_1.show()
+    self.auth_text_2.show()
+    self.auth_panel_user.show()
+    self.auth_text_select_account.show()
+    self.auth_qlineedit_1.show()
+    self.auth_text_add_account.show()
+    self.auth_qlineedit_2.show()
+    self.auth_qlineedit_3.show()
+    self.auth_text_password_line.show()
+    self.auth_button_create_to_account.show()
+    self.auth_text_change_theme_container.show()
+
+    self.auth_text_1.setText(build.get_lang_text('auth_page-register_page-text_1'))
+    self.auth_text_2.setText(build.get_lang_text('auth_page-register_page-text_2'))
+    self.auth_text_select_account.setText(build.get_lang_text('auth_page-register_page-text_3'))
+    self.auth_qlineedit_1.setPlaceholderText(build.get_lang_text('auth_page-register_page-placeholder_1'))
+    self.auth_qlineedit_1_icon.setPixmap(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'mail.svg')).pixmap(16, 16))
+    self.auth_text_add_account.move(400, 314)
+    self.auth_text_add_account.setText(build.get_lang_text('auth_page-register_page-text_4'))
+    self.auth_qlineedit_3.setPlaceholderText(build.get_lang_text('auth_page-register_page-placeholder_2'))
+    self.auth_qlineedit_3_icon.setPixmap(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'user.svg')).pixmap(16, 16))
+    self.auth_text_password_line.setText(build.get_lang_text('auth_page-register_page-text_5'))
+
+    self.btn_back.setIcon(QtGui.QIcon(pathjoin(build.static_folder, 'icons', f'arrow_left_10x10.svg')))
+    self.btn_back.setText(build.get_lang_text('auth_page-login_page-back'))
+    self.btn_back.show()
+    self.btn_back.move(1100-400-self.btn_back.size().width(), 225)
+
+    self.auth_qlineedit_2.setPlaceholderText(build.get_lang_text('auth_page-register_page-placeholder_3'))
+    self.auth_qlineedit_2_icon.setPixmap(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'lock.svg')).pixmap(16, 16))
+    self.auth_qlineedit_2.setGeometry(QtCore.QRect(397, 428, 306, 40))
+
+    self.auth_button_create_to_account.setText(build.get_lang_text('auth_page-register_page-button'))
+    self.auth_text_change_theme_container.move(QPoint(375, 597))
+    self.auth_panel_user.setFixedHeight(377)
+
+def show_home(self) -> None:
+    hide_all_elements(self)
+
+    self.logo_auth.show()
+    self.auth_text_1.show()
+    self.auth_text_2.show()
+    self.auth_panel_user.show()
+    self.auth_text_select_account.show()
+    self.auth_text_count_saved.show()
+    self.box_users_card.show()
+    self.auth_text_add_account.show()
+    self.auth_button_auth_new_account.show()
+    self.auth_button_reg_new_account.show()
+    self.auth_text_change_theme_container.show()
+
+    self.auth_text_1.setGeometry(QtCore.QRect(0, 90, 1100, 54))
+    self.auth_text_1.setText(build.get_lang_text('auth_page-hello'))
+
+    self.auth_text_2.setGeometry(QtCore.QRect(0, 152, 1100, 18))
+    self.auth_text_2.setText(build.get_lang_text('auth_page-direction'))
+
+    self.auth_text_select_account.setText(build.get_lang_text('auth_page-select_account'))
+    self.auth_text_select_account.setGeometry(QtCore.QRect(400, 225, 150, 13))
+    self.auth_text_count_saved.setGeometry(QtCore.QRect(375+175, 205+20, 150, 13))
+    self.auth_text_add_account.setText(build.get_lang_text('auth_page-add_account'))
+    self.auth_text_add_account.setGeometry(QtCore.QRect(400, 419, 300, 13))
+    self.auth_button_auth_new_account.setGeometry(QtCore.QRect(397, 444, 306, 40))
+    self.auth_button_auth_new_account.setIcon(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'login.svg')))
+    self.auth_button_auth_new_account.setText(f" {build.get_lang_text('auth_page-login')}")
+    self.auth_button_reg_new_account.setGeometry(QtCore.QRect(397, 492, 306, 40))
+    self.auth_button_reg_new_account.setText(f" {build.get_lang_text('auth_page-register')}")
+    self.auth_button_reg_new_account.setIcon(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'user_add.svg')))
+    self.auth_text_change_theme.setText(build.get_lang_text('auth_page-change_theme'))
+    self.auth_text_change_theme_container.setGeometry(QtCore.QRect(375, 597, 350, 15))
+    self.auth_panel_user.setGeometry(QtCore.QRect(375, 205, 350, 377))
+
+    pos_size_with_count_accounts(self)
+
+def hide_all_elements(self) -> None: 
+    self.logo_auth.hide()
+    self.auth_text_1.hide()
+    self.auth_text_2.hide()
+    self.auth_panel_user.hide()
+    self.auth_text_select_account.hide()
+    self.auth_text_count_saved.hide()
+    self.box_users_card.hide()
+    self.auth_text_add_account.hide()
+    self.auth_button_auth_new_account.hide()
+    self.auth_button_reg_new_account.hide()
+    self.auth_text_change_theme_container.hide()
+    self.auth_qlineedit_1.hide()
+    self.auth_qlineedit_2.hide()
+    self.auth_button_login_to_account.hide()
+    self.btn_back.hide()
+    self.auth_qlineedit_3.hide()
+    self.auth_text_password_line.hide()
+    self.auth_button_create_to_account.hide()
+    self.auth_forgot_password.hide()
+    self.auth_button_confirm_email.hide()
+
+def show_set_email_for_account(self, nickname) -> None:
+    hide_all_elements(self)
+
+    self.auth_qlineedit_1.clear()
+    self.logo_auth.show()
+    self.auth_text_1.show()
+    self.auth_text_2.show()
+    self.auth_panel_user.show()
+    self.auth_text_select_account.show()
+    self.auth_text_count_saved.show()
+    self.auth_qlineedit_1.show()
+    self.auth_button_confirm_email.show()
+    self.auth_text_change_theme.show()
+
+    self.auth_panel_user.setGeometry(QtCore.QRect(375, 243, 350, 199))
+    self.auth_panel_user.setFixedHeight(199)
+    self.auth_text_1.setGeometry(QtCore.QRect(265, 90, 570, 92))
+    self.auth_text_1.setText(build.get_lang_text('auth_set_email-page1-text1'))
+    self.auth_text_1.setWordWrap(True)
+    self.auth_text_1.setFont(font.font(12,36))
+
+    self.auth_text_2.setGeometry(QtCore.QRect(0, 190, 1100, 18))
+    self.auth_text_2.setText(build.get_lang_text('auth_set_email-page1-direction'))
+
+    self.auth_text_select_account.setText(build.get_lang_text('auth_set_email-page1-select_account'))
+    self.auth_text_select_account.setGeometry(QtCore.QRect(400, 263, 150, 13))
+    self.auth_text_count_saved.setGeometry(QtCore.QRect(540, 263, 160, 13))
+    self.auth_text_count_saved.setText(nickname.upper())
+    self.auth_qlineedit_1.setPlaceholderText(build.get_lang_text('auth_page-register_page-placeholder_1'))
+    self.auth_qlineedit_1.setGeometry(QtCore.QRect(397, 288, 306, 40))
+    self.auth_qlineedit_1_icon.setPixmap(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'mail.svg')).pixmap(16, 16))
+
+    self.auth_button_confirm_email.setGeometry(QtCore.QRect(397, 352, 306, 40))
+    self.auth_button_confirm_email.setText(build.get_lang_text('auth_set_email-page1-confirm'))
+
+    self.auth_text_change_theme.setText(build.get_lang_text('auth_page-change_theme'))
+    self.auth_text_change_theme_container.setGeometry(QtCore.QRect(375, 454, 350, 15))
+
+
+# ------------------------------------------------
+
+# SYSTEM-FUNCTIONS FOR AUTH, REGISTER,
+# SET EMAIL, SHOW ERROR, CONTINUE IN LAUNCHER
+
+# ------------------------------------------------
+
+
+def click_on_card_user(self, nickname, email, verify, play_time, data_register) -> None:
+    if not verify: print('Not verify')
+    elif email == None: show_set_email_for_account(self, nickname)
+    else: print("All ok, let's go in launcher")
+
+
+# ------------------------------------------------
+
+# SETTING CARDS
+
+# ------------------------------------------------
+
+
 class AccountCard(QWidget):
     clicked = pyqtSignal()
     
@@ -120,11 +349,9 @@ class ScrollableCardContainer(QScrollArea):
                 if isinstance(card, AccountCard):
                     set_style(card, color)
 
-    def add_user(self, name: str, play_time: float, icon: Union[str, Path], verify: bool, on_click=None) -> AccountCard:
+    def add_user(self,selfmain, name: str, play_time: float, icon: Union[str, Path], verify: bool, email: str | None, register_time: str) -> AccountCard:
         card = add_user(self.parent_main, name, play_time, icon, verify)
-        
-        if on_click:
-            card.clicked.connect(on_click)
+        card.clicked.connect(lambda: click_on_card_user(selfmain, name, email, verify, play_time, register_time))
         
         self.cards_layout.addWidget(card)
         return card
@@ -155,155 +382,10 @@ def add_all_card(self) -> None:
             name = player[0]
             verify = player[1]
             play_time = player[2]
+            email = player[3]
+            register_time = player[4]
 
             logger.info(f'Add card-user: {player[0]}')
-            self.box_users_card.add_user(name, play_time, pathjoin(build.static_folder, 'textures_heads', 'icon.png'), verify)
+            self.box_users_card.add_user(self, name, play_time, pathjoin(build.static_folder, 'textures_heads', 'icon.png'), verify, email, register_time)
     except Exception as e:
         ErrorExc(e)
-
-def pos_size_with_count_accounts(self) -> None:
-    count = len(build.get_all_nicknames()) # type: ignore
-
-    if count == 1:
-        self.auth_text_add_account.move(QPoint(400, 310+24))
-        self.auth_button_auth_new_account.move(QPoint(400, self.auth_text_add_account.pos().y()+13+12))
-        self.auth_button_reg_new_account.move(QPoint(400, self.auth_button_auth_new_account.pos().y()+40+8))
-        self.auth_panel_user.setFixedHeight(292)
-        self.auth_text_change_theme_container.move(QPoint(375, 205+292+15))
-
-    if count == 2:
-        self.auth_text_add_account.move(QPoint(400, 250+(60*2)+8+24))
-        self.auth_button_auth_new_account.move(QPoint(400, self.auth_text_add_account.pos().y()+13+12))
-        self.auth_button_reg_new_account.move(QPoint(400, self.auth_button_auth_new_account.pos().y()+40+8))
-        self.auth_panel_user.setFixedHeight(360)
-        self.auth_text_change_theme_container.move(QPoint(375, 205+360+15))
-
-def show_login_account(self) -> None:
-    hide_all_elements(self)
-
-    self.logo_auth.show()
-    self.auth_text_1.show()
-    self.auth_text_2.show()
-    self.auth_panel_user.show()
-    self.auth_text_select_account.show()
-    self.auth_qlineedit_1.show()
-    self.auth_text_add_account.show()
-    self.auth_qlineedit_2.show()
-    self.auth_button_login_to_account.show()
-    self.auth_text_change_theme_container.show()
-
-    self.auth_qlineedit_2.setGeometry(QtCore.QRect(397, 339, 306, 40))
-    self.auth_text_1.setText(build.get_lang_text('auth_page-login_page-text_1'))
-    self.auth_text_2.setText(build.get_lang_text('auth_page-login_page-text_2'))
-    self.auth_text_select_account.setText(build.get_lang_text('auth_page-login_page-text_3'))
-    self.auth_qlineedit_1_icon.setPixmap(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'user.svg')).pixmap(16, 16))
-    self.auth_qlineedit_1.setPlaceholderText(build.get_lang_text('auth_page-login_page-placeholder_1'))
-    self.auth_text_add_account.move(400, 314)
-    self.auth_text_add_account.setText(build.get_lang_text('auth_page-login_page-text_4'))
-    self.auth_qlineedit_2.setPlaceholderText(build.get_lang_text('auth_page-login_page-placeholder_2'))
-    self.auth_qlineedit_2_icon.setPixmap(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'lock.svg')).pixmap(16, 16))
-    self.auth_button_login_to_account.setText(build.get_lang_text('auth_page-login_page-button'))
-    self.auth_panel_user.setFixedHeight(288)
-    self.auth_text_change_theme_container.move(QPoint(375, 508))
-    self.btn_back.setIcon(QtGui.QIcon(pathjoin(build.static_folder, 'icons', f'arrow_left_10x10.svg')))
-    self.btn_back.setText(build.get_lang_text('auth_page-login_page-back'))
-    self.btn_back.show()
-    self.btn_back.move(1100-400-self.btn_back.size().width(), 225)
-
-def show_register_account(self) -> None:
-    hide_all_elements(self)
-
-    self.logo_auth.show()
-    self.auth_text_1.show()
-    self.auth_text_2.show()
-    self.auth_panel_user.show()
-    self.auth_text_select_account.show()
-    self.auth_qlineedit_1.show()
-    self.auth_text_add_account.show()
-    self.auth_qlineedit_2.show()
-    self.auth_qlineedit_3.show()
-    self.auth_text_password_line.show()
-    self.auth_button_create_to_account.show()
-    self.auth_text_change_theme_container.show()
-
-    self.auth_text_1.setText(build.get_lang_text('auth_page-register_page-text_1'))
-    self.auth_text_2.setText(build.get_lang_text('auth_page-register_page-text_2'))
-    self.auth_text_select_account.setText(build.get_lang_text('auth_page-register_page-text_3'))
-    self.auth_qlineedit_1.setPlaceholderText(build.get_lang_text('auth_page-register_page-placeholder_1'))
-    self.auth_qlineedit_1_icon.setPixmap(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'mail.svg')).pixmap(16, 16))
-    self.auth_text_add_account.move(400, 314)
-    self.auth_text_add_account.setText(build.get_lang_text('auth_page-register_page-text_4'))
-    self.auth_qlineedit_3.setPlaceholderText(build.get_lang_text('auth_page-register_page-placeholder_2'))
-    self.auth_qlineedit_3_icon.setPixmap(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'user.svg')).pixmap(16, 16))
-    self.auth_text_password_line.setText(build.get_lang_text('auth_page-register_page-text_5'))
-
-    self.btn_back.setIcon(QtGui.QIcon(pathjoin(build.static_folder, 'icons', f'arrow_left_10x10.svg')))
-    self.btn_back.setText(build.get_lang_text('auth_page-login_page-back'))
-    self.btn_back.show()
-    self.btn_back.move(1100-400-self.btn_back.size().width(), 225)
-
-    self.auth_qlineedit_2.setPlaceholderText(build.get_lang_text('auth_page-register_page-placeholder_3'))
-    self.auth_qlineedit_2_icon.setPixmap(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'lock.svg')).pixmap(16, 16))
-    self.auth_qlineedit_2.setGeometry(QtCore.QRect(397, 428, 306, 40))
-
-    self.auth_button_create_to_account.setText(build.get_lang_text('auth_page-register_page-button'))
-    self.auth_text_change_theme_container.move(QPoint(375, 597))
-    self.auth_panel_user.setFixedHeight(377)
-
-def show_home(self) -> None:
-    hide_all_elements(self)
-
-    self.logo_auth.show()
-    self.auth_text_1.show()
-    self.auth_text_2.show()
-    self.auth_panel_user.show()
-    self.auth_text_select_account.show()
-    self.auth_text_count_saved.show()
-    self.box_users_card.show()
-    self.auth_text_add_account.show()
-    self.auth_button_auth_new_account.show()
-    self.auth_button_reg_new_account.show()
-    self.auth_text_change_theme_container.show()
-
-    self.auth_text_1.setGeometry(QtCore.QRect(0, 90, 1100, 54))
-    self.auth_text_1.setText(build.get_lang_text('auth_page-hello'))
-
-    self.auth_text_2.setGeometry(QtCore.QRect(0, 152, 1100, 18))
-    self.auth_text_2.setText(build.get_lang_text('auth_page-direction'))
-
-    self.auth_text_select_account.setText(build.get_lang_text('auth_page-select_account'))
-    self.auth_text_select_account.setGeometry(QtCore.QRect(400, 225, 150, 13))
-    self.auth_text_count_saved.setGeometry(QtCore.QRect(375+175, 205+20, 150, 13))
-    self.auth_text_add_account.setText(build.get_lang_text('auth_page-add_account'))
-    self.auth_text_add_account.setGeometry(QtCore.QRect(400, 419, 300, 13))
-    self.auth_button_auth_new_account.setGeometry(QtCore.QRect(397, 444, 306, 40))
-    self.auth_button_auth_new_account.setIcon(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'login.svg')))
-    self.auth_button_auth_new_account.setText(f" {build.get_lang_text('auth_page-login')}")
-    self.auth_button_reg_new_account.setGeometry(QtCore.QRect(397, 492, 306, 40))
-    self.auth_button_reg_new_account.setText(f" {build.get_lang_text('auth_page-register')}")
-    self.auth_button_reg_new_account.setIcon(QtGui.QIcon(pathjoin(build.static_folder, 'icons', 'user_add.svg')))
-    self.auth_text_change_theme.setText(build.get_lang_text('auth_page-change_theme'))
-    self.auth_text_change_theme_container.setGeometry(QtCore.QRect(375, 597, 350, 15))
-    self.auth_panel_user.setGeometry(QtCore.QRect(375, 205, 350, 377))
-
-    pos_size_with_count_accounts(self)
-
-def hide_all_elements(self) -> None: 
-    self.logo_auth.hide()
-    self.auth_text_1.hide()
-    self.auth_text_2.hide()
-    self.auth_panel_user.hide()
-    self.auth_text_select_account.hide()
-    self.auth_text_count_saved.hide()
-    self.box_users_card.hide()
-    self.auth_text_add_account.hide()
-    self.auth_button_auth_new_account.hide()
-    self.auth_button_reg_new_account.hide()
-    self.auth_text_change_theme_container.hide()
-    self.auth_qlineedit_1.hide()
-    self.auth_qlineedit_2.hide()
-    self.auth_button_login_to_account.hide()
-    self.btn_back.hide()
-    self.auth_qlineedit_3.hide()
-    self.auth_text_password_line.hide()
-    self.auth_button_create_to_account.hide()

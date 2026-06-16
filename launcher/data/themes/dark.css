@@ -146,3 +146,11 @@
 #auth_btn_back:hover {
     color: rgba(0, 95, 255, 0.9);
 }
+
+#auth_forgot_password {
+    color: #005FFF;
+}
+
+#auth_forgot_password:hover {
+    color: rgba(0, 95, 255, 0.9);
+}

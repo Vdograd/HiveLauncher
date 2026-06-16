@@ -66,12 +66,14 @@ class AuthManager:
 
             for user, nickname in zip(sorted_users, nicknames):
                 time_play = user['play_time'] # type: ignore
+                register_time = user['register_time'] # type: ignore
+                email = user['email'] # type: ignore
                 verify_code_db = user['verify_code'] # type: ignore
                 verify_code = data["verify_code"][nickname]
                 if verify_code == verify_code_db:
-                    return_list += [[nickname, True, time_play]]
+                    return_list += [[nickname, True, time_play, email, register_time]]
                 else:
-                    return_list += [[nickname, False, time_play]]
+                    return_list += [[nickname, False, time_play, email, register_time]]
 
             return return_list
         except Exception as e:
